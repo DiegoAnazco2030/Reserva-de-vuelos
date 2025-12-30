@@ -1,0 +1,77 @@
+Versiones
+/*
+Java 25
+JUnit 6.0.0
+Mockito 5.21.0
+Spring boot 4.0.0
+*/
+
+Especificaciones
+/*
+* Debe agustarse a diferentes aeorolineas - Guardar los logos en resourses
+* Cuando se registre el boleto, se imprime un pdf con el logo de la aerolinea
+* JUnit 6 y MOckito 1.12.1
+* Implementar CRUD en una interfaz generico y dspues la instancia especifica por clase
+* Parte grafia
+	Pagina principal son reservas
+	Botones para abrir las otras funcionalidades
+* Usar un ENUM para identificar que tipo de usario es 
+* Controleor va a ser nuestra clase principal, esta va a tener una instancia de vista y una de service, vista y contorler se van a tener mutuamente como instancias
+* Crear nuestra carpeta de excepciones
+* Usar la api de Collection 
+* Almacenamiento en memoria es un Map: Map<Long, String> miIndice = new HashMap<>(); 
+*/
+
+
+Spring boot
+/*
+1. La Configuración Centralizada (application.properties)
+En lugar de escribir rutas de archivos ("C:/mis_datos/vuelos.dat") directamente en tu código Java, usarás el archivo de configuración de Spring.
+
+Qué debes hacer: Definir variables en un archivo de texto simple dentro del proyecto. Ahí pondrás las rutas de tus archivos RandomAccessFile (uno para clientes, uno para vuelos, etc.) y tamaños de registros.
+
+Por qué ayuda: Spring leerá estas líneas y se las "inyectará" a tus clases de repositorio. Si mañana cambias la carpeta de los archivos, solo editas este archivo de texto, no tocas ni una línea de código Java.
+
+2. La Capa de Persistencia: Los "Repositorios" (@Repository)
+Tu proyecto exige persistencia en archivos con acceso aleatorio e índices densos.
+
+Qué debes hacer: Crearás clases encargadas exclusivamente de tocar el disco duro (leer/escribir bytes). A estas clases les pondrás una etiqueta especial (@Repository).
+
+La magia de Spring: Al poner esa etiqueta, Spring detecta que esa clase sirve para guardar datos. Spring creará una sola instancia (Singleton) de esta clase en memoria. Esto es vital porque no quieres 50 objetos intentando abrir el mismo archivo al mismo tiempo; Spring te garantiza que solo habrá uno gestionando el acceso.
+
+3. La Capa de Servicio: La Lógica de Negocio (@Service)
+Aquí es donde validas las reglas antes de guardar (ej: "No vender un boleto si el avión está lleno").
+
+Qué debes hacer: Crearás clases que contengan toda la lógica inteligente. Les pondrás la etiqueta @Service.
+
+La Inyección: En lugar de hacer new VueloRepository() dentro del servicio, definirás un constructor que pida una interfaz VueloRepository. Spring buscará la implementación que hiciste en el paso 2 y se la entregará al servicio automáticamente.
+
+Beneficio: Cumples el requisito de separar responsabilidades. El servicio no sabe cómo se guardan los datos (si es en archivo o en la nube), solo sabe que alguien se los guarda.
+
+4. La Capa de Presentación: Integración con Swing (@Component)
+Este es el punto más delicado porque Swing no es nativo de Spring, pero se llevan bien.
+
+
+Qué debes hacer: Tus ventanas (JFrames) y tus Controladores (la clase que une la vista con el servicio ) deben ser marcados como componentes de Spring (@Component o @Controller).
+
+Cómo funciona: Normalmente, tú harías new VentanaPrincipal(). Con Spring, le dirás al framework "dame la Ventana Principal". Como Spring ya tiene cargados los Servicios, al crear la ventana, le inyectará automáticamente los Controladores y Servicios que esa ventana necesite para funcionar.
+
+5. El Arranque "No Web" (CommandLineRunner)
+Spring Boot suele arrancar un servidor web (Tomcat) por defecto. Tú no quieres eso.
+
+Qué debes hacer: Configurar el arranque de la aplicación para que sea modo "Escritorio" (headless false).
+
+El flujo:
+
+Spring arranca.
+
+Lee las configuraciones.
+
+Crea los Repositorios.
+
+Crea los Servicios (y les mete los Repositorios).
+
+Crea la Ventana Principal (y le mete los Servicios/Controladores).
+
+Muestra la ventana al usuario.
+*/
