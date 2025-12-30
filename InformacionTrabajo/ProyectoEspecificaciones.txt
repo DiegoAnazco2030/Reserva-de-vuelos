@@ -24,6 +24,13 @@ Especificaciones
 
 
 Spring boot
+
+Se debe agregar esto para funcionar con swing!!
+
+new SpringApplicationBuilder(TuClaseMain.class)
+    .headless(false) // Vital para Swing
+    .run(args);
+
 /*
 1. La Configuración Centralizada (application.properties)
 En lugar de escribir rutas de archivos ("C:/mis_datos/vuelos.dat") directamente en tu código Java, usarás el archivo de configuración de Spring.
