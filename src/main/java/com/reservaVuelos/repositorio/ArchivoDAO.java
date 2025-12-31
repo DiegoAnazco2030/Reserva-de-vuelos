@@ -16,5 +16,47 @@ public abstract class ArchivoDAO<T extends Identifcador> implements IRepositorio
 
     // -------------- Métodos de la interfaz IRepositorio --------------
 
+    @Override
+    public T guardarDato(T entity) {
+        // poner codigo
+        return null;
+    }
+
+    @Override
+    public T encontrarPorID(Long ID) {
+        // poner codigo
+        return null;
+    }
+
+    @Override
+    public List<T> obtenerTodosDatos() {
+        // poner codigo
+        return null;
+    }
+
+    @Override
+    public T actualizarDato(T entity) {
+        // poner codigo
+        return null;
+    }
+
+    @Override
+    public T eliminarDato(T entity) {
+        // poner codigo
+        return null;
+    }
+
+    @Override
+    public boolean existePorID(Long ID) {
+        // poner codigo
+        return false;
+    }
+
+    @Override
+    public Long contarDatos() {
+        // poner codigo
+        return null;
+    }
+
     // Poner los metodos abstractos que se necesiten para los DAO concretos.
 }
