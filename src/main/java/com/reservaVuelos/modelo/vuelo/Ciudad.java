@@ -1,6 +1,6 @@
 package com.reservaVuelos.modelo.vuelo;
 
-public enum Paises {
+public enum Ciudad {
     Argentina,
     Brasil,
     Colombia,

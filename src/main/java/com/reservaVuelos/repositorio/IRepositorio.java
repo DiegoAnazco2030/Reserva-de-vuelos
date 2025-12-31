@@ -1,12 +1,12 @@
 package com.reservaVuelos.repositorio;
 
-import com.reservaVuelos.modelo.Identifcador;
+import com.reservaVuelos.modelo.Identificador;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IRepositorio<T extends Identifcador> {
+public interface IRepositorio<T extends Identificador> {
 
     // -------------- CRUD --------------
 

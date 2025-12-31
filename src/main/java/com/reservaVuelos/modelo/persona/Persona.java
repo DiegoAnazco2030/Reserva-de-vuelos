@@ -1,50 +1,50 @@
 package com.reservaVuelos.modelo.persona;
 
-import com.reservaVuelos.modelo.Identifcador;
+import com.reservaVuelos.modelo.Identificador;
 
-public abstract class Persona implements Identifcador {
+public abstract class Persona implements Identificador {
 
-    private String personaNombre;
-    private String personaApellido;
-    private String personaTelefono;
-    private int personaEdad;
+    private String Nombre;
+    private String Apellido;
+    private String Telefono;
+    private int Edad;
 
-    public Persona(String personaNombre, String personaApellido, String personaTelefono, int personaEdad) {
-        this.personaNombre = personaNombre;
-        this.personaApellido = personaApellido;
-        this.personaTelefono = personaTelefono;
-        this.personaEdad = personaEdad;
+    public Persona(String Nombre, String Apellido, String Telefono, int Edad) {
+        this.Nombre = Nombre;
+        this.Apellido = Apellido;
+        this.Telefono = Telefono;
+        this.Edad = Edad;
     }
 
-    public String getPersonaNombre() {
-        return personaNombre;
+    public String getNombre() {
+        return Nombre;
     }
 
-    public void setPersonaNombre(String personaNombre) {
-        this.personaNombre = personaNombre;
+    public void setNombre(String nombre) {
+        this.Nombre = nombre;
     }
 
-    public String getPersonaApellido() {
-        return personaApellido;
+    public String getApellido() {
+        return Apellido;
     }
 
-    public void setPersonaApellido(String personaApellido) {
-        this.personaApellido = personaApellido;
+    public void setApellido(String apellido) {
+        this.Apellido = apellido;
     }
 
-    public String getPersonaTelefono() {
-        return personaTelefono;
+    public String getTelefono() {
+        return Telefono;
     }
 
-    public void setPersonaTelefono(String personaTelefono) {
-        this.personaTelefono = personaTelefono;
+    public void setTelefono(String telefono) {
+        this.Telefono = telefono;
     }
 
-    public int getPersonaEdad() {
-        return personaEdad;
+    public int getEdad() {
+        return Edad;
     }
 
-    public void setPersonaEdad(int personaEdad) {
-        this.personaEdad = personaEdad;
+    public void setEdad(int edad) {
+        this.Edad = edad;
     }
 }

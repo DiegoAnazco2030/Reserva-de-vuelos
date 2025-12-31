@@ -1,8 +1,8 @@
 package com.reservaVuelos.modelo.vuelo;
 
-import com.reservaVuelos.modelo.Identifcador;
+import com.reservaVuelos.modelo.Identificador;
 
-public class Asiento implements Identifcador {
+public class Asiento implements Identificador {
 
     private final Long idAsiento;
     private TipoDeAsiento tipoAsiento;
