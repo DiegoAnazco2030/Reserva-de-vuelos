@@ -7,6 +7,6 @@ public interface IServicio {
     void crearUsuario(UsuarioDTO usuarioNuevo);
     void crearReserva();
     void crearEmpleado();
-    
+
 
 }
