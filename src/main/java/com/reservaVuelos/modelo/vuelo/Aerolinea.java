@@ -6,5 +6,4 @@ public enum Aerolinea {
     Aeroregional,
     JetSmart,
     EcuatorianaAirlines,
-
 }

@@ -1,6 +1,5 @@
 package com.reservaVuelos.modelo.persona;
 
-
 import com.reservaVuelos.modelo.Identifcador;
 
 public abstract class Persona implements Identifcador {

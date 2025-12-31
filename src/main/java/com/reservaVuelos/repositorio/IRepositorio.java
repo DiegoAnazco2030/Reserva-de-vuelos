@@ -8,24 +8,36 @@ import java.util.function.Predicate;
 
 public interface IRepositorio<T extends Identifcador> {
 
+    // -------------- CRUD --------------
+
+    // Crear
     T guardarDato(T entity);
 
-    T leerDato(T entity);
+    // Leer
+    T encontrarPorID(Long ID);
 
-    T actualizarDato(T entity);
+    List<T> obtenerTodosDatos();
 
-    T eliminarDato(T entity);
-
-    List<T> ObtenerTodosDatos();
-
-    T EncontrarPorID(Long ID);
-
-    default List<T> ObtenerTodosDatos(Predicate<? super T> filter) {
+    default List<T> obtenerTodosDatos(Predicate<? super T> filter) {
         List<T> salida = new ArrayList<>();
 
-        for (T t : ObtenerTodosDatos()) {
+        for (T t : obtenerTodosDatos()) {
             if (filter.test(t)) salida.add(t);
         }
         return salida;
     }
+
+    // Actualizar
+    T actualizarDato(T entity);
+
+    // Eliminar
+    T eliminarDato(T entity);
+
+    // -------------- Auxiliares --------------
+
+    // Verificar existencia
+    boolean existePorID(Long ID);
+
+    // Contar la cantidad de datos
+    Long contarDatos();
 }

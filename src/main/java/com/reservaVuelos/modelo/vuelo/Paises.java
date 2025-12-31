@@ -11,4 +11,5 @@ public enum Paises {
     India,
     Japón,
     Kenia,
+    Ecuador,
 }

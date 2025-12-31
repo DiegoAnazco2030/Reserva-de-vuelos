@@ -5,14 +5,14 @@ import com.reservaVuelos.modelo.Identifcador;
 import java.time.LocalDateTime;
 
 public class Vuelo implements Identifcador {
-    private final Long vueloID;
-    private final Aerolinea aerolinea;
-    private final String origenVuelo;
-    private final String destinoVuelo;
-    private final LocalDateTime fechaHoraSalida;
-    private final LocalDateTime fechaHoraLlegada;
-    private final int capacidad;
-    private final ModeloAvion modeloAvion;
+    private Long vueloID;
+    private Aerolinea aerolinea;
+    private String origenVuelo;
+    private String destinoVuelo;
+    private LocalDateTime fechaHoraSalida;
+    private LocalDateTime fechaHoraLlegada;
+    private int capacidad;
+    private ModeloAvion modeloAvion;
     private boolean estadoVuelo; //"1 = Programado", "0 = Aterrizado"
 
     public Vuelo(Long vueloID, Aerolinea aerolinea, String origenVuelo,
@@ -31,6 +31,42 @@ public class Vuelo implements Identifcador {
 
     public void setEstadoVuelo(boolean estadoVuelo) {
         this.estadoVuelo = estadoVuelo;
+    }
+
+    public Long getVueloID() {
+        return vueloID;
+    }
+
+    public Aerolinea getAerolinea() {
+        return aerolinea;
+    }
+
+    public String getOrigenVuelo() {
+        return origenVuelo;
+    }
+
+    public String getDestinoVuelo() {
+        return destinoVuelo;
+    }
+
+    public LocalDateTime getFechaHoraSalida() {
+        return fechaHoraSalida;
+    }
+
+    public LocalDateTime getFechaHoraLlegada() {
+        return fechaHoraLlegada;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public ModeloAvion getModeloAvion() {
+        return modeloAvion;
+    }
+
+    public boolean isEstadoVuelo() {
+        return estadoVuelo;
     }
 
     @Override

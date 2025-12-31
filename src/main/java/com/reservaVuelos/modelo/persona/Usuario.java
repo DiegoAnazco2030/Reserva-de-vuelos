@@ -5,7 +5,7 @@ import static com.reservaVuelos.modelo.persona.RolUsuario.USUARIO;
 public class Usuario extends Persona {
 
     private String usuarioEmail;
-    private String usuarioContrasenia;
+    private String usuarioContrasenia; //La constraseña ya encriptada
     private final RolUsuario rolUsuario = USUARIO;
     private final Long usuarioPassaporteID;
 

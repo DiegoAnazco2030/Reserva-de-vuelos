@@ -4,5 +4,4 @@ public enum TipoDeAsiento {
     Economica,
     Ejecutiva,
     Primera,
-
 }
