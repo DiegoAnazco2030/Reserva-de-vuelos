@@ -1,4 +1,7 @@
 package com.reservaVuelos.servicio.DTOs.DTOsSalida;
 
-public class SalidaEmpleadoDTO {
+public record SalidaEmpleadoDTO(String correoEmpleado,
+    String nombre,
+    String apellido,
+    Long idEmpleado) {
 }

@@ -1,4 +1,7 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-public class CrearReservaDTO {
+public record CrearReservaDTO( Long idReserva,
+    Long idVuelo,
+    Long idAsiento,
+    Long idUsuario) {
 }

@@ -1,4 +1,9 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-public class CrearUsuarioDTO {
+public record CrearUsuarioDTO( String nombre,
+       String apellido,
+       String telefono,
+       int edad,  String usuarioEmail,
+       String usuarioContrasenia,
+       Long usuarioPassaporteID) {
 }

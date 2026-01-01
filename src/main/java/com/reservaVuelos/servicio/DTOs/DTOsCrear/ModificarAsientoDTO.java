@@ -1,4 +1,4 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-public class ModificarAsientoDTO {
+public record ModificarAsientoDTO(Long idAsiento,boolean estadoAsiento) {
 }

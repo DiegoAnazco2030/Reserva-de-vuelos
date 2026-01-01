@@ -1,4 +1,6 @@
 package com.reservaVuelos.servicio.DTOs.DTOsSalida;
 
-public class SalidaAsientoDTO {
+import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
+
+public record SalidaAsientoDTO(Long idAsiento, boolean estado, TipoDeAsiento tipoAsiento) {
 }

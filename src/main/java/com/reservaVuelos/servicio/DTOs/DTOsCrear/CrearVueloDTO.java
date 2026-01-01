@@ -1,6 +1,14 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-public class CrearVueloDTO {
-    public static class ModificarAsientoDTO {
-    }
+import com.reservaVuelos.modelo.vuelo.Aerolinea;
+import com.reservaVuelos.modelo.vuelo.Ciudad;
+
+import java.time.LocalDateTime;
+
+public record CrearVueloDTO(Aerolinea aerolinea,
+    Ciudad origenVuelo,
+     Ciudad destinoVuelo,
+     LocalDateTime fechaHoraSalida,
+     LocalDateTime fechaHoraLlegada, Long idAvion) {
+
 }
