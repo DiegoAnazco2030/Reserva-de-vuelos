@@ -5,15 +5,14 @@ import com.reservaVuelos.modelo.Identifcador;
 import java.time.LocalDateTime;
 
 public class Vuelo implements Identifcador {
-    private final Long vueloID;
-    private Aerolinea aerolinea;
-    private Paises origenVuelo;
-    private Paises destinoVuelo;
-    private LocalDateTime fechaHoraSalida;
-    private LocalDateTime fechaHoraLlegada;
-    private boolean estadoVuelo; //"1 = Programado", "0 = Aterrizado"
-    private Avion avionVuelo;
-
+    private final Long vueloID; // 7 caracteres (10^7 = 10,000,000 posibles IDs)
+    private Aerolinea aerolinea; // 19 caracteres
+    private Paises origenVuelo; // 9 caracteres
+    private Paises destinoVuelo; // 9 caracteres
+    private LocalDateTime fechaHoraSalida; // 29 caracteres
+    private LocalDateTime fechaHoraLlegada; // 29 caracteres
+    private boolean estadoVuelo; //"0 = Programado", "1 = Aterrizado" / 1 caracter
+    private Avion avionVuelo; // 7 caracteres (ID del avión)
 
     public Vuelo(Long vueloID, Aerolinea aerolinea, Paises origenVuelo, Paises destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, boolean estadoVuelo, Avion avionVuelo) {
         this.vueloID = vueloID;

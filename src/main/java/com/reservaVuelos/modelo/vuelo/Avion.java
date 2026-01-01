@@ -2,15 +2,14 @@ package com.reservaVuelos.modelo.vuelo;
 
 import com.reservaVuelos.modelo.Identifcador;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Avion implements Identifcador {
 
-    private final Long idAvion;
-    private ModeloAvion modeloAvion;
-    private int capacidad;
+    private final Long idAvion;  // 7 caracteres (10^7 = 10,000,000 posibles IDs)
+    private ModeloAvion modeloAvion; // 11 caracteres
+    private int capacidad; // 3 caracteres
     private final List<Asiento> asientosAvion;
 
     public Avion(Long idAvion, ModeloAvion modeloAvion, List<Asiento> asientosAvion) {
