@@ -2,10 +2,10 @@ package com.reservaVuelos.modelo;
 
 public class Reserva implements Identificador {
 
-    private final Long idReserva;
-    private final Long idVuelo;
-    private final Long idAsiento;
-    private final Long idUsuario;
+    private final Long idReserva; // tamaño de Long
+    private final Long idVuelo; // tamaño de Long
+    private final Long idAsiento; // tamaño de Long
+    private final Long idUsuario; // tamaño de Long
 
     public Reserva(Long idReserva, Long idVuelo, Long idAsiento, Long idUsuario) {
         this.idReserva = idReserva;

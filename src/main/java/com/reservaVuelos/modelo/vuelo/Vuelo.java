@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 
 public class Vuelo implements Identificador {
     private final Long vueloID; // tamaño de Long
-    private Aerolinea aerolinea; // 19 caracteres
+    private Aerolinea aerolinea; // para guardar se usa el ID de la aerolinea / tamaño de Long
     private Ciudad origenVuelo; // 12 caracteres
     private Ciudad destinoVuelo; // 12 caracteres
     private LocalDateTime fechaHoraSalida; // 29 caracteres
     private LocalDateTime fechaHoraLlegada; // 29 caracteres
     private boolean estadoVuelo; //"0 = Programado", "1 = Aterrizado" / tamaño de boolean
-    private Avion avionVuelo; // ID del avion / tamaño de Long
+    private Avion avionVuelo; // para guardar se usa el ID del avion / tamaño de Long
 
     public Vuelo(Long vueloID, Aerolinea aerolinea, Ciudad origenVuelo, Ciudad destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, boolean estadoVuelo, Avion avionVuelo) {
         this.vueloID = vueloID;
