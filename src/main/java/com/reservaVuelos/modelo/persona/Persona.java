@@ -4,10 +4,10 @@ import com.reservaVuelos.modelo.Identificador;
 
 public abstract class Persona implements Identificador {
 
-    private String nombre;
-    private String apellido;
-    private String telefono;
-    private int edad;
+    private String nombre; // 10 caracteres
+    private String apellido; // 10 caracteres
+    private String telefono; // 10 caracteres
+    private int edad; // 3 caracteres
 
     public Persona(String Nombre, String Apellido, String Telefono, int Edad) {
         this.nombre = Nombre;

@@ -4,10 +4,13 @@ import static com.reservaVuelos.modelo.persona.RolUsuario.USUARIO;
 
 public class Usuario extends Persona {
 
-    private String usuarioEmail;
-    private String usuarioContrasenia; //La constraseña ya encriptada
-    private final RolUsuario rolUsuario = USUARIO;
-    private final Long usuarioPassaporteID;
+    private String usuarioEmail; // 40 caracteres
+    private String usuarioContrasenia; /*La constraseña ya encriptada
+    contraseña con un maximo de 20 caracteres
+    28 caracteres usando SHA-1
+    */
+    private final RolUsuario rolUsuario = USUARIO; // 13 caracteres
+    private final Long usuarioPassaporteID; // 10 caracteres por el passaporte
 
     public Usuario(String personaNombre, String personaApellido, String personaTelefono, int personaEdad, Long usuarioPassaporteID, String usuarioContrasenia, String usuarioEmail) {
         super(personaNombre, personaApellido, personaTelefono, personaEdad);

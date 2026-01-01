@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class ArchivoDAO<T extends Identificador> implements IRepositorio<T> {
     protected RandomAccessFile file; // El archivo físico
-    protected Map<Integer, Long> indexMap; // El Índice Denso en RAM (ID vs Posición)
+    protected Map<Long, Long> indexMap; // El Índice Denso en RAM (ID vs Posición)
 
     public ArchivoDAO(RandomAccessFile file) {
         this.file = file;

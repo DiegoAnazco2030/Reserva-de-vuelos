@@ -10,15 +10,14 @@ import static com.reservaVuelos.modelo.vuelo.TipoDeAsiento.*;
 
 public class Avion implements Identificador {
 
-    private final Long idAvion;
-    private ModeloAvion modeloAvion;
-    private int capacidad;
+    private final Long idAvion;  // 7 caracteres (10^7 = 10,000,000 posibles IDs)
+    private ModeloAvion modeloAvion; // 11 caracteres
+    private int capacidad; // 3 caracteres
     private final List<Asiento> asientosAvion = new ArrayList<>();
 
     //Contadores de los asientos
     private int cantAsientoPrimera;
     private int cantAsientoEjecutiva;
-    private int cantAsientoTurista;
 
     public Avion(Long idAvion, ModeloAvion modeloAvion) {
         this.idAvion = idAvion;
@@ -27,8 +26,7 @@ public class Avion implements Identificador {
 
         //Cantidad de asientos
         cantAsientoPrimera = (int) (capacidad * 0.1);
-        cantAsientoEjecutiva = (int) (capacidad * 0.3);
-        cantAsientoTurista =  capacidad -  cantAsientoPrimera - cantAsientoEjecutiva;
+        cantAsientoEjecutiva = (int) (capacidad * 0.4);
         //Relleno mi avion
         for(int i =1 ; i<= capacidad; i++){
             if(i < cantAsientoPrimera){
