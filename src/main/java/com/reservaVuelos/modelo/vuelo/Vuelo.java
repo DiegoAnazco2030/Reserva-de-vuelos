@@ -14,7 +14,6 @@ public class Vuelo implements Identificador {
     private boolean estadoVuelo; //"0 = Programado", "1 = Aterrizado"
     private Avion avionVuelo;
 
-
     public Vuelo(Long vueloID, Aerolinea aerolinea, Ciudad origenVuelo, Ciudad destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, Avion avionVuelo) {
         this.vueloID = vueloID;
         this.aerolinea = aerolinea;

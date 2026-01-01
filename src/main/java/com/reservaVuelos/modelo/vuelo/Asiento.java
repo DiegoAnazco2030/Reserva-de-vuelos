@@ -6,7 +6,7 @@ public class Asiento implements Identificador {
 
     private final Long idAsiento;
     private TipoDeAsiento tipoAsiento;
-    private boolean estadoAsiento = false;
+    private boolean estadoAsiento = false; //false libre y true ocupado
 
     public Asiento(Long idAsiento, TipoDeAsiento tipoAsiento) {
         this.idAsiento = idAsiento;

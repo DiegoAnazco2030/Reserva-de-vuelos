@@ -4,47 +4,47 @@ import com.reservaVuelos.modelo.Identificador;
 
 public abstract class Persona implements Identificador {
 
-    private String Nombre;
-    private String Apellido;
-    private String Telefono;
-    private int Edad;
+    private String nombre;
+    private String apellido;
+    private String telefono;
+    private int edad;
 
     public Persona(String Nombre, String Apellido, String Telefono, int Edad) {
-        this.Nombre = Nombre;
-        this.Apellido = Apellido;
-        this.Telefono = Telefono;
-        this.Edad = Edad;
+        this.nombre = Nombre;
+        this.apellido = Apellido;
+        this.telefono = Telefono;
+        this.edad = Edad;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getApellido() {
-        return Apellido;
+        return apellido;
     }
 
     public void setApellido(String apellido) {
-        this.Apellido = apellido;
+        this.apellido = apellido;
     }
 
     public String getTelefono() {
-        return Telefono;
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
-        this.Telefono = telefono;
+        this.telefono = telefono;
     }
 
     public int getEdad() {
-        return Edad;
+        return edad;
     }
 
     public void setEdad(int edad) {
-        this.Edad = edad;
+        this.edad = edad;
     }
 }

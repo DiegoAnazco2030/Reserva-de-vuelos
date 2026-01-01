@@ -32,10 +32,10 @@ public class Avion implements Identificador {
         //Relleno mi avion
         for(int i =1 ; i<= capacidad; i++){
             if(i < cantAsientoPrimera){
-                asientosAvion.add(new Asiento(idAvion + i, PRIMERA));
+                asientosAvion.add(new Asiento((idAvion*100) + i, PRIMERA));
             }else  if(i < cantAsientoEjecutiva){
-                asientosAvion.add(new Asiento(idAvion + i, EJECUTIVA));
-            }else asientosAvion.add(new Asiento(idAvion + i, TURISTA));
+                asientosAvion.add(new Asiento((idAvion*100) + i, EJECUTIVA));
+            }else asientosAvion.add(new Asiento((idAvion*100) + i, TURISTA));
         }
     }
 
