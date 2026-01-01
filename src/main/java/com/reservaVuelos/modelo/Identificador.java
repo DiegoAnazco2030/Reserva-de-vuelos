@@ -1,5 +1,5 @@
 package com.reservaVuelos.modelo;
 
-public interface Identifcador {
+public interface Identificador {
     Long getId();
 }

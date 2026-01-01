@@ -1,27 +1,27 @@
 package com.reservaVuelos.modelo.vuelo;
 
-import com.reservaVuelos.modelo.Identifcador;
+import com.reservaVuelos.modelo.Identificador;
 
 import java.time.LocalDateTime;
 
-public class Vuelo implements Identifcador {
+public class Vuelo implements Identificador {
     private final Long vueloID; // 7 caracteres (10^7 = 10,000,000 posibles IDs)
     private Aerolinea aerolinea; // 19 caracteres
-    private Paises origenVuelo; // 9 caracteres
-    private Paises destinoVuelo; // 9 caracteres
+    private Ciudad origenVuelo; // 12 caracteres
+    private Ciudad destinoVuelo; // 12 caracteres
     private LocalDateTime fechaHoraSalida; // 29 caracteres
     private LocalDateTime fechaHoraLlegada; // 29 caracteres
     private boolean estadoVuelo; //"0 = Programado", "1 = Aterrizado" / 1 caracter
     private Avion avionVuelo; // 7 caracteres (ID del avión)
 
-    public Vuelo(Long vueloID, Aerolinea aerolinea, Paises origenVuelo, Paises destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, boolean estadoVuelo, Avion avionVuelo) {
+    public Vuelo(Long vueloID, Aerolinea aerolinea, Ciudad origenVuelo, Ciudad destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, boolean estadoVuelo, Avion avionVuelo) {
         this.vueloID = vueloID;
         this.aerolinea = aerolinea;
         this.origenVuelo = origenVuelo;
         this.destinoVuelo = destinoVuelo;
         this.fechaHoraSalida = fechaHoraSalida;
         this.fechaHoraLlegada = fechaHoraLlegada;
-        this.estadoVuelo = estadoVuelo;
+        this.estadoVuelo = false;
         this.avionVuelo = avionVuelo;
     }
 
@@ -33,19 +33,19 @@ public class Vuelo implements Identifcador {
         this.aerolinea = aerolinea;
     }
 
-    public Paises getOrigenVuelo() {
+    public Ciudad getOrigenVuelo() {
         return origenVuelo;
     }
 
-    public void setOrigenVuelo(Paises origenVuelo) {
+    public void setOrigenVuelo(Ciudad origenVuelo) {
         this.origenVuelo = origenVuelo;
     }
 
-    public Paises getDestinoVuelo() {
+    public Ciudad getDestinoVuelo() {
         return destinoVuelo;
     }
 
-    public void setDestinoVuelo(Paises destinoVuelo) {
+    public void setDestinoVuelo(Ciudad destinoVuelo) {
         this.destinoVuelo = destinoVuelo;
     }
 

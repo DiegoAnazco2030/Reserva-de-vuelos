@@ -1,12 +1,12 @@
 package com.reservaVuelos.modelo.vuelo;
 
-import com.reservaVuelos.modelo.Identifcador;
+import com.reservaVuelos.modelo.Identificador;
 
-public class Asiento implements Identifcador {
+public class Asiento implements Identificador {
 
     private final Long idAsiento;
     private TipoDeAsiento tipoAsiento;
-    private boolean estadoAsiento = false;
+    private boolean estadoAsiento = false; //false libre y true ocupado
 
     public Asiento(Long idAsiento, TipoDeAsiento tipoAsiento) {
         this.idAsiento = idAsiento;
