@@ -4,6 +4,7 @@ package com.reservaVuelos.repositorio;
  * Repositorio para gestión de Usuarios con RandomAccessFile
  * 
  * Tamaños de atributos (usando writeChars: 2 bytes por carácter):
+ * - estado: boolean = 1 byte
  * - usuarioID: Long = 8 bytes
  * - nombre: 10 caracteres × 2 = 20 bytes
  * - apellido: 10 caracteres × 2 = 20 bytes
@@ -15,6 +16,6 @@ package com.reservaVuelos.repositorio;
  */
 public class RepositorioUsuarios {
     
-    private static final int TOTAL_RECORD_SIZE = 226; // bytes por registro de Usuario
+    private static final int TOTAL_RECORD_SIZE = 227; // bytes por registro de Usuario
 
 }

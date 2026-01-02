@@ -50,6 +50,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     // -------------- Indice Denso --------------
 
     // Cargar el indice denso a memoria
+    @SuppressWarnings("unchecked")
     private void cargarIndiceDensoEnMemoria() {
         if (!archivoIndices.exists()) {
             if (archivoDatos.exists() && archivoDatos.length() > 0) {
@@ -59,12 +60,15 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
         }
 
         try (ObjectInputStream ios = new ObjectInputStream(new FileInputStream(archivoIndices))) {
-            indicesMapa = (Map<Long, Long>) ios.readObject();
-
-            Long registroEstimado = archivoDatos.length() / tamanoRegistro;
-            if (indicesMapa.size() != registroEstimado) {
+            Long longitudRegistro = ios.readLong();
+            Long longitudActual = archivoDatos.length();
+            if (longitudRegistro != longitudActual) {
+                System.out.println("El tamaño del registro ha cambiado. Reconstruyendo el índice denso...");
                 reconstruirIndiceDensoEnDisco();
+                return;
             }
+
+            indicesMapa = (Map<Long, Long>) ios.readObject();
         } catch(Exception e) {
             e.printStackTrace();
             reconstruirIndiceDensoEnDisco();

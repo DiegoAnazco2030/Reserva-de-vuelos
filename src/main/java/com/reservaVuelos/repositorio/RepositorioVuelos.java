@@ -4,6 +4,7 @@ package com.reservaVuelos.repositorio;
  * Repositorio para gestión de Vuelos con RandomAccessFile
  * 
  * Tamaños de atributos (usando writeChars: 2 bytes por carácter):
+ * - estado: boolean = 1 byte
  * - vueloID: Long = 8 bytes
  * - aerolineaID: Long = 8 bytes
  * - origenVuelo: 12 caracteres × 2 = 24 bytes
@@ -15,6 +16,6 @@ package com.reservaVuelos.repositorio;
  */
 public class RepositorioVuelos {
     
-    private static final int TOTAL_RECORD_SIZE = 189; // bytes por registro de Vuelo
+    private static final int TOTAL_RECORD_SIZE = 190; // bytes por registro de Vuelo
 
 }
