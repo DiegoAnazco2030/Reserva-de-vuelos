@@ -19,7 +19,7 @@ public class Mapper {
     // --- USUARIO ---
 
     // 1. Crear Usuario (Entrada)
-    public static Usuario UsuarioDTOAUsuario(CrearUsuarioDTO dto, Long usuarioID) {
+    public Usuario UsuarioDTOAUsuario(CrearUsuarioDTO dto, Long usuarioID) {
         return new Usuario(
                 dto.nombre(),
                 dto.apellido(),
@@ -33,7 +33,7 @@ public class Mapper {
     }
 
     // 2. Salida Usuario (Salida)
-    public static SalidaUsuarioDTO UsuarioASalidaUsuarioDTO(Usuario usuario) {
+    public  SalidaUsuarioDTO UsuarioASalidaUsuarioDTO(Usuario usuario) {
         return new SalidaUsuarioDTO(
                 usuario.getId(),
                 usuario.getNombre(),
@@ -45,7 +45,7 @@ public class Mapper {
     // --- EMPLEADO ---
 
     // 3. Crear Empleado (Entrada)
-    public static Empleado EmpleadoDTOAEmpleado(CrearEmpleadoDTO dto, Long empleadoID) {
+    public Empleado EmpleadoDTOAEmpleado(CrearEmpleadoDTO dto, Long empleadoID) {
         return new Empleado(
                 dto.nombre(),
                 dto.apellido(),
@@ -58,7 +58,7 @@ public class Mapper {
     }
 
     // 4. Salida Empleado (Salida)
-    public static SalidaEmpleadoDTO EmpleadoASalidaEmpleadoDTO(Empleado empleado) {
+    public  SalidaEmpleadoDTO EmpleadoASalidaEmpleadoDTO(Empleado empleado) {
         return new SalidaEmpleadoDTO(
                 empleado.getEmpleadoEmail(),
                 empleado.getNombre(),
@@ -70,14 +70,14 @@ public class Mapper {
     // --- AVION ---
 
     // 5. Crear Avion (Entrada)
-    public static Avion AvionDTOAAvion(CrearAvionDTO dto, Long idAvion) {
+    public  Avion AvionDTOAAvion(CrearAvionDTO dto, Long idAvion) {
         return new Avion(idAvion, dto.modeloAvion());
     }
 
     // --- ASIENTO ---
 
     // 6. Salida Asiento (Salida)
-    public static SalidaAsientoDTO AsientoASalidaAsientoDTO(Asiento asiento) {
+    public  SalidaAsientoDTO AsientoASalidaAsientoDTO(Asiento asiento) {
         return new SalidaAsientoDTO(
                 asiento.getId(),
                 asiento.isEstadoAsiento(),
@@ -86,14 +86,14 @@ public class Mapper {
     }
 
     // 7. Modificar Asiento (Entrada/Actualización)
-    public static void actualizarEstadoAsiento(Asiento asiento, ModificarAsientoDTO dto) {
+    public  void actualizarEstadoAsiento(Asiento asiento, ModificarAsientoDTO dto) {
         asiento.setEstadoAsiento(dto.estadoAsiento());
     }
 
     // --- VUELO ---
 
     // 8. Crear Vuelo (Entrada: LocalDateTime viene del DTO)
-    public static Vuelo VuealoDTOAVuelo(CrearVueloDTO dto, Long vueloID, Avion avion) {
+    public  Vuelo VuealoDTOAVuelo(CrearVueloDTO dto, Long vueloID, Avion avion) {
         return new Vuelo(
                 vueloID,
                 dto.aerolinea(),
@@ -107,7 +107,7 @@ public class Mapper {
     }
 
     // 9. Salida Vuelo (Salida: Convierte LocalDateTime a String)
-    public static SalidaVueloDTO VueloASalidaVueloDTO(Vuelo vuelo) {
+    public  SalidaVueloDTO VueloASalidaVueloDTO(Vuelo vuelo) {
         return new SalidaVueloDTO(
                 vuelo.getOrigenVuelo(),
                 vuelo.getDestinoVuelo(),
@@ -121,17 +121,17 @@ public class Mapper {
     // --- RESERVA ---
 
     // 10. Procesar entrada de Reserva (ID Vuelo)
-    public static Long obtenerVueloIdDeReserva(CrearReservaDTO dto) {
+    public  Long obtenerVueloIdDeReserva(CrearReservaDTO dto) {
         return dto.idVuelo();
     }
 
     // 11. Procesar entrada de Reserva (ID Usuario)
-    public static Long obtenerUsuarioIdDeReserva(CrearReservaDTO dto) {
+    public  Long obtenerUsuarioIdDeReserva(CrearReservaDTO dto) {
         return dto.idUsuario();
     }
 
     // 12. Salida Reserva (Transformación final)
-    public static SalidaReservaDTO mapearASalidaReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
+    public  SalidaReservaDTO mapearASalidaReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
         return new SalidaReservaDTO(
                 idReserva,
                 vuelo.getId(),

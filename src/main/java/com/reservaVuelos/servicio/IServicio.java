@@ -1,13 +1,16 @@
 package com.reservaVuelos.servicio;
 
+import com.reservaVuelos.modelo.Identificador;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
 
-public interface IServicio {
+import java.util.List;
 
-    void crear();
-    void obtenerTodos();
-    void eliminar();
-    void modificar();
+public interface IServicio<T> {
+
+    void crear(T objeto);
+    List<T> obtenerTodos();
+    void eliminar(Long id);
+    void modificar(Long id);
 
 
 }
