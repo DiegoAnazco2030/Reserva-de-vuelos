@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,10 @@ import java.util.Map;
  * para guardar cualquier cosa el ID es el primer dato que se guarda
  * Existe un archivo de datos (.raf) y un archivo de indices (.idx) para el indice denso
  * El indice denso se guarda en un mapa en RAM (ID vs Posición)
+ * Template Method para los DAO que usan archivos RandomAccessFile
+ * 
+ * Se tiene pensado hacer una funcion de mantenimiento para elimine fisicamente
+ *  los datos que se eliminaron logicamente (Por implementar)
  */
 
 public abstract class ArchivoDAO<T extends Identificador> implements IRepositorio<T> {
@@ -102,53 +108,123 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
 
     @Override
     public T guardar(T entity) {
-        // poner codigo
-        return null;
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
+            byte[] datosBytes = convertirABytes(entity);
+
+            Long posicion = raf.length();
+            raf.seek(posicion);
+
+            raf.write(datosBytes);
+
+            indicesMapa.put(entity.getId(), posicion);
+            return entity;
+        } catch(IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public T buscarPorID(Long ID) {
-        // poner codigo
-        return null;
+        Long posicion = indicesMapa.get(ID);
+        if (posicion == null) return null;
+
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
+            raf.seek(posicion);
+            byte[] datosBytes = new byte[tamanoRegistro.intValue()];
+            raf.readFully(datosBytes);
+
+            return convertirDeBytes(datosBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public List<T> buscarTodos() {
-        // poner codigo
-        return null;
+        List<T> resultados = new ArrayList<>();
+
+        if (indicesMapa.isEmpty()) return resultados;
+
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
+            byte[] datosBytes = new byte[tamanoRegistro.intValue()];
+
+            for (Long posicion : indicesMapa.values()) {
+                raf.seek(posicion);
+                raf.readFully(datosBytes);
+                T entidad = convertirDeBytes(datosBytes);
+                resultados.add(entidad);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultados;
     }
 
     @Override
     public T actualizar(T entity) {
-        // poner codigo
-        return null;
+        if (entity == null || indicesMapa.get(entity.getId()) == null) return null;
+        Long posicion = indicesMapa.get(entity.getId());
+        
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
+            byte[] datosBytes = convertirABytes(entity);
+            raf.seek(posicion);
+            raf.write(datosBytes);
+            return entity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public T eliminar(Long ID) {
-        // poner codigo
-        return null;
+        if (ID == null || indicesMapa.get(ID) == null) return null;
+
+        T entidadEliminada = buscarPorID(ID);
+
+        // Se hace eliminacion lógica (no se reordenan los datos en el archivo)
+        indicesMapa.remove(ID);
+        return entidadEliminada;
     }
 
     @Override
     public boolean existe(Long ID) {
-        // poner codigo
-        return false;
+        return indicesMapa.containsKey(ID);
     }
 
     @Override
     public Long contarDatos() {
-        // poner codigo
-        return null;
+        return (long) indicesMapa.size();
     }
 
     @Override
     public Long ultimoID() {
-        // poner codigo
-        return null;
+        if (indicesMapa.isEmpty()) return 0L;
+
+        // Los IDs son unicos y crecientes, por lo que el maximo es el ultimo
+        return Collections.max(indicesMapa.keySet());
     }
 
     // Poner los metodos abstractos que se necesiten para los DAO concretos. (si es que existen)
 
-    //Una función que devuelva el último ID de cada objeto
+    protected abstract byte[] convertirABytes(T entidad);
+
+    protected abstract T convertirDeBytes(byte[] bytes);
+
+    protected String ajustarString(String texto, int longitud) {
+        if (texto == null) texto = "";
+        StringBuilder sb = new StringBuilder(texto);
+        
+        // Rellenar
+        while (sb.length() < longitud) {
+            sb.append(" ");
+        }
+        // Recortar
+        if (sb.length() > longitud) {
+            sb.setLength(longitud);
+        }
+        return sb.toString();
+    }
 }
