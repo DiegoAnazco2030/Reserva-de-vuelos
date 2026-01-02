@@ -45,7 +45,11 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public void eliminar(Long id) {
-        repo.eliminarDato();
+        List<SalidaEmpleadoDTO> listaEmpleados = obtenerTodos();
+        if(listaEmpleados.get()!=null){
+
+        }
+        repo.eliminarDato(id);
     }
 
     @Override
