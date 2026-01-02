@@ -11,33 +11,37 @@ public interface IRepositorio<T extends Identificador> {
     // -------------- CRUD --------------
 
     // Crear
-    T guardarDato(T entity);
+    T guardar(T entity);
 
     // Leer
-    T encontrarPorID(Long ID);
+    T buscarPorID(Long ID);
 
-    List<T> obtenerTodosDatos();
+    List<T> buscarTodos();
 
-    default List<T> obtenerTodosDatos(Predicate<? super T> filter) {
+    default List<T> buscar(Predicate<? super T> filter) {
         List<T> salida = new ArrayList<>();
 
-        for (T t : obtenerTodosDatos()) {
+        for (T t : buscarTodos()) {
             if (filter.test(t)) salida.add(t);
         }
         return salida;
     }
 
     // Actualizar
-    T actualizarDato(T entity);
+    T actualizar(T entity);
 
     // Eliminar
-    T eliminarDato(T entity);
+    T eliminar(Long ID);
 
     // -------------- Auxiliares --------------
 
     // Verificar existencia
-    boolean existePorID(Long ID);
+    boolean existe(Long ID);
 
     // Contar la cantidad de datos
     Long contarDatos();
+
+    // Obtener el ultimo ID
+
+    Long ultimoID();
 }
