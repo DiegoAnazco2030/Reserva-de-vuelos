@@ -9,8 +9,8 @@ public interface IServicio<I, O> {
 
     void crear(I objeto);
     List<O> obtenerTodos();
-    void eliminar(Long id);
-    void modificar(Long id);
+    void eliminar(Long id) throws Exception;
+    void modificar(Long id, I objeto) throws Exception;
 
 
 }
