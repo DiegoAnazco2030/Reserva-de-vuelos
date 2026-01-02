@@ -1,4 +1,6 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-public record CrearAereolineaDTO() {
+public record CrearAereolineaDTO(String nombre,
+                                 String telefono,
+                                 String email) {
 }

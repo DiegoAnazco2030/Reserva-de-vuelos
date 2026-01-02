@@ -22,8 +22,8 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public void crear(CrearAvionDTO avionNuevo) throws Exception {
-        Long id = repo.ultimoID() + 1;
-        if (repo.guardar(mapperAvion.AvionDTOAAvion(avionNuevo,id)) == null) {
+        Long id = repo.ultimoID();
+        if (repo.guardar(mapperAvion.AvionDTOAAvion(avionNuevo,++id)) == null) {
             throw new Exception("No se pudo crear el avion");
         }
     }

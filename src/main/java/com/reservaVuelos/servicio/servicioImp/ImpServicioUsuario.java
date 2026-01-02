@@ -31,7 +31,7 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
     public void crear(CrearUsuarioDTO usuarioNuevoDTO) {
         validarDatosUsuario(usuarioNuevoDTO);
         Long id=repo.ultimoID();
-        Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,id++);
+        Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,++id);
         repo.guardar(usuarioNuevo);
     }
 

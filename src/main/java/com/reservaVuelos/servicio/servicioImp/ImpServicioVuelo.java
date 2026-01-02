@@ -31,7 +31,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
         validacion.validarFechas(vueloNuevo.fechaHoraSalida(), vueloNuevo.fechaHoraLlegada());
         Long id = repo.ultimoID();
         Avion avionEncontrado=avionServicio.obtenerAvionPorID(vueloNuevo.idAvion());
-        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, id, avionEncontrado);
+        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, ++id, avionEncontrado);
         repo.guardar(nuevoVuelo);
     }
 

@@ -3,6 +3,7 @@ package com.reservaVuelos.servicio;
 import com.reservaVuelos.modelo.Reserva;
 import com.reservaVuelos.modelo.persona.Empleado;
 import com.reservaVuelos.modelo.persona.Usuario;
+import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
@@ -138,9 +139,9 @@ public class Mapper {
     }
 
     // Entrada Reserva (Entrada)
-    public Reserva ReservaDTOAReserva(CrearReservaDTO dto) {
+    public Reserva ReservaDTOAReserva(Long id,CrearReservaDTO dto) {
         return new Reserva(
-            dto.idReserva(),
+            id,
             dto.idVuelo(),
             dto.idAsiento(),
             dto.idUsuario());
@@ -157,6 +158,26 @@ public class Mapper {
                 usuario.getUsuarioEmail(),
                 vuelo.getOrigenVuelo(),
                 vuelo.getDestinoVuelo()
+        );
+    }
+
+    // --- AEROLINEA ---
+
+    public Aerolinea AerolineaDTOAAerolinea(CrearAereolineaDTO dto, Long id) {
+        return new Aerolinea(
+                id,
+                dto.nombre(),
+                dto.telefono(),
+                dto.email()
+        );
+    }
+
+    public SalidaAerolineaDTO AerolineaASalidaAerolineaDTO(Aerolinea aerolinea) {
+        return new SalidaAerolineaDTO(
+                aerolinea.getId(),
+                aerolinea.getNombre(),
+                aerolinea.getTelefono(),
+                aerolinea.getEmail()
         );
     }
 }

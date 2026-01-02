@@ -29,7 +29,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     public void crear(CrearEmpleadoDTO empleadoNuevoDTO) {
         validarDatosEmpleado(empleadoNuevoDTO);
         Long id=repo.ultimoID();
-        Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id++);
+        Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,++id);
         repo.guardar(empleadoNuevo);
     }
 
