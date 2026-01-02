@@ -1,9 +1,11 @@
 package com.reservaVuelos.servicio.servicioImp;
 
+import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
 import com.reservaVuelos.modelo.persona.Empleado;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearEmpleadoDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
@@ -44,20 +46,28 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     }
 
     @Override
-    public void eliminar(Long id) {
-
-        List<SalidaEmpleadoDTO> listaEmpleados = obtenerTodos();
-        if(listaEmpleados.get()!=null){
-
+    public void eliminar(Long id) throws PersonaNoEncontradaException {
+        if(repo.buscarPorID(id)==null){
+            throw new PersonaNoEncontradaException("Error, la persona no existe");
         }
-        repo.eliminarDato(id);
-
         repo.eliminar(id);
 
     }
 
+
     @Override
-    public void modificar(Long id) {
+    public void modificar(Long id, CrearEmpleadoDTO empleadoModificar) throws Exception{
+
+        Empleado empleadoEncontrado=repo.buscarPorID(id);
+        if(empleadoEncontrado==null){
+            throw new PersonaNoEncontradaException("Error, la persona no existe");
+        }
+
+        if(!validacion.correoEsValido(empleadoModificar.empleadoEmail())){
+            throw new CorreoNoValidoException("El nuevo correo no es valido");
+        }
+
+        Empleado empleadoModificado = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoModificar, empleadoEncontrado.getId());
 
     }
 
