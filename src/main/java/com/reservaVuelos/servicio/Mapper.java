@@ -131,7 +131,7 @@ public class Mapper {
     }
 
     // 12. Salida Reserva (Transformación final)
-    public  SalidaReservaDTO mapearASalidaReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
+    public SalidaReservaDTO mapearASalidaReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
         return new SalidaReservaDTO(
                 idReserva,
                 vuelo.getId(),
