@@ -5,10 +5,10 @@ import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
 
 import java.util.List;
 
-public interface IServicio<T> {
+public interface IServicio<I, O> {
 
-    void crear(T objeto);
-    List<T> obtenerTodos();
+    void crear(I objeto);
+    List<O> obtenerTodos();
     void eliminar(Long id);
     void modificar(Long id);
 
