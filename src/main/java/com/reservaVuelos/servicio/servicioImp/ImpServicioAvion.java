@@ -1,7 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.AvionNoEncontradoDTO;
-import com.reservaVuelos.modelo.persona.Usuario;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
