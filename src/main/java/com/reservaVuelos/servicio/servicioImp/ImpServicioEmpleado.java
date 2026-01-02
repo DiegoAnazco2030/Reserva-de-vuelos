@@ -66,6 +66,13 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
         if(!validacion.correoEsValido(empleadoModificar.empleadoEmail())){
             throw new CorreoNoValidoException("El nuevo correo no es valido");
         }
+        if(!empleadoModificar.empleadoContrasenia().trim().isEmpty()){
+            empleadoEncontrado.setEmpleadoContrasenia(empleadoModificar.
+                    empleadoContrasenia().trim());
+        }
+        if(!empleadoModificar.telefono().trim().isEmpty()){
+            empleadoEncontrado.setTelefono(empleadoEncontrado.getTelefono().trim());
+        }
 
         Empleado empleadoModificado = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoModificar, empleadoEncontrado.getId());
 
