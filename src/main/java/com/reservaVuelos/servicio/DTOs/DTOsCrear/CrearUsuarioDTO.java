@@ -5,5 +5,5 @@ public record CrearUsuarioDTO( String nombre,
        String telefono,
        int edad,  String usuarioEmail,
        String usuarioContrasenia,
-       Long usuarioPassaporteID) {
+       String usuarioPassaporteID) {
 }

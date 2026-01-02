@@ -19,7 +19,7 @@ public class Mapper {
     // --- USUARIO ---
 
     // 1. Crear Usuario (Entrada)
-    public static Usuario UsuarioDTOAUsuario(CrearUsuarioDTO dto) {
+    public static Usuario UsuarioDTOAUsuario(CrearUsuarioDTO dto, Long usuarioID) {
         return new Usuario(
                 dto.nombre(),
                 dto.apellido(),
@@ -27,7 +27,8 @@ public class Mapper {
                 dto.edad(),
                 dto.usuarioPassaporteID(),
                 dto.usuarioContrasenia(),
-                dto.usuarioEmail()
+                dto.usuarioEmail(),
+                usuarioID
         );
     }
 
