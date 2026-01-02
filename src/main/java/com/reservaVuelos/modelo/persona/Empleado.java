@@ -9,8 +9,8 @@ public class Empleado extends Persona {
     contraseña con un maximo de 20 caracteres
     28 caracteres usando SHA-1
     */
-    private final RolUsuario rolUsuario = ADMINISTRADOR; // 13 caracteres
-    private final Long empleadoID; // 7 caracteres (10^7 = 10,000,000 posibles IDs)
+    private final RolUsuario rolUsuario = ADMINISTRADOR; // Esto no va ya que el repoEmpleado y repoUsuario estan separados
+    private final Long empleadoID; // tamaño de Long
 
     public Empleado(String personaNombre, String personaApellido, String personaTelefono, int personaEdad, Long empleadoID, String empleadoContrasenia, String empleadoEmail) {
         super(personaNombre, personaApellido, personaTelefono, personaEdad);

@@ -1,15 +1,20 @@
 package com.reservaVuelos.repositorio;
 
+/**
+ * Repositorio para gestión de Vuelos con RandomAccessFile
+ * 
+ * Tamaños de atributos (usando writeChars: 2 bytes por carácter):
+ * - vueloID: Long = 8 bytes
+ * - aerolineaID: Long = 8 bytes
+ * - origenVuelo: 12 caracteres × 2 = 24 bytes
+ * - destinoVuelo: 12 caracteres × 2 = 24 bytes
+ * - fechaHoraSalida: 29 caracteres × 2 = 58 bytes
+ * - fechaHoraLlegada: 29 caracteres × 2 = 58 bytes
+ * - estadoVuelo: boolean = 1 byte
+ * - avionVueloID: Long = 8 bytes
+ */
 public class RepositorioVuelos {
-        // Tamaños fijos en bytes
-    private static final int VUELO_ID_SIZE = 7;
-    private static final int AEROLINEA_SIZE = 19;
-    private static final int ORIGEN_VUELO_SIZE = 12;
-    private static final int DESTINO_VUELO_SIZE = 12;
-    private static final int FECHA_HORA_SALIDA_SIZE = 29;
-    private static final int FECHA_HORA_LLEGADA_SIZE = 29;
-    private static final int ESTADO_VUELO_SIZE = 1;
-    private static final int AVION_VUELO_SIZE = 7;
     
-    private static final int TOTAL_RECORD_SIZE = 117; // bytes por registro
+    private static final int TOTAL_RECORD_SIZE = 189; // bytes por registro de Vuelo
+
 }

@@ -1,10 +1,15 @@
 package com.reservaVuelos.repositorio;
 
+/**
+ * Repositorio para gestión de Aviones con RandomAccessFile
+ * 
+ * Tamaños de atributos (usando writeChars: 2 bytes por carácter):
+ * - idAvion: Long = 8 bytes
+ * - modeloAvion: 11 caracteres × 2 = 22 bytes
+ * - capacidad: int = 4 bytes
+ */
 public class RepositorioAviones {
-        // Tamaños fijos en bytes
-    private static final int ID_AVION_SIZE = 7;
-    private static final int MODELO_AVION_SIZE = 11;
-    private static final int CAPACIDAD_SIZE = 3;
     
-    private static final int TOTAL_RECORD_SIZE = 21; // bytes por registro
+    private static final int TOTAL_RECORD_SIZE = 34; // bytes por registro de Avion
+
 }

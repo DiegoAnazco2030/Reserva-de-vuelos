@@ -7,12 +7,11 @@ import java.util.List;
 
 import static com.reservaVuelos.modelo.vuelo.TipoDeAsiento.*;
 
-
 public class Avion implements Identificador {
 
-    private final Long idAvion;  // 7 caracteres (10^7 = 10,000,000 posibles IDs)
+    private final Long idAvion;  // tamaño de Long
     private ModeloAvion modeloAvion; // 11 caracteres
-    private int capacidad; // 3 caracteres
+    private int capacidad; // tamaño de int
     private final List<Asiento> asientosAvion = new ArrayList<>();
 
     //Contadores de los asientos

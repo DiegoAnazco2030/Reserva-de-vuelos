@@ -7,7 +7,7 @@ public abstract class Persona implements Identificador {
     private String nombre; // 10 caracteres
     private String apellido; // 10 caracteres
     private String telefono; // 10 caracteres
-    private int edad; // 3 caracteres
+    private int edad; // tamaño de int
 
     public Persona(String Nombre, String Apellido, String Telefono, int Edad) {
         this.nombre = Nombre;

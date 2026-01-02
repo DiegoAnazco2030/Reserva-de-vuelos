@@ -9,19 +9,22 @@ public class Usuario extends Persona {
     contraseña con un maximo de 20 caracteres
     28 caracteres usando SHA-1
     */
-    private final RolUsuario rolUsuario = USUARIO; // 13 caracteres
-    private final Long usuarioPassaporteID; // 10 caracteres por el passaporte
+    private final RolUsuario rolUsuario = USUARIO; // Esto no va ya que el repoUsuario y repoEmpleado estan separados
+    private final String usuarioPassaporteID; // 9 caracteres por pasaporte
+    private final Long usuarioID; // tamaño de Long
 
-    public Usuario(String personaNombre, String personaApellido, String personaTelefono, int personaEdad, Long usuarioPassaporteID, String usuarioContrasenia, String usuarioEmail) {
+    public Usuario(String personaNombre, String personaApellido, String personaTelefono, int personaEdad,
+        String usuarioPassaporteID, String usuarioContrasenia, String usuarioEmail, Long usuarioID) {
         super(personaNombre, personaApellido, personaTelefono, personaEdad);
         this.usuarioPassaporteID = usuarioPassaporteID;
         this.usuarioContrasenia = usuarioContrasenia;
         this.usuarioEmail = usuarioEmail;
+        this.usuarioID = usuarioID;
     }
 
     @Override
     public Long getId(){
-        return usuarioPassaporteID;
+        return usuarioID;
     }
 
     public String getUsuarioEmail() {
@@ -38,6 +41,10 @@ public class Usuario extends Persona {
 
     public void setUsuarioContrasenia(String usuarioContrasenia) {
         this.usuarioContrasenia = usuarioContrasenia;
+    }
+
+    public String getUsuarioPassaporteID() {
+        return usuarioPassaporteID;
     }
 
     public RolUsuario getRolUsuario() {
