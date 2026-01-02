@@ -27,29 +27,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public void crear(CrearEmpleadoDTO empleadoNuevoDTO) {
-
-        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.nombre(), 1, 10)){
-            throw new StringNoValidoException("Nombre no valido");
-        }
-
-        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.nombre(), 1, 10)){
-            throw new StringNoValidoException("Apellido no valido");
-        }
-        if(!validacion.validarTelefono(empleadoNuevoDTO.telefono())){
-            throw new TelefonoNoValidoException("Ingrese un telefono valido");
-        }
-        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.empleadoEmail(),
-                10, 40)){
-            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
-        }
-        if(!validacion.correoEsValido(empleadoNuevoDTO.empleadoEmail())){
-            throw new CorreoNoValidoException("Se debe usar un correo valido");
-        }
-
-        if(!validacion.validarTelefono(empleadoNuevoDTO.telefono())){
-            throw new TelefonoNoValidoException("Ingrese un telefono valido");
-        }
-
+        validarDatosEmpleado(empleadoNuevoDTO);
         Long id=repo.ultimoID();
         Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id++);
         repo.guardar(empleadoNuevo);
@@ -57,13 +35,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public List<SalidaEmpleadoDTO> obtenerTodos() {
-        List<Empleado> listaEmpleados= repo.buscarTodos();
-        List<SalidaEmpleadoDTO> todosEmpleados=new ArrayList<>();
-        for(Empleado e : listaEmpleados){
-            SalidaEmpleadoDTO empleadoDTO = mapperEmpleado.EmpleadoASalidaEmpleadoDTO(e);
-            todosEmpleados.add(empleadoDTO);
-        }
-        return todosEmpleados;
+        return repo.buscarTodos().stream().map(mapperEmpleado::EmpleadoASalidaEmpleadoDTO).toList();
     }
 
     @Override
@@ -102,7 +74,34 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     }
 
     @Override
-    public List<SalidaEmpleadoDTO> obtenerListaReducida() {
-        return repo.buscar();
+    public List<SalidaEmpleadoDTO> obtenerListaReducida(String palabraBuscar) {
+        return  repo.buscar(t -> t.getNombre().equals(palabraBuscar)).stream().map(mapperEmpleado::EmpleadoASalidaEmpleadoDTO).toList();
+    }
+
+    private void validarDatosEmpleado(CrearEmpleadoDTO dto) {
+        // Validar Nombre
+        if (!validacion.validarRangoLongitud(dto.nombre(), 1, 10)) {
+            throw new StringNoValidoException("Nombre no valido");
+        }
+
+        // Validar Apellido (CORREGIDO: ahora usa el campo correcto)
+        if (!validacion.validarRangoLongitud(dto.apellido(), 1, 10)) {
+            throw new StringNoValidoException("Apellido no valido");
+        }
+
+        // Validar Teléfono (SOLO UNA VEZ)
+        if (!validacion.validarTelefono(dto.telefono())) {
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
+        }
+
+        // Validar Longitud Email
+        if (!validacion.validarRangoLongitud(dto.empleadoEmail(), 10, 40)) {
+            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
+        }
+
+        // Validar Formato Email
+        if (!validacion.correoEsValido(dto.empleadoEmail())) {
+            throw new CorreoNoValidoException("Se debe usar un correo valido");
+        }
     }
 }

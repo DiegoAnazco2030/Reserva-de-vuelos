@@ -29,32 +29,7 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
 
     @Override
     public void crear(CrearUsuarioDTO usuarioNuevoDTO) {
-        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.nombre(), 1, 10)){
-            throw new StringNoValidoException("Nombre no valido");
-        }
-
-        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.nombre(), 1, 10)){
-            throw new StringNoValidoException("Apellido no valido");
-        }
-        if(!validacion.validarTelefono(usuarioNuevoDTO.telefono())){
-            throw new TelefonoNoValidoException("Ingrese un telefono valido");
-        }
-        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.usuarioEmail(),
-                10, 40)){
-            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
-        }
-        if(!validacion.correoEsValido(usuarioNuevoDTO.usuarioEmail())){
-            throw new CorreoNoValidoException("Se debe usar un correo valido");
-        }
-
-        if(!validacion.validarTelefono(usuarioNuevoDTO.telefono())){
-            throw new TelefonoNoValidoException("Ingrese un telefono valido");
-        }
-
-        if(!validacion.documentoEsValidaGenerico(usuarioNuevoDTO.usuarioPassaporteID())){
-            throw new DocumentoNoValidoException("El pasaporte no es correcto");
-        }
-
+        validarDatosUsuario(usuarioNuevoDTO);
         Long id=repo.ultimoID();
         Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,id++);
         repo.guardar(usuarioNuevo);
@@ -106,8 +81,35 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
     }
 
     @Override
-    public List<SalidaUsuarioDTO> obtenerListaReducida() {
+    public List<SalidaUsuarioDTO> obtenerListaReducida(String palabraBuscar) {
+        return repo.buscarTodos().stream().map(mapperUsuario::UsuarioASalidaUsuarioDTO).toList();
+    }
 
-        return List.of();
+    private void validarDatosUsuario(CrearUsuarioDTO dto) {
+        // Validación de Nombre
+        if (!validacion.validarRangoLongitud(dto.nombre(), 1, 10)) {
+            throw new StringNoValidoException("Nombre no valido");
+        }
+
+        if (!validacion.validarRangoLongitud(dto.apellido(), 1, 10)) {
+            throw new StringNoValidoException("Apellido no valido");
+        }
+
+        if (!validacion.validarTelefono(dto.telefono())) {
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
+        }
+
+        // Validación de longitud de Email
+        if (!validacion.validarRangoLongitud(dto.usuarioEmail(), 10, 40)) {
+            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
+        }
+
+        // Validación de formato de Email
+        if (!validacion.correoEsValido(dto.usuarioEmail())) {
+            throw new CorreoNoValidoException("Se debe usar un correo valido");
+        }
+        if(!validacion.documentoEsValidaGenerico(dto.usuarioPassaporteID())){
+            throw new DocumentoNoValidoException("El pasaporte no es correcto");
+        }
     }
 }
