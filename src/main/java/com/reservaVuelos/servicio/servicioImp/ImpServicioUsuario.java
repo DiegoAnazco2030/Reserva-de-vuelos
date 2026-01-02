@@ -3,6 +3,8 @@ package com.reservaVuelos.servicio.servicioImp;
 import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
 import com.reservaVuelos.Excepciones.RunTime.DocumentoNoValidoException;
+import com.reservaVuelos.Excepciones.RunTime.StringNoValidoException;
+import com.reservaVuelos.Excepciones.RunTime.TelefonoNoValidoException;
 import com.reservaVuelos.modelo.persona.Usuario;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
@@ -27,13 +29,32 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
 
     @Override
     public void crear(CrearUsuarioDTO usuarioNuevoDTO) {
+        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.nombre(), 1, 10)){
+            throw new StringNoValidoException("Nombre no valido");
+        }
+
+        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.nombre(), 1, 10)){
+            throw new StringNoValidoException("Apellido no valido");
+        }
+        if(!validacion.validarTelefono(usuarioNuevoDTO.telefono())){
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
+        }
+        if(!validacion.validarRangoLongitud(usuarioNuevoDTO.usuarioEmail(),
+                10, 40)){
+            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
+        }
         if(!validacion.correoEsValido(usuarioNuevoDTO.usuarioEmail())){
             throw new CorreoNoValidoException("Se debe usar un correo valido");
+        }
+
+        if(!validacion.validarTelefono(usuarioNuevoDTO.telefono())){
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
         }
 
         if(!validacion.documentoEsValidaGenerico(usuarioNuevoDTO.usuarioPassaporteID())){
             throw new DocumentoNoValidoException("El pasaporte no es correcto");
         }
+
         Long id=repo.ultimoID();
         Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,id++);
         repo.guardar(usuarioNuevo);
@@ -82,5 +103,11 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
         }
 
         repo.guardar(usuarioExistente);
+    }
+
+    @Override
+    public List<SalidaUsuarioDTO> obtenerListaReducida() {
+
+        return List.of();
     }
 }

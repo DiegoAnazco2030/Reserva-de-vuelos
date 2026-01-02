@@ -11,6 +11,6 @@ public interface IServicio<I, O> {
     List<O> obtenerTodos();
     void eliminar(Long id) throws Exception;
     void modificar(Long id, I objeto) throws Exception;
-
+    List<O> obtenerListaReducida();
 
 }

@@ -2,6 +2,8 @@ package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
+import com.reservaVuelos.Excepciones.RunTime.StringNoValidoException;
+import com.reservaVuelos.Excepciones.RunTime.TelefonoNoValidoException;
 import com.reservaVuelos.modelo.persona.Empleado;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearEmpleadoDTO;
@@ -25,9 +27,29 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public void crear(CrearEmpleadoDTO empleadoNuevoDTO) {
+
+        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.nombre(), 1, 10)){
+            throw new StringNoValidoException("Nombre no valido");
+        }
+
+        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.nombre(), 1, 10)){
+            throw new StringNoValidoException("Apellido no valido");
+        }
+        if(!validacion.validarTelefono(empleadoNuevoDTO.telefono())){
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
+        }
+        if(!validacion.validarRangoLongitud(empleadoNuevoDTO.empleadoEmail(),
+                10, 40)){
+            throw new StringNoValidoException("La longitud de caracteres del correo no es valida");
+        }
         if(!validacion.correoEsValido(empleadoNuevoDTO.empleadoEmail())){
             throw new CorreoNoValidoException("Se debe usar un correo valido");
         }
+
+        if(!validacion.validarTelefono(empleadoNuevoDTO.telefono())){
+            throw new TelefonoNoValidoException("Ingrese un telefono valido");
+        }
+
         Long id=repo.ultimoID();
         Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id++);
         repo.guardar(empleadoNuevo);
@@ -77,5 +99,10 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
         }
 
         repo.guardar(empleadoExistente);
+    }
+
+    @Override
+    public List<SalidaEmpleadoDTO> obtenerListaReducida() {
+        return repo.buscar();
     }
 }

@@ -12,8 +12,32 @@ public class Validaciones {
 
     public boolean documentoEsValidaGenerico(String documento) {
         if (documento == null) return false;
-        String validadorGenerico = "^[a-zA-Z0-9]{5,10}$";
+        String validadorGenerico = "^[a-zA-Z0-9]{5,9}$";
 
         return documento.matches(validadorGenerico);
+    }
+
+    public boolean validarRangoLongitud(String texto, int minimo, int maximo) {
+        if (texto == null) return false;
+        int largo = texto.length();
+        return largo >= minimo && largo <= maximo;
+
+    }
+
+    public boolean validarTelefono(String telefono) {
+        if (telefono == null || telefono.length() != 10) {
+            return false;
+        }
+        return telefono.matches("^[0-9]+$");
+    }
+
+    public boolean validarContrasenia(String contrasenia) {
+        if (contrasenia == null) {
+            return false;
+        }
+
+        int largo = contrasenia.trim().length();
+
+        return largo >= 8 && largo <= 20;
     }
 }
