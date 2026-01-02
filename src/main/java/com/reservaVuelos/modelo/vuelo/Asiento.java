@@ -4,9 +4,9 @@ import com.reservaVuelos.modelo.Identificador;
 
 public class Asiento implements Identificador {
 
-    private final Long idAsiento;
-    private TipoDeAsiento tipoAsiento;
-    private boolean estadoAsiento = false; //false libre y true ocupado
+    private final Long idAsiento;           // tamaño de un Long
+    private TipoDeAsiento tipoAsiento;      // 9 caracteres
+    private boolean estadoAsiento = false;  // tamaño de un booblean
 
     public Asiento(Long idAsiento, TipoDeAsiento tipoAsiento) {
         this.idAsiento = idAsiento;

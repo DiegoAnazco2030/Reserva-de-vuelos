@@ -35,8 +35,13 @@ public class RepositorioVuelos extends ArchivoDAO<Vuelo> {
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
     private static final Long TOTAL_RECORD_SIZE = 190L; // bytes por registro de Vuelo
 
-    public RepositorioVuelos() {
+    private RepositorioAerolineas repositorioAerolineas;
+    private RepositorioAviones repositorioAviones;
+
+    public RepositorioVuelos(RepositorioAerolineas repositorioAerolineas, RepositorioAviones repositorioAviones) {
         super("vuelos", TOTAL_RECORD_SIZE);
+        this.repositorioAerolineas = repositorioAerolineas;
+        this.repositorioAviones = repositorioAviones;
     }
 
     @Override
@@ -74,6 +79,8 @@ public class RepositorioVuelos extends ArchivoDAO<Vuelo> {
             dis.readBoolean();
 
             Long aerolineaID = dis.readLong();
+            Aerolinea aerolinea = repositorioAerolineas.buscarPorID(aerolineaID);
+
             String origenStr = leerStringFijo(dis, ORIGEN_SIZE);
             Ciudad origen = Ciudad.valueOf(origenStr);
             
@@ -87,11 +94,13 @@ public class RepositorioVuelos extends ArchivoDAO<Vuelo> {
             LocalDateTime fechaLlegada = LocalDateTime.parse(fechaLlegadaStr, DATE_TIME_FORMATTER);
             
             boolean estadoVuelo = dis.readBoolean();
+
             Long avionID = dis.readLong();
+            Avion avion = repositorioAviones.buscarPorID(avionID);
 
             // Nota: Aquí se necesitaría obtener los objetos Aerolinea y Avion desde sus respectivos repositorios
             // Por ahora retornamos null para los objetos complejos
-            return new Vuelo(vueloID, null, origen, destino, fechaSalida, fechaLlegada, estadoVuelo, null);
+            return new Vuelo(vueloID, aerolinea, origen, destino, fechaSalida, fechaLlegada, estadoVuelo, avion);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
