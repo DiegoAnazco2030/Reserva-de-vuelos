@@ -23,7 +23,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="b0052" class="javax.swing.JTable" binding="tablaAerolinea">
+          <component id="b0052" class="javax.swing.JTable" binding="tablaAerolinea" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -93,7 +93,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="d5d43" class="javax.swing.JButton" binding="registrarModificarAerolinea">
+      <component id="d5d43" class="javax.swing.JButton" binding="registrarModificarAerolineas">
         <constraints>
           <grid row="8" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
