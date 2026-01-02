@@ -5,7 +5,6 @@ import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
 import com.reservaVuelos.modelo.persona.Empleado;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearEmpleadoDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
