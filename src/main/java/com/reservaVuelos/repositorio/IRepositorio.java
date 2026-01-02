@@ -2,7 +2,6 @@ package com.reservaVuelos.repositorio;
 
 import com.reservaVuelos.modelo.Identificador;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -18,14 +17,7 @@ public interface IRepositorio<T extends Identificador> {
 
     List<T> buscarTodos();
 
-    default List<T> buscar(Predicate<? super T> filter) {
-        List<T> salida = new ArrayList<>();
-
-        for (T t : buscarTodos()) {
-            if (filter.test(t)) salida.add(t);
-        }
-        return salida;
-    }
+    List<T> buscar(Predicate<? super T> filter);
 
     // Actualizar
     T actualizar(T entity);

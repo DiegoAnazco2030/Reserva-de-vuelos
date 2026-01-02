@@ -2,6 +2,7 @@ package com.reservaVuelos.repositorio;
 
 import com.reservaVuelos.modelo.Identificador;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,11 +15,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * para guardar cualquier cosa el ID es el primer dato que se guarda
  * Existe un archivo de datos (.raf) y un archivo de indices (.idx) para el indice denso
  * El indice denso se guarda en un mapa en RAM (ID vs Posición)
+ * Los datos eliminados se eliminan logicamente se marcan con false en el boolean de estado
  * Template Method para los DAO que usan archivos RandomAccessFile
  * 
  * Se tiene pensado hacer una funcion de mantenimiento para elimine fisicamente
@@ -60,9 +63,9 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
         }
 
         try (ObjectInputStream ios = new ObjectInputStream(new FileInputStream(archivoIndices))) {
-            Long longitudRegistro = ios.readLong();
-            Long longitudActual = archivoDatos.length();
-            if (longitudRegistro != longitudActual) {
+            Long longitudArchivoRegistros = ios.readLong();
+            Long longitudActualRegistros = archivoDatos.length();
+            if (longitudArchivoRegistros.equals(longitudActualRegistros)) {
                 System.out.println("El tamaño del registro ha cambiado. Reconstruyendo el índice denso...");
                 reconstruirIndiceDensoEnDisco();
                 return;
@@ -89,7 +92,10 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
                 raf.seek(pos);
                 // El ID es siempre el primer dato guardado
                 idRecuperado = raf.readLong();
-                indicesMapa.put(idRecuperado, pos);
+                // El estado es siempre el segundo dato guardado
+                if (raf.readBoolean()) {
+                    indicesMapa.put(idRecuperado, pos);
+                }
             }
 
             guardarIndiceDensoEnDisco();
@@ -102,6 +108,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     // Guardar indice denso en disco
     private void guardarIndiceDensoEnDisco() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoIndices))) {
+            oos.writeLong(archivoDatos.length());
             oos.writeObject(indicesMapa);
         } catch(IOException e) {
             e.printStackTrace();
@@ -114,6 +121,14 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     public T guardar(T entity) {
         try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
             byte[] datosBytes = convertirABytes(entity);
+
+            if (datosBytes == null || datosBytes.length != tamanoRegistro) {
+                throw new IOException("Error al convertir la entidad a bytes o tamaño incorrecto");
+            }
+
+            if (existe(entity.getId())) {
+                throw new IOException("La entidad con ID " + entity.getId() + " ya existe.");
+            }
 
             Long posicion = raf.length();
             raf.seek(posicion);
@@ -158,7 +173,34 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
                 raf.seek(posicion);
                 raf.readFully(datosBytes);
                 T entidad = convertirDeBytes(datosBytes);
-                resultados.add(entidad);
+
+                if (entidad != null) {
+                    resultados.add(entidad);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultados;
+    }
+
+    @Override
+    public List<T> buscar(Predicate<? super T> filter) {
+        List<T> resultados = new ArrayList<>();
+
+        if (indicesMapa.isEmpty()) return resultados;
+
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
+            byte[] datosBytes = new byte[tamanoRegistro.intValue()];
+
+            for (Long posicion : indicesMapa.values()) {
+                raf.seek(posicion);
+                raf.readFully(datosBytes);
+                T entidad = convertirDeBytes(datosBytes);
+
+                if (entidad != null && filter.test(entidad)) {
+                    resultados.add(entidad);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,6 +215,11 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
         
         try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
             byte[] datosBytes = convertirABytes(entity);
+
+            if (datosBytes == null || datosBytes.length != tamanoRegistro) {
+                throw new IOException("Error al convertir la entidad a bytes o tamaño incorrecto");
+            }
+
             raf.seek(posicion);
             raf.write(datosBytes);
             return entity;
@@ -188,8 +235,17 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
 
         T entidadEliminada = buscarPorID(ID);
 
-        // Se hace eliminacion lógica (no se reordenan los datos en el archivo)
-        indicesMapa.remove(ID);
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
+            Long posicion = indicesMapa.get(ID);
+            raf.seek(posicion + 8); // Se salta a la posición del boolean de estado
+            raf.writeBoolean(false);
+
+            indicesMapa.remove(ID);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         return entidadEliminada;
     }
 
@@ -230,5 +286,13 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
             sb.setLength(longitud);
         }
         return sb.toString();
+    }
+
+    protected String leerStringFijo(DataInputStream dis, int longitud) throws IOException {
+        StringBuilder sb = new StringBuilder(longitud);
+        for (int i = 0; i < longitud; i++) {
+            sb.append(dis.readChar());
+        }
+        return sb.toString().trim();
     }
 }
