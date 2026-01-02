@@ -9,4 +9,11 @@ public class Validaciones {
         }
         return false;
     }
+
+    public boolean documentoEsValidaGenerico(String documento) {
+        if (documento == null) return false;
+        String validadorGenerico = "^[a-zA-Z0-9]{5,10}$";
+
+        return documento.matches(validadorGenerico);
+    }
 }

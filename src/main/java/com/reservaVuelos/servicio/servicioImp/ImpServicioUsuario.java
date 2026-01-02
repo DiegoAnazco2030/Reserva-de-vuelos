@@ -2,6 +2,7 @@ package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
+import com.reservaVuelos.Excepciones.RunTime.DocumentoNoValidoException;
 import com.reservaVuelos.modelo.persona.Usuario;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
@@ -28,6 +29,10 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
     public void crear(CrearUsuarioDTO usuarioNuevoDTO) {
         if(!validacion.correoEsValido(usuarioNuevoDTO.usuarioEmail())){
             throw new CorreoNoValidoException("Se debe usar un correo valido");
+        }
+
+        if(!validacion.documentoEsValidaGenerico(usuarioNuevoDTO.usuarioPassaporteID())){
+            throw new DocumentoNoValidoException("El pasaporte no es correcto");
         }
         Long id=repo.ultimoID();
         Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,id++);
