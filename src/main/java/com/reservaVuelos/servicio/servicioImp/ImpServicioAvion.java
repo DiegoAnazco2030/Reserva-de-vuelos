@@ -21,9 +21,11 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
     }
 
     @Override
-    public void crear(CrearAvionDTO avionNuevo) {
-        Long id=repo.ultimoID();
-        repo.guardar(mapperAvion.AvionDTOAAvion(avionNuevo,id++));
+    public void crear(CrearAvionDTO avionNuevo) throws Exception {
+        Long id = repo.ultimoID() + 1;
+        if (repo.guardar(mapperAvion.AvionDTOAAvion(avionNuevo,id)) == null) {
+            throw new Exception("No se pudo crear el avion");
+        }
     }
 
     @Override
@@ -36,22 +38,31 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
         if(!repo.existe(id)){
             throw new AvionNoEncontradoException("El avion a eliminar no existe");
         }
+        if (repo.eliminar(id) == null) {
+            throw new Exception("No se pudo eliminar el avion");
+        }
     }
 
     @Override
     public void modificar(Long id, CrearAvionDTO avionModificar) throws Exception {
-        Avion avionEncontrado=repo.buscarPorID(id);
+        Avion avionEncontrado = repo.buscarPorID(id);
+        if (avionEncontrado == null) {
+            throw new AvionNoEncontradoException("El avion no existe");
+        }
         avionEncontrado.setModeloAvion(avionModificar.modeloAvion());
-        repo.actualizar(avionEncontrado);
+        if (repo.actualizar(avionEncontrado) == null) {
+            throw new Exception("No se pudo modificar el avion");
+        }
     }
 
     @Override
     public List<SalidaAvionDTO> obtenerListaReducida(String palabraBuscar) {
-
-        return repo.buscar(t -> t.getModeloAvion().name().equals(palabraBuscar)).stream().map(mapperAvion::AvionASalidaAvionDTO).toList();
+        return repo.buscar(t -> t.getModeloAvion().name().equalsIgnoreCase(palabraBuscar)).stream().
+        map(mapperAvion::AvionASalidaAvionDTO).
+        toList();
     }
 
-    public Avion obtenerAvionPorID(Long id){
+    public Avion obtenerAvionPorID(Long id) throws AvionNoEncontradoException {
         Avion avionEncontrado= repo.buscarPorID(id);
         if(avionEncontrado==null){
             throw new AvionNoEncontradoException("El avion no existe");

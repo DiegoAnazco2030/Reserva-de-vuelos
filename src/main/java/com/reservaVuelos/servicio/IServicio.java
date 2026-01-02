@@ -7,7 +7,7 @@ public interface IServicio<I, O> {
     // ----------------------- CRUD ----------------------
 
     // Crear
-    void crear(I objeto);
+    void crear(I objeto) throws Exception;
 
     // Leer todo los datos
     List<O> obtenerTodos();
