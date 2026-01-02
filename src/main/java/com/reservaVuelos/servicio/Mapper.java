@@ -18,7 +18,6 @@ public class Mapper {
 
     // --- USUARIO ---
 
-    // 1. Crear Usuario (Entrada)
     public Usuario UsuarioDTOAUsuario(CrearUsuarioDTO dto, Long usuarioID) {
         return new Usuario(
                 dto.nombre(),
@@ -74,6 +73,12 @@ public class Mapper {
         return new Avion(idAvion, dto.modeloAvion());
     }
 
+    public SalidaAvionDTO AvionASalidaAvionDTO(Avion avion) {
+        return new SalidaAvionDTO(
+                avion.getModeloAvion(),
+                avion.getId()
+        );
+    }
     // --- ASIENTO ---
 
     // 6. Salida Asiento (Salida)
@@ -92,7 +97,6 @@ public class Mapper {
 
     // --- VUELO ---
 
-    // 8. Crear Vuelo (Entrada: LocalDateTime viene del DTO)
     public  Vuelo VuealoDTOAVuelo(CrearVueloDTO dto, Long vueloID, Avion avion) {
         return new Vuelo(
                 vueloID,
@@ -106,7 +110,6 @@ public class Mapper {
         );
     }
 
-    // 9. Salida Vuelo (Salida: Convierte LocalDateTime a String)
     public  SalidaVueloDTO VueloASalidaVueloDTO(Vuelo vuelo) {
         return new SalidaVueloDTO(
                 vuelo.getOrigenVuelo(),
@@ -130,7 +133,7 @@ public class Mapper {
         return dto.idUsuario();
     }
 
-    // 12. Salida Reserva (Transformación final)
+    // 12. Salida Reserva
     public SalidaReservaDTO mapearASalidaReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
         return new SalidaReservaDTO(
                 idReserva,
