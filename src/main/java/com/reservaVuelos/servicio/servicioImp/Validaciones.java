@@ -1,5 +1,7 @@
 package com.reservaVuelos.servicio.servicioImp;
 
+import java.time.LocalDateTime;
+
 public class Validaciones {
 
     public boolean correoEsValido(String correo){
@@ -39,5 +41,11 @@ public class Validaciones {
         int largo = contrasenia.trim().length();
 
         return largo >= 8 && largo <= 20;
+    }
+
+    public void validarFechas(LocalDateTime salida, LocalDateTime llegada) {
+        if (llegada.isBefore(salida)) {
+            throw new RuntimeException("La fecha de llegada no puede ser anterior a la de salida");
+        }
     }
 }

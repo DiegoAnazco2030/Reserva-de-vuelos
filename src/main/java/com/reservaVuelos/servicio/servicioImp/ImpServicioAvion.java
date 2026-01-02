@@ -1,6 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
-import com.reservaVuelos.Excepciones.Excepcion.AvionNoEncontradoDTO;
+import com.reservaVuelos.Excepciones.Excepcion.AvionNoEncontradoException;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
@@ -34,7 +34,7 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
     @Override
     public void eliminar(Long id) throws Exception {
         if(!repo.existe(id)){
-            throw new AvionNoEncontradoDTO("El avion a eliminar no existe");
+            throw new AvionNoEncontradoException("El avion a eliminar no existe");
         }
     }
 
@@ -49,5 +49,13 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
     public List<SalidaAvionDTO> obtenerListaReducida(String palabraBuscar) {
 
         return repo.buscar(t -> t.getModeloAvion().name().equals(palabraBuscar)).stream().map(mapperAvion::AvionASalidaAvionDTO).toList();
+    }
+
+    public Avion obtenerAvionPorID(Long id){
+        Avion avionEncontrado= repo.buscarPorID(id);
+        if(avionEncontrado==null){
+            throw new AvionNoEncontradoException("El avion no existe");
+        }
+        return avionEncontrado;
     }
 }

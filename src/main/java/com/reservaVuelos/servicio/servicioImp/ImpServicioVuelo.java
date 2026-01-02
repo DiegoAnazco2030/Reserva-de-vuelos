@@ -16,18 +16,22 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
 
     private final IRepositorio<Vuelo> repo;
     private final Mapper mapperVuelo;
+    private final ImpServicioAvion avionServicio;
+    private final Validaciones validacion;
 
-    public ImpServicioVuelo(IRepositorio<Vuelo> repo, Mapper mapperVuelo) {
+    public ImpServicioVuelo(IRepositorio<Vuelo> repo, Mapper mapperVuelo, ImpServicioAvion avionServicio, Validaciones validacion) {
         this.repo = repo;
         this.mapperVuelo = mapperVuelo;
+        this.avionServicio = avionServicio;
+        this.validacion = validacion;
     }
 
     @Override
-    public void crear(CrearVueloDTO objeto) {
-        validarFechas(objeto.fechaHoraSalida(), objeto.fechaHoraLlegada());
+    public void crear(CrearVueloDTO vueloNuevo) {
+        validacion.validarFechas(vueloNuevo.fechaHoraSalida(), vueloNuevo.fechaHoraLlegada());
         Long id = repo.ultimoID();
-
-        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(objeto, id);
+        Avion avionEncontrado=avionServicio.obtenerAvionPorID(vueloNuevo.idAvion());
+        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, id, avionEncontrado);
         repo.guardar(nuevoVuelo);
     }
 
@@ -55,7 +59,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
             throw new PersonaNoEncontradaException("Vuelo no encontrado");
         }
 
-        validarFechas(objeto.fechaHoraSalida(), objeto.fechaHoraLlegada());
+        validacion.validarFechas(objeto.fechaHoraSalida(), objeto.fechaHoraLlegada());
 
         vueloExistente.setFechaHoraSalida(objeto.fechaHoraSalida());
         vueloExistente.setFechaHoraLlegada(objeto.fechaHoraLlegada());
@@ -76,11 +80,6 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
                 .toList();
     }
 
-    private void validarFechas(LocalDateTime salida, LocalDateTime llegada) {
-        if (llegada.isBefore(salida)) {
-            throw new RuntimeException("La fecha de llegada no puede ser anterior a la de salida");
-        }
-    }
 
     private void actualizarEstadoVuelo(Vuelo vuelo) {
         if (LocalDateTime.now().isAfter(vuelo.getFechaHoraLlegada())) {
