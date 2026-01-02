@@ -17,7 +17,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     private final IRepositorio<Empleado> repo;
     private final Mapper mapperEmpleado;
 
-    public ImpServicioEmpleado(Validaciones validacion, IRepositorio repo, Mapper mapperEmpleado) {
+    public ImpServicioEmpleado(Validaciones validacion, IRepositorio<Empleado> repo, Mapper mapperEmpleado) {
         this.validacion = validacion;
         this.repo = repo;
         this.mapperEmpleado = mapperEmpleado;
@@ -28,7 +28,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
         if(!validacion.correoEsValido(empleadoNuevoDTO.empleadoEmail())){
             throw new CorreoNoValidoException("Se debe usar un correo valido");
         }
-        Long id=0L;
+        Long id=repo.ultimoID();
         Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id++);
         repo.guardar(empleadoNuevo);
     }
