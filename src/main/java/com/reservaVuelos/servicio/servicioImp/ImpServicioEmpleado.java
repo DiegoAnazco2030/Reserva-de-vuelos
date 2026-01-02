@@ -29,12 +29,12 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
         }
         Long id=0L;
         Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id++);
-        repo.guardarDato(empleadoNuevo);
+        repo.guardar(empleadoNuevo);
     }
 
     @Override
     public List<SalidaEmpleadoDTO> obtenerTodos() {
-        List<Empleado> listaEmpleados= repo.obtenerTodosDatos();
+        List<Empleado> listaEmpleados= repo.buscarTodos();
         List<SalidaEmpleadoDTO> todosEmpleados=new ArrayList<>();
         for(Empleado e : listaEmpleados){
             SalidaEmpleadoDTO empleadoDTO = mapperEmpleado.EmpleadoASalidaEmpleadoDTO(e);
@@ -45,7 +45,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public void eliminar(Long id) {
-        repo.eliminarDato();
+        repo.eliminar(id);
     }
 
     @Override
