@@ -1,6 +1,7 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.repositorio.IRepositorio;
@@ -27,9 +28,17 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public void crear(CrearAvionDTO avionNuevo) throws Exception {
-        Long id = repo.ultimoID();
-        if (repo.guardar(mapperAvion.AvionDTOAAvion(avionNuevo,++id)) == null) {
-            throw new Exception("No se pudo crear el avion");
+        if (avionNuevo == null) {
+            throw new OperacionFallidaException("El DTO de avión no puede ser nulo");
+        }
+
+
+        Long id = repo.ultimoID() +1;
+
+        Avion avionParaGuardar = mapperAvion.AvionDTOAAvion(avionNuevo, id);
+
+        if (repo.guardar(avionParaGuardar) == null) {
+            throw new OperacionFallidaException("No se pudo crear el avion");
         }
     }
 
