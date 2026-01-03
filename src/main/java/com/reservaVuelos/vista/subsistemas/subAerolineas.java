@@ -19,9 +19,8 @@ public class subAerolineas extends JFrame {
     private JTextField emailAerolinea;
     private JTextField textFiBuscarAerolinea;
 
-    //Bottoms de Crud y buscar
+    //Bottoms de Crud
     private JButton registrarModificarAerolineas;
-    private JButton buscarAerolinea;
     private JButton EliminarAerolinea;
 
     //JLabel apra mostrar los mensajes del sistema
@@ -31,7 +30,7 @@ public class subAerolineas extends JFrame {
 
         setContentPane(JPanelAero);
         setTitle("Registro de aerolinea");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
 
@@ -60,13 +59,6 @@ public class subAerolineas extends JFrame {
         });
 
         //Action listeners de los bottoms
-
-        buscarAerolinea.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
         registrarModificarAerolineas.addActionListener(new ActionListener() {
             @Override

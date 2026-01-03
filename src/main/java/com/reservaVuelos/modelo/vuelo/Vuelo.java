@@ -11,7 +11,7 @@ public class Vuelo implements Identificador {
     private Ciudad destinoVuelo; // 12 caracteres
     private LocalDateTime fechaHoraSalida; // 29 caracteres
     private LocalDateTime fechaHoraLlegada; // 29 caracteres
-    private boolean estadoVuelo; //"0 = Programado", "1 = Aterrizado" / tamaño de boolean
+    private boolean estadoVuelo; //"0 = Programado", "1 = Completado" / tamaño de boolean
     private Avion avionVuelo; // para guardar se usa el ID del avion / tamaño de Long
 
     public Vuelo(Long vueloID, Aerolinea aerolinea, Ciudad origenVuelo, Ciudad destinoVuelo, LocalDateTime fechaHoraSalida, LocalDateTime fechaHoraLlegada, boolean estadoVuelo, Avion avionVuelo) {

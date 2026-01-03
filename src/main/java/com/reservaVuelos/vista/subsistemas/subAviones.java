@@ -15,7 +15,6 @@ public class subAviones extends JFrame {
     private JTextField textFiBusquedaAvion;
 
     //Los bottom para el crud
-    private JButton buscarAvion;
     private JButton registrarModificarAvion;
     private JButton eliminarAvion;
 
@@ -26,11 +25,14 @@ public class subAviones extends JFrame {
     //Combo Box del modelo de avion
     private JComboBox modeloAvion;
 
+    //JLabel apra mostrar los mensajes del sistema
+    private JLabel mensajeSistema;
+
     public subAviones() {
 
         setContentPane(JPanelAvion);
         setTitle("Registro de avion");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
 
@@ -61,13 +63,6 @@ public class subAviones extends JFrame {
 
         //Listener de los bottoms
 
-        buscarAvion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
         registrarModificarAvion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,8 +82,7 @@ public class subAviones extends JFrame {
     private void cargarCamposDesdeTabla() {
         int fila = tablaAviones.getSelectedRow();
         if(fila != -1) {
-            String modeloSeleccionado = modeloTablaAviones.getValueAt(fila, 1).toString();
-            modeloAvion.setSelectedItem(ModeloAvion.valueOf(modeloSeleccionado));
+            modeloAvion.setSelectedItem(ModeloAvion.valueOf(modeloTablaAviones.getValueAt(fila, 1).toString()));
         }
     }
 
