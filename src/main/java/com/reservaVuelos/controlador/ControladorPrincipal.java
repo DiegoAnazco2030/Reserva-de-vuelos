@@ -7,6 +7,8 @@ import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.servicioImp.ImpServicioAvion;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ControladorPrincipal implements IControlador {
@@ -16,6 +18,7 @@ public class ControladorPrincipal implements IControlador {
     private final IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva;
     private final IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario;
     private final IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo;
+    private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
 
     public ControladorPrincipal(IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado,
                                 IServicio<CrearAereolineaDTO, SalidaAerolineaDTO> servicioAerolinea,
@@ -107,6 +110,7 @@ public class ControladorPrincipal implements IControlador {
                                   int edad, String empleadoEmail) throws Exception {
         CrearEmpleadoDTO empleadoModificar = new CrearEmpleadoDTO(nombre,
                 apellido, telefono, edad, empleadoEmail, " ");
+        servicioEmpleado.modificar(id, empleadoModificar);
     }
 
     //Usuario
@@ -133,13 +137,17 @@ public class ControladorPrincipal implements IControlador {
                                  int edad, String empleadoEmail) throws Exception {
         CrearUsuarioDTO usuarioModificar= new CrearUsuarioDTO(nombre, apellido,
                 telefono, edad, empleadoEmail, " ", " " );
+        servicioUsuario.modificar(id, usuarioModificar);
     }
 
     //Vuelo
     @Override
     public void crearVuelo(Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida,
                            String fechaHoraLlegada, Long idAvion, Long idAerolinea) throws Exception {
-        CrearVueloDTO vueloDTO = new CrearVueloDTO();
+        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida, DATE_TIME_FORMATTER);
+        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada, DATE_TIME_FORMATTER);
+        CrearVueloDTO vueloDTO = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaSalida, fechaLlegada, idAvion);
+        servicioVuelo.crear(vueloDTO);
     }
 
     @Override
@@ -155,7 +163,10 @@ public class ControladorPrincipal implements IControlador {
     @Override
     public void modificarVuelo(Long id, Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
                                String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
-        CrearVueloDTO dto = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaHoraSalida, fechaHoraLlegada, idAvion);
+        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida, DATE_TIME_FORMATTER);
+        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada, DATE_TIME_FORMATTER);
+        CrearVueloDTO dto = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaSalida, fechaLlegada, idAvion);
+        servicioVuelo.modificar(id, dto);
     }
 
     @Override
