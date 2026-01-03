@@ -10,9 +10,11 @@ import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearEmpleadoDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmpleadoDTO> {
     private final Validaciones validacion;
     private final IRepositorio<Empleado> repo;

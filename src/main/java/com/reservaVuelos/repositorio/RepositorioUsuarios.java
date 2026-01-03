@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.reservaVuelos.modelo.persona.Usuario;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Usuarios con RandomAccessFile
@@ -22,6 +23,7 @@ import com.reservaVuelos.modelo.persona.Usuario;
  * - usuarioContrasenia: 28 caracteres × 2 = 56 bytes
  * - usuarioPassaporteID: 9 caracteres × 2 = 18 bytes
  */
+@Repository
 public class RepositorioUsuarios extends ArchivoDAO<Usuario> {
 
     private final int NOMBRE_SIZE = 10;

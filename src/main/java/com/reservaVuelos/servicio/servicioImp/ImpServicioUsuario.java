@@ -11,10 +11,12 @@ import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearUsuarioDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> {
 
     private final Validaciones validacion;

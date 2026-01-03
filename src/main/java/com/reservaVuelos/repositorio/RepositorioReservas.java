@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.reservaVuelos.modelo.Reserva;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Reservas con RandomAccessFile
@@ -18,6 +19,7 @@ import com.reservaVuelos.modelo.Reserva;
  * - idAsiento: Long = 8 bytes
  * - idUsuario: Long = 8 bytes
  */
+@Repository
 public class RepositorioReservas extends ArchivoDAO<Reserva> {
     
     private static final Long TOTAL_RECORD_SIZE = 33L; // bytes por registro de Reserva

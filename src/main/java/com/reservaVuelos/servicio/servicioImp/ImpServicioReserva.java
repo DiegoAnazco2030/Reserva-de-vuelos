@@ -9,9 +9,11 @@ import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearReservaDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaReservaDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaReservaDTO> {
     private final IRepositorio<Reserva> repoReserva;
     private final IRepositorio<Vuelo> repoVuelo;

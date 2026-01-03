@@ -1,7 +1,10 @@
 package com.reservaVuelos.servicio.servicioImp;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 
+@Component
 public class Validaciones {
 
     public boolean correoEsValido(String correo){

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Asientos con RandomAccessFile
@@ -18,6 +19,7 @@ import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
  * - tipoAsiento: 9 caracteres × 2 = 18 bytes
  * - estadoAsiento: boolean = 1 byte
  */
+@Repository
 public class RepositorioAsientos extends ArchivoDAO<Asiento> {
 
     private final int TIPO_ASIENTO_SIZE = 9;

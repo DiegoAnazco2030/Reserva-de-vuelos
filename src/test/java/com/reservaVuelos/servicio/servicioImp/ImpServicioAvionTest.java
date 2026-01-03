@@ -70,7 +70,6 @@ class ImpServicioAvionTest {
         verify(repo).ultimoID();
         verify(repo).guardar(entidadSimulada);
     }
-
     @Test
     void ErrorRepoAlCrear() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_737);

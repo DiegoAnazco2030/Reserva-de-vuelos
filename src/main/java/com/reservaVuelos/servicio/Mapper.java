@@ -9,9 +9,11 @@ import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.*;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
+import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class Mapper {
 
     // Formateador para convertir de String a LocalDateTime y viceversa

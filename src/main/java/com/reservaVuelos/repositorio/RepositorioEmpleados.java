@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.reservaVuelos.modelo.persona.Empleado;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Empleados con RandomAccessFile
@@ -21,6 +22,7 @@ import com.reservaVuelos.modelo.persona.Empleado;
  * - empleadoEmail: 40 caracteres × 2 = 80 bytes
  * - empleadoContrasenia: 28 caracteres × 2 = 56 bytes
  */
+@Repository
 public class RepositorioEmpleados extends ArchivoDAO<Empleado> {
     
     private final int NOMBRE_SIZE = 10;
