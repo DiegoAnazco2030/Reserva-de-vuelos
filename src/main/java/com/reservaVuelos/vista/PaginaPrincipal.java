@@ -55,7 +55,7 @@ public class PaginaPrincipal extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        actualizarTablaAsientos();
+        actualizarTablaAsientos(null);
         actualizarTablaUsuarios();
         actualizarTablaReservas("");
         actualizarTablaVuelos();
@@ -121,10 +121,15 @@ public class PaginaPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
+                    int filaSeleccionada = tablaReservas.getSelectedRow();
                     int filaVuelo = tablaVuelos.getSelectedRow();
                     int filaAsiento = tablaAsientos.getSelectedRow();
                     int filaUsuario = tablaUsuarios.getSelectedRow();
+
+                    if(filaVuelo == -1 || filaAsiento == -1 || filaUsuario == -1){
+                        mensajeSistema.setText("Seleccione vuelo, asiento y usuario");
+                        return;
+                    }
 
                     if(filaSeleccionada == -1){
                         controlador.crearReserva(
@@ -133,6 +138,7 @@ public class PaginaPrincipal extends JFrame {
                                 Long.parseLong(modeloTablaUsuarios.getValueAt(filaUsuario, 0).toString())
                         );
                         actualizarTablaReservas(buscarReserva.getText());
+                        limpiarFormulario();
                         mensajeSistema.setText("Reserva Creada");
                     }else{
 
@@ -143,6 +149,7 @@ public class PaginaPrincipal extends JFrame {
                                 Long.parseLong(modeloTablaUsuarios.getValueAt(filaUsuario, 0).toString())
                         );
                         actualizarTablaReservas(buscarReserva.getText());
+                        limpiarFormulario();
                         mensajeSistema.setText("Reserva Modificada");
                     }
                 }catch(Exception ex){
@@ -155,16 +162,30 @@ public class PaginaPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
+                    int filaSeleccionada = tablaReservas.getSelectedRow();
                     if (filaSeleccionada == -1) {
                         mensajeSistema.setText("Seleccione una reserva");
                     } else {
                         controlador.eliminarReserva(Long.parseLong(modeloTablaReservas.getValueAt(filaSeleccionada, 0).toString()));
                         actualizarTablaReservas(buscarReserva.getText());
+                        limpiarFormulario();
                         mensajeSistema.setText("Reserva Eliminada");
                     }
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        tablaVuelos.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int filaSeleccionada = tablaVuelos.getSelectedRow();
+
+                if (filaSeleccionada != -1) {
+                    Long idVuelo = Long.parseLong(modeloTablaVuelos.getValueAt(filaSeleccionada, 0).toString());
+                    actualizarTablaAsientos(idVuelo);
+                } else {
+                    modeloTablaAsientos.setRowCount(0);
                 }
             }
         });
@@ -200,8 +221,11 @@ public class PaginaPrincipal extends JFrame {
         }
     }
 
-    public void actualizarTablaAsientos(){
+    public void actualizarTablaAsientos(Long idVuelo){
         modeloTablaAsientos.setRowCount(0);
+        if(idVuelo==null){
+            return;
+        }
         /*
         *
         * Esto debo completar con lo que se haga con asientos
@@ -223,21 +247,20 @@ public class PaginaPrincipal extends JFrame {
         }
     }
 
+    private void limpiarFormulario() {
+        tablaReservas.clearSelection();
+        tablaVuelos.clearSelection();
+        tablaAsientos.clearSelection();
+        tablaUsuarios.clearSelection();
+        modeloTablaAsientos.setRowCount(0); // Limpiar asientos hasta que elijan otro vuelo
+        registrarModiReservas.setText("Registrar");
+    }
+
     private void createUIComponents() {
 
         //Configuracion tabla reservas
 
-        tablaReservas = new JTable() {
-
-            @Override
-            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
-                    clearSelection();
-                } else {
-                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
-                }
-            }
-        };
+        tablaReservas = crearTablaConToggle();
 
         modeloTablaReservas = new DefaultTableModel(){
             @Override
@@ -256,17 +279,7 @@ public class PaginaPrincipal extends JFrame {
 
         //Configurar tabla de vuelos
 
-        tablaVuelos = new JTable() {
-
-            @Override
-            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
-                    clearSelection();
-                } else {
-                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
-                }
-            }
-        };
+        tablaVuelos = crearTablaConToggle();
 
         modeloTablaVuelos = new DefaultTableModel(){
             @Override
@@ -283,17 +296,7 @@ public class PaginaPrincipal extends JFrame {
 
         //Configurar tabla de asientos
 
-        tablaAsientos = new JTable() {
-
-            @Override
-            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
-                    clearSelection();
-                } else {
-                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
-                }
-            }
-        };
+        tablaAsientos = crearTablaConToggle();
 
         modeloTablaAsientos = new DefaultTableModel(){
             @Override
@@ -308,17 +311,7 @@ public class PaginaPrincipal extends JFrame {
 
         //Configurar tabla de usuarios
 
-        tablaUsuarios = new JTable() {
-
-            @Override
-            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
-                    clearSelection();
-                } else {
-                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
-                }
-            }
-        };
+        tablaUsuarios = crearTablaConToggle();
 
         modeloTablaUsuarios = new DefaultTableModel(){
             @Override
@@ -331,6 +324,20 @@ public class PaginaPrincipal extends JFrame {
         modeloTablaUsuarios.addColumn("Nombre");
         modeloTablaUsuarios.addColumn("Apellido");
         modeloTablaUsuarios.addColumn("Correo");
+        tablaUsuarios.setModel(modeloTablaUsuarios);
 
+    }
+
+    private JTable crearTablaConToggle(){
+        return new JTable() {
+            @Override
+            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
+                    clearSelection();
+                } else {
+                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
+                }
+            }
+        };
     }
 }
