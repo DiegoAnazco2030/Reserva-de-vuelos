@@ -79,7 +79,7 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
                 .toList();
     }
 
-    public SalidaAvionDTO obtenerAvionPorID(Long id) throws EntidadNoEncontradaException {
+    public SalidaAvionDTO obtenerAvionPorID(Long id) throws Exception {
         Avion avionEncontrado= repo.buscarPorID(id);
         if(avionEncontrado == null){
             throw new EntidadNoEncontradaException("El avion no existe");

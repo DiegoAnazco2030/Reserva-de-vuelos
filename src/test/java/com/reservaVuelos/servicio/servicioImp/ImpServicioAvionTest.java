@@ -113,7 +113,7 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void idNoEncontradoParaModificar() throws Exception {
+    void idNoEncontradoParaModificar() throws Exception { //
         Long id = 1L;
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_787);
 
@@ -146,7 +146,7 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void obtenerListaReducidaDeAviones() {
+    void obtenerListaReducidaDeAviones() { //
         // GIVEN
         String palabra = "BOEING";
         Avion avion = new Avion(1L, ModeloAvion.BOEING_787);
@@ -165,7 +165,7 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void obtenerAvionPorIDExistente() throws EntidadNoEncontradaException {
+    void obtenerAvionPorIDExistente() throws Exception {
         // GIVEN
         Long id = 1L;
         Avion avionEncontrado = new Avion(id, ModeloAvion.AIRBUS_A320);
@@ -184,15 +184,17 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void obtenerAvionPorIDNoExistente() {
+    void obtenerAvionPorIDNoExistente() throws Exception {
         // GIVEN
         Long id = 1L;
+
         when(repo.buscarPorID(id)).thenReturn(null);
 
-        // WHEN & THEN
         assertThrows(EntidadNoEncontradaException.class, () -> {
             servicio.obtenerAvionPorID(id);
         });
+
+        verify(repo).buscarPorID(id);
     }
 
     @Test
