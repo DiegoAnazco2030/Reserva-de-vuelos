@@ -1,7 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
-import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.repositorio.IRepositorio;
