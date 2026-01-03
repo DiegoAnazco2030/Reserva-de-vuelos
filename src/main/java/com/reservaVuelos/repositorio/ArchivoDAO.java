@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -259,10 +258,19 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
 
     @Override
     public Long ultimoID() {
-        if (indicesMapa.isEmpty()) return 0L;
+        if (!archivoDatos.exists() || archivoDatos.length() == 0) return 0L;
 
-        // Los IDs son unicos y crecientes, por lo que el maximo es el ultimo
-        return Collections.max(indicesMapa.keySet());
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
+            long posUltimoRegistro = raf.length() - tamanoRegistro;
+            
+            raf.seek(posUltimoRegistro);
+            
+            return raf.readLong();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
     }
 
     // Poner los metodos abstractos que se necesiten para los DAO concretos. (si es que existen)
