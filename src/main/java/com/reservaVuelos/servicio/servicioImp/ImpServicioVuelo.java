@@ -73,13 +73,12 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
 
     @Override
     public List<SalidaVueloDTO> obtenerListaReducida(String palabraBuscar) {
-        List<Vuelo> vuelos = repo.buscar(t -> t.getOrigenVuelo().name().equalsIgnoreCase(palabraBuscar));
+        List<Vuelo> vuelos = repo.buscar(t -> t.getOrigenVuelo().name().contains(palabraBuscar));
         vuelos.forEach(this::actualizarEstadoVuelo);
         return vuelos.stream()
                 .map(mapperVuelo::VueloASalidaVueloDTO)
                 .toList();
     }
-
 
     private void actualizarEstadoVuelo(Vuelo vuelo) {
         if (LocalDateTime.now().isAfter(vuelo.getFechaHoraLlegada())) {

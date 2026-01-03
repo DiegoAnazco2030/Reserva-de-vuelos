@@ -74,7 +74,10 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
     @Override
     public List<SalidaEmpleadoDTO> obtenerListaReducida(String palabraBuscar) {
-        return  repo.buscar(t -> t.getNombre().equals(palabraBuscar)).stream().map(mapperEmpleado::EmpleadoASalidaEmpleadoDTO).toList();
+        return  repo.buscar(t -> t.getNombre().contains(palabraBuscar))
+                .stream()
+                .map(mapperEmpleado::EmpleadoASalidaEmpleadoDTO)
+                .toList();
     }
 
     private void validarDatosEmpleado(CrearEmpleadoDTO dto) {

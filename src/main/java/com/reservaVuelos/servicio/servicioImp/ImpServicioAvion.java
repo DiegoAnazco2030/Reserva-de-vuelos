@@ -57,9 +57,10 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public List<SalidaAvionDTO> obtenerListaReducida(String palabraBuscar) {
-        return repo.buscar(t -> t.getModeloAvion().name().toLowerCase().contains(palabraBuscar.toLowerCase())).stream().
-        map(mapperAvion::AvionASalidaAvionDTO).
-        toList();
+        return repo.buscar(t -> t.getModeloAvion().name().toLowerCase().contains(palabraBuscar.toLowerCase()))
+                .stream()
+                .map(mapperAvion::AvionASalidaAvionDTO)
+                .toList();
     }
 
     public Avion obtenerAvionPorID(Long id) throws EntidadNoEncontradaException {

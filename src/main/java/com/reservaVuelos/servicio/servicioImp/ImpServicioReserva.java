@@ -43,7 +43,7 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
 
     @Override
     public List<SalidaReservaDTO> obtenerListaReducida(String palabraBuscar) {
-        return repoReserva.buscar(r -> String.valueOf(r.getIdUsuario()).equals(palabraBuscar))
+        return repoReserva.buscar(r -> String.valueOf(r.getIdUsuario()).contains(palabraBuscar))
                 .stream()
                 .map(this::mapearASalida)
                 .toList();

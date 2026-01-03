@@ -82,7 +82,10 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
 
     @Override
     public List<SalidaUsuarioDTO> obtenerListaReducida(String palabraBuscar) {
-        return repo.buscarTodos().stream().map(mapperUsuario::UsuarioASalidaUsuarioDTO).toList();
+        return repo.buscar(t -> t.getNombre().contains(palabraBuscar))
+                .stream()
+                .map(mapperUsuario::UsuarioASalidaUsuarioDTO)
+                .toList();
     }
 
     private void validarDatosUsuario(CrearUsuarioDTO dto) {
