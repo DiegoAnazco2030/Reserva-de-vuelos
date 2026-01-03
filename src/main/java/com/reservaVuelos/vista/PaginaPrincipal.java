@@ -26,6 +26,49 @@ public class PaginaPrincipal {
     //Bottoms del crud de reservas
     private JButton registrarModiReservas;
     private JButton eliminarReservas;
-    private JLabel mensajeSistema;
+
+    //Text field para buscar
     private JTextField buscarReserva;
+
+    //Mensaje del sistema
+    private JLabel mensajeSistema;
+
+    public PaginaPrincipal() {
+
+    }
+
+    private void createUIComponents() {
+
+        //Configuracion tabla reservas
+
+        tablaReservas = new JTable() {
+
+            @Override
+            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+                if (isRowSelected(rowIndex) && isColumnSelected(columnIndex)) {
+                    clearSelection();
+                } else {
+                    super.changeSelection(rowIndex, columnIndex, toggle, extend);
+                }
+            }
+        };
+
+        modeloTablaReservas = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
+
+        modeloTablaReservas.addColumn("ID Reserva");
+        modeloTablaReservas.addColumn("ID Usuario");
+        modeloTablaReservas.addColumn("ID Vuelo");
+        modeloTablaReservas.addColumn("ID Asientos");
+        modeloTablaReservas.addColumn("Aerolinea");
+        tablaReservas.setModel(modeloTablaReservas);
+
+        //Configurar tabla de vuelos
+
+
+    }
 }

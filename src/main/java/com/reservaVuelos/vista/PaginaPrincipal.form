@@ -97,7 +97,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="b3214" class="javax.swing.JTable" binding="tablaUsuarios">
+          <component id="b3214" class="javax.swing.JTable" binding="tablaUsuarios" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -118,7 +118,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="82e3d" class="javax.swing.JTable" binding="tablaVuelos">
+          <component id="82e3d" class="javax.swing.JTable" binding="tablaVuelos" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -147,7 +147,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="306fb" class="javax.swing.JTable" binding="tablaAsientos">
+          <component id="306fb" class="javax.swing.JTable" binding="tablaAsientos" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -168,7 +168,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="25ba1" class="javax.swing.JTable" binding="tablaReservas">
+          <component id="25ba1" class="javax.swing.JTable" binding="tablaReservas" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -184,7 +184,7 @@
       </component>
       <component id="46c36" class="javax.swing.JTextField" binding="buscarReserva">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="50" height="-1"/>
           </grid>
         </constraints>
