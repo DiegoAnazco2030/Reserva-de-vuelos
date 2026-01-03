@@ -5,6 +5,7 @@ import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearVueloDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
@@ -30,7 +31,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
     public void crear(CrearVueloDTO vueloNuevo) throws Exception {
         validacion.validarFechas(vueloNuevo.fechaHoraSalida(), vueloNuevo.fechaHoraLlegada());
         Long id = repo.ultimoID();
-        Avion avionEncontrado=avionServicio.obtenerAvionPorID(vueloNuevo.idAvion());
+        Avion avionEncontrado = mapperAvion(avionServicio.obtenerAvionPorID(vueloNuevo.idAvion()), vueloNuevo.idAvion());
         Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, ++id, avionEncontrado);
         repo.guardar(nuevoVuelo);
     }
@@ -84,5 +85,9 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
         if (LocalDateTime.now().isAfter(vuelo.getFechaHoraLlegada())) {
             vuelo.setEstadoVuelo(true);
         }
+    }
+
+    private Avion mapperAvion(SalidaAvionDTO dto, Long idAvion) {
+        return new Avion(idAvion, dto.modeloAvion());
     }
 }

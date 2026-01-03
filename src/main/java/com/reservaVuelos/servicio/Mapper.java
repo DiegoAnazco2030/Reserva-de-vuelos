@@ -101,10 +101,10 @@ public class Mapper {
     // --- VUELO ---
 
     // Crear Vuelo (Entrada)
-    public Vuelo VuealoDTOAVuelo(CrearVueloDTO dto, Long vueloID, Avion avion) {
+    public Vuelo VuealoDTOAVuelo(CrearVueloDTO dto, Long vueloID, Aerolinea aerolinea, Avion avion) {
         return new Vuelo(
                 vueloID,
-                dto.aerolinea(),
+                aerolinea,
                 dto.origenVuelo(),
                 dto.destinoVuelo(),
                 dto.fechaHoraSalida(),

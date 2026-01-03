@@ -1,6 +1,5 @@
 package com.reservaVuelos.servicio.DTOs.DTOsCrear;
 
-import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 
 import java.time.LocalDateTime;
