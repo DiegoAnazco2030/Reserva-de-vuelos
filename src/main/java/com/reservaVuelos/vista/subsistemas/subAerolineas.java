@@ -105,14 +105,17 @@ public class subAerolineas extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try{
                     int filaSeleccionada =  tablaAerolinea.getSelectedRow();
-                    if(filaSeleccionada != -1){
-                        controlador.eliminarAerolinea(Long.parseLong(modeloTablaAerolinea.getValueAt(filaSeleccionada,0).toString()));
-                        actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
-                        limpiarFormulario();
-                        mensajeService.setText("Aerolinea Eliminada");
-                    }else{
+
+                    if(filaSeleccionada == -1){
                         mensajeService.setText("Seleccione un Aerolinea");
+                        return;
                     }
+
+                    controlador.eliminarAerolinea(Long.parseLong(modeloTablaAerolinea.getValueAt(filaSeleccionada,0).toString()));
+                    actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
+                    limpiarFormulario();
+                    mensajeService.setText("Aerolinea Eliminada");
+
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                 }

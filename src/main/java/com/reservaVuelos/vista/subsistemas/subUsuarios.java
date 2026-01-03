@@ -2,6 +2,8 @@ package com.reservaVuelos.vista.subsistemas;
 
 import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.persona.RolUsuario;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
 
 import java.util.List;
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class subUsuarios extends JFrame{
 
-    private IControlador controlador;
+    private final IControlador controlador;
     private JPanel JPanelUsuario;
 
     //Tabla y configuracion
@@ -46,6 +48,7 @@ public class subUsuarios extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
+        actualizarTablaUsuarios("");
 
         DefaultComboBoxModel<RolUsuario> modelo = new DefaultComboBoxModel<>(RolUsuario.values());
         rolUsuario.setModel(modelo);
@@ -69,7 +72,7 @@ public class subUsuarios extends JFrame{
         textFiBuscarUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                actualizarTablaUsuarios(textFiBuscarUsuario.getText());
             }
         });
 
@@ -78,21 +81,106 @@ public class subUsuarios extends JFrame{
         registroUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try{
+                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
+                    RolUsuario seleccion =  (RolUsuario) rolUsuario.getSelectedItem();
 
+                    if (seleccion == null) {
+                        mensajeSistema.setText("Seleccione el rol de usuario");
+                        return;
+                    }
+
+                    String nombre = nombrePersona.getText();
+                    String apellido = apellidoPersona.getText();
+                    String tel = telefonoPersona.getText();
+                    int edad = Integer.parseInt(edadPersona.getText()); // Idealmente envolver en try-catch
+                    String email = emailUsuario.getText();
+                    String pass = contrasenaUsuario.getText();
+
+                    if(filaSeleccionada == -1){
+                        if(seleccion == RolUsuario.USUARIO){
+                            controlador.crearUsuario(nombre, apellido, tel, edad, email, pass, pasaporteUsuario.getText());
+                        }else{
+                            controlador.crearEmpleado(nombre, apellido, tel, edad, email, pass);
+                        }
+                        actualizarTablaUsuarios(textFiBuscarUsuario.getText());
+                        mensajeSistema.setText("Usuario registrado");
+                        return;
+                    }
+
+                    RolUsuario seleccionTabla = (RolUsuario) tablaUsuarios.getValueAt(filaSeleccionada, 4);
+                    Long idSeleccion = Long.parseLong(tablaUsuarios.getValueAt(filaSeleccionada,0).toString());
+
+                    if(seleccionTabla == RolUsuario.USUARIO){
+                        controlador.modificarUsuario(idSeleccion, nombre, apellido, tel, edad, email);
+                    }else{
+                        controlador.modificarEmpleado(idSeleccion, nombre, apellido, tel, edad, email);
+                    }
+
+                    actualizarTablaUsuarios(textFiBuscarUsuario.getText());
+                    limpiarFormulario();
+                    mensajeSistema.setText("Usuario modificado");
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
         eliminarUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try{
+                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
 
+                    if(filaSeleccionada == -1){
+                        mensajeSistema.setText("Seleccione una opcion");
+                        return;
+                    }
+
+                    RolUsuario seleccion =  (RolUsuario) tablaUsuarios.getValueAt(filaSeleccionada, 4);
+                    Long idSelcion = Long.parseLong(tablaUsuarios.getValueAt(filaSeleccionada,0).toString());
+
+                    if(seleccion == RolUsuario.USUARIO){
+                        controlador.eliminarUsuario(idSelcion);
+                    }else {
+                        controlador.eliminarEmpleado(idSelcion);
+                    }
+                    actualizarTablaUsuarios(textFiBuscarUsuario.getText());
+                    limpiarFormulario();
+                    mensajeSistema.setText("Usuario eliminado");
+
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
     }
 
-    public void actualizarTablaUsuarios(){
-
+    public void actualizarTablaUsuarios(String buscarUsuarioPalabra){
+        modelotablaUsuario.setRowCount(0);
+        List<SalidaUsuarioDTO> listUsuarios = controlador.buscarUsuarios(buscarUsuarioPalabra);
+        List<SalidaEmpleadoDTO> listEmpleados = controlador.buscarEmpleados(buscarUsuarioPalabra);
+        for (SalidaUsuarioDTO salidaUsuario : listUsuarios) {
+            Object[] fila = new Object[]{
+                    salidaUsuario.idUsuario(),
+                    salidaUsuario.nombre(),
+                    salidaUsuario.Apellido(),
+                    salidaUsuario.correo(),
+                    RolUsuario.USUARIO
+            };
+            modelotablaUsuario.addRow(fila);
+        }
+        for (SalidaEmpleadoDTO salidaEmpleado : listEmpleados) {
+            Object[] fila = new Object[]{
+                    salidaEmpleado.idEmpleado(),
+                    salidaEmpleado.nombre(),
+                    salidaEmpleado.apellido(),
+                    salidaEmpleado.correoEmpleado(),
+                    RolUsuario.ADMINISTRADOR
+            };
+            modelotablaUsuario.addRow(fila);
+        }
     }
 
     //Carga los datos seleccionados en la tabla en el formulario de forma automatica
@@ -101,13 +189,14 @@ public class subUsuarios extends JFrame{
         if(fila != -1) {
             nombrePersona.setText(modelotablaUsuario.getValueAt(fila, 1).toString());
             apellidoPersona.setText(modelotablaUsuario.getValueAt(fila, 2).toString());
-            telefonoPersona.setText(modelotablaUsuario.getValueAt(fila, 3).toString());
-            edadPersona.setText(modelotablaUsuario.getValueAt(fila, 4).toString());
-            emailUsuario.setText(modelotablaUsuario.getValueAt(fila, 5).toString());
-            rolUsuario.setSelectedItem(RolUsuario.valueOf(modelotablaUsuario.getValueAt(fila, 6).toString()));
+            emailUsuario.setText(modelotablaUsuario.getValueAt(fila, 3).toString());
+
+            telefonoPersona.setText("");
+            edadPersona.setText("");
+            pasaporteUsuario.setText("");
+            contrasenaUsuario.setText("");
         }
     }
-
     //Cuando se deseleccionar la tabla se limpia el fomrulario
     private void limpiarFormulario() {
         nombrePersona.setText("");
@@ -145,8 +234,6 @@ public class subUsuarios extends JFrame{
         modelotablaUsuario.addColumn("ID");
         modelotablaUsuario.addColumn("Nombre");
         modelotablaUsuario.addColumn("Apellido");
-        modelotablaUsuario.addColumn("Telefono");
-        modelotablaUsuario.addColumn("Edad");
         modelotablaUsuario.addColumn("Email");
         modelotablaUsuario.addColumn("Rol");
         tablaUsuarios.setModel(modelotablaUsuario);

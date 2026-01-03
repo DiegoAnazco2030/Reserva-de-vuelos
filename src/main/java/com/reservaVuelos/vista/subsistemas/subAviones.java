@@ -78,16 +78,16 @@ public class subAviones extends JFrame {
                         controlador.crearAvion(
                                 (ModeloAvion)  modeloAvion.getSelectedItem()
                         );
-                        actualizarTablaAviones(textFiBusquedaAvion.getText());
                         mensajeSistema.setText("Avion registrado");
                     }else{
                         controlador.modificarAvion(
                                 Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionado,0).toString()),
                                 (ModeloAvion)  modeloAvion.getSelectedItem()
                         );
-                        actualizarTablaAviones(textFiBusquedaAvion.getText());
+
                         mensajeSistema.setText("Avion modificado");
                     }
+                    actualizarTablaAviones(textFiBusquedaAvion.getText());
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                 }
@@ -99,15 +99,18 @@ public class subAviones extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try{
                     int filaSeleccionada = tablaAviones.getSelectedRow();
-                    if(filaSeleccionada != -1){
-                        controlador.eliminarAvion(
-                                Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionada,0).toString())
-                        );
-                        actualizarTablaAviones(textFiBusquedaAvion.getText());
-                        mensajeSistema.setText("Avion eliminado");
-                    }else{
+
+                    if(filaSeleccionada == -1){
                         mensajeSistema.setText("Seleccione un avion");
+                        return;
                     }
+
+                    controlador.eliminarAvion(
+                            Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionada,0).toString())
+                    );
+                    actualizarTablaAviones(textFiBusquedaAvion.getText());
+                    mensajeSistema.setText("Avion eliminado");
+
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                 }
