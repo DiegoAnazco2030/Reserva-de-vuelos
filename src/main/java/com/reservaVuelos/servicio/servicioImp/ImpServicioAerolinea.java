@@ -1,6 +1,7 @@
 package com.reservaVuelos.servicio.servicioImp;
 
-import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAereolineaDTO;
@@ -21,11 +22,21 @@ public class ImpServicioAerolinea implements IServicio<CrearAereolineaDTO, Salid
     }
 
     @Override
-    public void crear(CrearAereolineaDTO objeto) {
+    public void crear(CrearAereolineaDTO objeto) throws Exception {
+        if (objeto == null) {
+            throw new OperacionFallidaException("El objeto de creación de aerolínea no puede ser nulo.");
+        }
+
         // Asignamos el ID desde el servicio
-        Long id = repo.ultimoID();
+        Long id = repo.ultimoID() + 1;
         Aerolinea nueva = mapper.AerolineaDTOAAerolinea(objeto, id);
-        repo.guardar(nueva);
+        try {
+            repo.guardar(nueva);
+        } catch (OperacionFallidaException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new OperacionFallidaException("No se pudo crear la aerolínea.", e);
+        }
     }
 
     @Override
@@ -38,17 +49,17 @@ public class ImpServicioAerolinea implements IServicio<CrearAereolineaDTO, Salid
     @Override
     public void eliminar(Long id) throws Exception {
         if (!repo.existe(id)) {
-            throw new PersonaNoEncontradaException("La aerolínea con ID " + id + " no existe.");
+            throw new EntidadNoEncontradaException("La aerolínea con ID " + id + " no existe.");
         }
         repo.eliminar(id);
     }
 
     @Override
     public void modificar(Long id, CrearAereolineaDTO objeto) throws Exception {
-        Aerolinea existente = repo.buscarPorID(id);
-        if (existente == null) {
-            throw new PersonaNoEncontradaException("Aerolínea no encontrada.");
+        if (!repo.existe(id)) {
+            throw new EntidadNoEncontradaException("La aerolínea con ID " + id + " no existe.");
         }
+        Aerolinea existente = repo.buscarPorID(id);
 
         // Actualizamos los campos
         existente.setNombre(objeto.nombre());
@@ -70,7 +81,7 @@ public class ImpServicioAerolinea implements IServicio<CrearAereolineaDTO, Salid
     // Método helper para otros servicios
     public Aerolinea buscarAerolineaEntidad(Long id) throws Exception {
         Aerolinea a = repo.buscarPorID(id);
-        if (a == null) throw new PersonaNoEncontradaException("Aerolínea no existe.");
+        if (a == null) throw new EntidadNoEncontradaException("Aerolínea no existe.");
         return a;
     }
 }

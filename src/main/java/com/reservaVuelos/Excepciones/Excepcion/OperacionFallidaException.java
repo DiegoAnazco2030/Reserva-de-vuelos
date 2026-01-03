@@ -5,4 +5,8 @@ public class OperacionFallidaException extends Exception {
         super(mensaje, causa);
     }
 
+    public OperacionFallidaException(String mensaje) {
+        super(mensaje);
+    }
+
 }

@@ -66,7 +66,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
         try (ObjectInputStream ios = new ObjectInputStream(new FileInputStream(archivoIndices))) {
             Long longitudArchivoRegistros = ios.readLong();
             Long longitudActualRegistros = archivoDatos.length();
-            if (longitudArchivoRegistros.equals(longitudActualRegistros)) {
+            if (!longitudArchivoRegistros.equals(longitudActualRegistros)) {
                 System.out.println("El tamaño del registro ha cambiado. Reconstruyendo el índice denso...");
                 reconstruirIndiceDensoEnDisco();
                 return;
