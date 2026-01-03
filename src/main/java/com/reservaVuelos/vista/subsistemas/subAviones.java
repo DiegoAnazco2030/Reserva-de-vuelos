@@ -1,5 +1,6 @@
 package com.reservaVuelos.vista.subsistemas;
 
+import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 
 public class subAviones extends JFrame {
 
+    private IControlador controlador;
     private JPanel JPanelAvion;
 
     //Los text field para la busqueda
@@ -28,8 +30,9 @@ public class subAviones extends JFrame {
     //JLabel apra mostrar los mensajes del sistema
     private JLabel mensajeSistema;
 
-    public subAviones() {
+    public subAviones(IControlador controlador) {
 
+        this.controlador = controlador;
         setContentPane(JPanelAvion);
         setTitle("Registro de avion");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

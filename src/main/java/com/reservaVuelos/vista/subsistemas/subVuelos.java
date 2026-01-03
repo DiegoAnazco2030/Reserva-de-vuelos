@@ -1,5 +1,6 @@
 package com.reservaVuelos.vista.subsistemas;
 
+import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.persona.RolUsuario;
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 
 public class subVuelos extends JFrame {
 
+    private IControlador controlador;
     private JPanel JPanelVuelo;
 
     //TextField ingreso de horas del vuelo y el buscar
@@ -36,8 +38,9 @@ public class subVuelos extends JFrame {
     //Mensaje del sistema
     private JLabel mensajeSistema;
 
-    public subVuelos() {
+    public subVuelos(IControlador controlador) {
 
+        this.controlador = controlador;
         setContentPane(JPanelVuelo);
         setTitle("Registro de vuelos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -1,5 +1,7 @@
 package com.reservaVuelos.vista.subsistemas;
 
+import com.reservaVuelos.controlador.IControlador;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,7 @@ import java.awt.event.ActionListener;
 
 public class subAerolineas extends JFrame {
 
+    private IControlador controlador;
     private JPanel JPanelAero;
 
     //Tabla que muestra las aerolienas registradas y la configuracion
@@ -26,8 +29,9 @@ public class subAerolineas extends JFrame {
     //JLabel apra mostrar los mensajes del sistema
     private JLabel mensajeService;
 
-    public subAerolineas() {
+    public subAerolineas(IControlador controlador) {
 
+        this.controlador = controlador;
         setContentPane(JPanelAero);
         setTitle("Registro de aerolinea");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -127,5 +131,9 @@ public class subAerolineas extends JFrame {
         modeloTablaAerolinea.addColumn("Telefono");
         modeloTablaAerolinea.addColumn("Email");
         tablaAerolinea.setModel(modeloTablaAerolinea);
+    }
+
+    public void actualizarTablaAerolineas() {
+
     }
 }

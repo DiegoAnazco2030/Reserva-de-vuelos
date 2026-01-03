@@ -1,5 +1,6 @@
 package com.reservaVuelos.vista.subsistemas;
 
+import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.persona.RolUsuario;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 
 public class subUsuarios extends JFrame{
 
+    private IControlador controlador;
     private JPanel JPanelUsuario;
 
     //Tabla y configuracion
@@ -35,8 +37,9 @@ public class subUsuarios extends JFrame{
     //JLabl del mensaje del sistema
     private JLabel mensajeSistema;
 
-    public subUsuarios() {
+    public subUsuarios(IControlador controlador) {
 
+        this.controlador = controlador;
         setContentPane(JPanelUsuario);
         setTitle("Registro de usuarios");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

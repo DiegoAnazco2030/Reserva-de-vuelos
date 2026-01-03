@@ -1,13 +1,24 @@
 package com.reservaVuelos.vista;
 
+import com.reservaVuelos.controlador.IControlador;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaReservaDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
+import com.reservaVuelos.vista.subsistemas.subAerolineas;
+import com.reservaVuelos.vista.subsistemas.subAviones;
+import com.reservaVuelos.vista.subsistemas.subUsuarios;
+import com.reservaVuelos.vista.subsistemas.subVuelos;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PaginaPrincipal extends JFrame {
 
     private JPanel JPanelPrincipal;
+    private IControlador controlador;
 
     //Tablas y sus configuraciones
     private JTable tablaVuelos;
@@ -35,13 +46,19 @@ public class PaginaPrincipal extends JFrame {
     //Mensaje del sistema
     private JLabel mensajeSistema;
 
-    public PaginaPrincipal() {
+    public PaginaPrincipal(IControlador controlador) {
 
+        this.controlador = controlador;
         setContentPane(JPanelPrincipal);
         setTitle("Registro de reservas");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
+
+        actualizarTablaAsientos();
+        actualizarTablaUsuarios();
+        actualizarTablaReservas("");
+        actualizarTablaVuelos();
 
         /*Esta funcion es para que se pueda seleccionar y deseleccionar de la tabla y dependiendo
         que si esta selecciona es modificar y si no lo esta es registrar*/
@@ -60,7 +77,7 @@ public class PaginaPrincipal extends JFrame {
         buscarReserva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                actualizarTablaReservas(buscarReserva.getText());
             }
         });
 
@@ -69,28 +86,32 @@ public class PaginaPrincipal extends JFrame {
         aerolineasSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                subAerolineas subSistemaAerolineas = new subAerolineas(controlador);
+                subSistemaAerolineas.setVisible(true);
             }
         });
 
         avionesSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                subAviones subSistemaAaviones = new subAviones(controlador);
+                subSistemaAaviones.setVisible(true);
             }
         });
 
         usuariosSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                subUsuarios subSistemaUsuarios = new subUsuarios(controlador);
+                subSistemaUsuarios.setVisible(true);
             }
         });
 
         vuelosSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                subVuelos subSistemaVuelos = new subVuelos(controlador);
+                subSistemaVuelos.setVisible(true);
             }
         });
 
@@ -99,17 +120,104 @@ public class PaginaPrincipal extends JFrame {
         registrarModiReservas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try{
+                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
+                    int filaVuelo = tablaVuelos.getSelectedRow();
+                    int filaAsiento = tablaAsientos.getSelectedRow();
+                    int filaUsuario = tablaUsuarios.getSelectedRow();
 
+                    if(filaSeleccionada == -1){
+                        controlador.crearReserva(
+                                Long.parseLong(modeloTablaVuelos.getValueAt(filaVuelo, 0).toString()),
+                                Long.parseLong(modeloTablaAsientos.getValueAt(filaAsiento, 0).toString()),
+                                Long.parseLong(modeloTablaUsuarios.getValueAt(filaUsuario, 0).toString())
+                        );
+                        actualizarTablaReservas(buscarReserva.getText());
+                        mensajeSistema.setText("Reserva Creada");
+                    }else{
+
+                        controlador.modificarReserva(
+                                Long.parseLong(modeloTablaReservas.getValueAt(filaSeleccionada,0).toString()),
+                                Long.parseLong(modeloTablaVuelos.getValueAt(filaVuelo, 0).toString()),
+                                Long.parseLong(modeloTablaAsientos.getValueAt(filaAsiento, 0).toString()),
+                                Long.parseLong(modeloTablaUsuarios.getValueAt(filaUsuario, 0).toString())
+                        );
+                        actualizarTablaReservas(buscarReserva.getText());
+                        mensajeSistema.setText("Reserva Modificada");
+                    }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
         eliminarReservas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    int filaSeleccionada = tablaUsuarios.getSelectedRow();
+                    if (filaSeleccionada == -1) {
+                        mensajeSistema.setText("Seleccione una reserva");
+                    } else {
+                        controlador.eliminarReserva(Long.parseLong(modeloTablaReservas.getValueAt(filaSeleccionada, 0).toString()));
+                        actualizarTablaReservas(buscarReserva.getText());
+                        mensajeSistema.setText("Reserva Eliminada");
+                    }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
     }
+
+    public void actualizarTablaReservas(String buscarReservaPalbra){
+        modeloTablaReservas.setRowCount(0);
+        List<SalidaReservaDTO> listBuscadaReserva = controlador.buscarReservas(buscarReservaPalbra);
+        for(SalidaReservaDTO salidaReserva : listBuscadaReserva) {
+            Object[] fila = new Object[]{
+                    salidaReserva.idReserva(),
+                    salidaReserva.idVuelo(),
+                    salidaReserva.nombrePersona(),
+                    salidaReserva.apellidoPersona(),
+                    salidaReserva.origen(),
+                    salidaReserva.destino()
+            };
+            modeloTablaReservas.addRow(fila);
+        }
+    }
+
+    public void actualizarTablaUsuarios(){
+        modeloTablaUsuarios.setRowCount(0);
+        List<SalidaUsuarioDTO> listUsuarios = controlador.buscarUsuarios("");
+        for(SalidaUsuarioDTO salidaUsuario : listUsuarios) {
+            Object[] fila = new Object[]{
+                    salidaUsuario.idUsuario(),
+                    salidaUsuario.nombre(),
+                    salidaUsuario.Apellido(),
+                    salidaUsuario.correo()
+            };
+            modeloTablaUsuarios.addRow(fila);
+        }
+    }
+
+    public void actualizarTablaAsientos(){
+        modeloTablaAsientos.setRowCount(0);
+
+    }
+
+    public void actualizarTablaVuelos(){
+        modeloTablaVuelos.setRowCount(0);
+        List<SalidaVueloDTO> listVuelos = controlador.buscarVuelos("");
+        for(SalidaVueloDTO  salidaVuelo : listVuelos) {
+            Object[] fila = new Object[]{
+                    salidaVuelo.
+            }
+        }
+    }
+    /*modeloTablaVuelos.addColumn("ID");
+        modeloTablaVuelos.addColumn("Origen");
+        modeloTablaVuelos.addColumn("Destino");
+        modeloTablaVuelos.addColumn("Hora Salida");*/
 
     private void createUIComponents() {
 
@@ -135,10 +243,11 @@ public class PaginaPrincipal extends JFrame {
         };
 
         modeloTablaReservas.addColumn("ID Reserva");
-        modeloTablaReservas.addColumn("ID Usuario");
         modeloTablaReservas.addColumn("ID Vuelo");
-        modeloTablaReservas.addColumn("ID Asientos");
-        modeloTablaReservas.addColumn("Aerolinea");
+        modeloTablaReservas.addColumn("Nombre");
+        modeloTablaReservas.addColumn("Apellido");
+        modeloTablaReservas.addColumn("Origen");
+        modeloTablaReservas.addColumn("Destino");
         tablaReservas.setModel(modeloTablaReservas);
 
         //Configurar tabla de vuelos
@@ -217,7 +326,7 @@ public class PaginaPrincipal extends JFrame {
         modeloTablaUsuarios.addColumn("ID");
         modeloTablaUsuarios.addColumn("Nombre");
         modeloTablaUsuarios.addColumn("Apellido");
-        modeloTablaUsuarios.addColumn("Telefono");
+        modeloTablaUsuarios.addColumn("Correo");
 
     }
 }

@@ -117,6 +117,7 @@ public class Mapper {
     // Salida Vuelo (Salida)
     public SalidaVueloDTO VueloASalidaVueloDTO(Vuelo vuelo) {
         return new SalidaVueloDTO(
+                vuelo.getId(),
                 vuelo.getOrigenVuelo(),
                 vuelo.getDestinoVuelo(),
                 vuelo.getFechaHoraSalida().format(formateador), // LocalDateTime a String
