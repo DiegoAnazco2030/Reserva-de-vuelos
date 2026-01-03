@@ -27,7 +27,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
     }
 
     @Override
-    public void crear(CrearVueloDTO vueloNuevo) {
+    public void crear(CrearVueloDTO vueloNuevo) throws Exception {
         validacion.validarFechas(vueloNuevo.fechaHoraSalida(), vueloNuevo.fechaHoraLlegada());
         Long id = repo.ultimoID();
         Avion avionEncontrado=avionServicio.obtenerAvionPorID(vueloNuevo.idAvion());

@@ -30,13 +30,7 @@ public class ImpServicioAerolinea implements IServicio<CrearAereolineaDTO, Salid
         // Asignamos el ID desde el servicio
         Long id = repo.ultimoID() + 1;
         Aerolinea nueva = mapper.AerolineaDTOAAerolinea(objeto, id);
-        try {
-            repo.guardar(nueva);
-        } catch (OperacionFallidaException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new OperacionFallidaException("No se pudo crear la aerolínea.", e);
-        }
+        repo.guardar(nueva);
     }
 
     @Override

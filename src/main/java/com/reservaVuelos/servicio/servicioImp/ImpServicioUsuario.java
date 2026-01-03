@@ -28,7 +28,7 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
     }
 
     @Override
-    public void crear(CrearUsuarioDTO usuarioNuevoDTO) {
+    public void crear(CrearUsuarioDTO usuarioNuevoDTO) throws Exception {
         validarDatosUsuario(usuarioNuevoDTO);
         Long id=repo.ultimoID();
         Usuario usuarioNuevo = mapperUsuario.UsuarioDTOAUsuario(usuarioNuevoDTO,++id);

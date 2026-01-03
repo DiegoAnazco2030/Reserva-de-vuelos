@@ -11,7 +11,6 @@ import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmpleadoDTO> {
@@ -26,7 +25,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     }
 
     @Override
-    public void crear(CrearEmpleadoDTO empleadoNuevoDTO) {
+    public void crear(CrearEmpleadoDTO empleadoNuevoDTO) throws Exception {
         validarDatosEmpleado(empleadoNuevoDTO);
         Long id=repo.ultimoID();
         Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,++id);
@@ -39,7 +38,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     }
 
     @Override
-    public void eliminar(Long id) throws PersonaNoEncontradaException {
+    public void eliminar(Long id) throws Exception {
         if(repo.buscarPorID(id)==null){
             throw new PersonaNoEncontradaException("Error, la persona no existe");
         }
