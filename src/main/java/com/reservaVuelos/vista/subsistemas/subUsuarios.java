@@ -91,6 +91,10 @@ public class subUsuarios extends JFrame{
 
     }
 
+    public void actualizarTablaUsuarios(){
+
+    }
+
     //Carga los datos seleccionados en la tabla en el formulario de forma automatica
     private void cargarCamposDesdeTabla() {
         int fila = tablaUsuarios.getSelectedRow();
@@ -116,6 +120,7 @@ public class subUsuarios extends JFrame{
         mensajeSistema.setText(""); // Limpiar avisos
     }
 
+    //Constructor personalizado de la tabla
     private void createUIComponents() {
 
         tablaUsuarios = new JTable() {

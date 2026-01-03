@@ -103,6 +103,10 @@ public class subAviones extends JFrame {
                         controlador.eliminarAvion(
                                 Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionada,0).toString())
                         );
+                        actualizarTablaAviones(textFiBusquedaAvion.getText());
+                        mensajeSistema.setText("Avion eliminado");
+                    }else{
+                        mensajeSistema.setText("Seleccione un avion");
                     }
                 }catch(Exception ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
@@ -117,7 +121,8 @@ public class subAviones extends JFrame {
         for (SalidaAvionDTO salidaAvion : listAviones) {
             Object[] fila = new Object[]{
                     salidaAvion.idAvion(),
-                    salidaAvion.modeloAvion()
+                    salidaAvion.modeloAvion(),
+                    salidaAvion.modeloAvion().getCapacidadAsientos()
             };
             modeloTablaAviones.addRow(fila);
         }
