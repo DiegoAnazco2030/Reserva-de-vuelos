@@ -26,14 +26,13 @@ public interface IControlador {
 
 	// Aviones
 	void crearAvion(ModeloAvion modeloAvion) throws Exception;
-	List<SalidaAvionDTO> listarAviones();
-	//List<SalidaAvionDTO> buscarAviones(String palabraBuscar);
+	List<SalidaAvionDTO> buscarAviones(String palabraBuscar);
 	void eliminarAvion(Long id) throws Exception;
 	void modificarAvion(Long id, ModeloAvion modeloAvion) throws Exception;
 	SalidaAvionDTO obtenerAvionPorId(Long id) throws Exception;
 
 	// Empleados
-	void crearEmpleado(String Nombre, String Apellido, String telefono, int edad,
+	void crearEmpleado(String nombre, String apellido, String telefono, int edad,
                        String email, String contrasenia) throws Exception;
 	//List<SalidaEmpleadoDTO> listarEmpleados();
 	List<SalidaEmpleadoDTO> buscarEmpleados(String palabraBuscar);
@@ -42,7 +41,7 @@ public interface IControlador {
                            String telefono, int edad, String empleadoEmail) throws Exception;
 
 	// Usuarios
-	void crearUsuario(String Nombre, String Apellido, String telefono, int edad,
+	void crearUsuario(String nombre, String apellido, String telefono, int edad,
                       String email, String contrasenia, String pasaporte) throws Exception;
 	//List<SalidaUsuarioDTO> listarUsuarios();
 	List<SalidaUsuarioDTO> buscarUsuarios(String palabraBuscar);
@@ -51,12 +50,12 @@ public interface IControlador {
                           String telefono, int edad, String empleadoEmail) throws Exception;
 
 	// Vuelos
-    void crearVuelo(Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,
+    void crearVuelo(Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
                     String fechaHoraSalida, String fechaHoraLlegada, String idAvion) throws Exception;
     //List<SalidaVueloDTO> listarVuelos();
     List<SalidaVueloDTO> buscarVuelos(String palabraBuscar);
     void eliminarVuelo(Long id) throws Exception;
-    void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,
+    void modificarVuelo(Long id, Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
                         String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception;
 
 	// Reservas

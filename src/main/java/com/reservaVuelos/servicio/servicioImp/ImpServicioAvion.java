@@ -63,11 +63,11 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
                 .toList();
     }
 
-    public Avion obtenerAvionPorID(Long id) throws EntidadNoEncontradaException {
+    public SalidaAvionDTO obtenerAvionPorID(Long id) throws EntidadNoEncontradaException {
         Avion avionEncontrado= repo.buscarPorID(id);
         if(avionEncontrado == null){
             throw new EntidadNoEncontradaException("El avion no existe");
         }
-        return avionEncontrado;
+        return mapperAvion.AvionASalidaAvionDTO(avionEncontrado);
     }
 }

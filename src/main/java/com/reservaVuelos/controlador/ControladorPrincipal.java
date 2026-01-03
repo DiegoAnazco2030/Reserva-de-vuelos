@@ -5,19 +5,24 @@ import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.*;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
 import com.reservaVuelos.servicio.IServicio;
+import com.reservaVuelos.servicio.servicioImp.ImpServicioAvion;
 
 import java.util.List;
 
 public class ControladorPrincipal implements IControlador {
     private final IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado;
     private final IServicio<CrearAereolineaDTO, SalidaAerolineaDTO> servicioAerolinea;
-    private final IServicio<CrearAvionDTO, SalidaAvionDTO> servicioAvion;
+    private final ImpServicioAvion servicioAvion;
     private final IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva;
     private final IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario;
     private final IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo;
 
-
-    public ControladorPrincipal(IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado, IServicio<CrearAereolineaDTO, SalidaAerolineaDTO> servicioAerolinea, IServicio<CrearAvionDTO, SalidaAvionDTO> servicioAvion, IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva, IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario, IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo) {
+    public ControladorPrincipal(IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado,
+                                IServicio<CrearAereolineaDTO, SalidaAerolineaDTO> servicioAerolinea,
+                                ImpServicioAvion servicioAvion,
+                                IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva,
+                                IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario,
+                                IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo) {
         this.servicioEmpleado = servicioEmpleado;
         this.servicioAerolinea = servicioAerolinea;
         this.servicioAvion = servicioAvion;
@@ -45,43 +50,50 @@ public class ControladorPrincipal implements IControlador {
 
     @Override
     public void modificarAerolinea(Long id, String nombre, String telefono, String email) throws Exception {
-        CrearAereolineaDTO aerolinea =
-        servicioAerolinea.modificar();
+        CrearAereolineaDTO aerolinea = new CrearAereolineaDTO(nombre, telefono, email);
+        servicioAerolinea.modificar(id, aerolinea);
     }
 
+    //Avion
     @Override
     public void crearAvion(ModeloAvion modeloAvion) throws Exception {
-
+        CrearAvionDTO avion = new CrearAvionDTO(modeloAvion);
+        servicioAvion.crear(avion);
     }
 
     @Override
-    public List<SalidaAvionDTO> listarAviones() {
-        return List.of();
+    public List<SalidaAvionDTO> buscarAviones(String palabraBuscar) {
+        return servicioAvion.obtenerListaReducida(palabraBuscar);
     }
 
     @Override
     public void eliminarAvion(Long id) throws Exception {
-
+        servicioAvion.eliminar(id);
     }
 
     @Override
     public void modificarAvion(Long id, ModeloAvion modeloAvion) throws Exception {
-
+        CrearAvionDTO avionDTO = new CrearAvionDTO(modeloAvion);
+        servicioAvion.modificar(id, avionDTO);
     }
 
     @Override
     public SalidaAvionDTO obtenerAvionPorId(Long id) throws Exception {
-        return null;
+        return servicioAvion.obtenerAvionPorID(id);
     }
 
+    //Empleado
     @Override
-    public void crearEmpleado(String Nombre, String Apellido, String telefono, int edad, String email, String contrasenia) throws Exception {
-
+    public void crearEmpleado(String nombre, String apellido, String telefono, int edad,
+                              String email, String contrasenia) throws Exception {
+        CrearEmpleadoDTO empleadoDTO= new CrearEmpleadoDTO(nombre, apellido,
+                telefono,edad,email,contrasenia);
+        servicioEmpleado.crear(empleadoDTO);
     }
 
     @Override
     public List<SalidaEmpleadoDTO> buscarEmpleados(String palabraBuscar) {
-        return List.of();
+        return ;
     }
 
     @Override
@@ -90,12 +102,14 @@ public class ControladorPrincipal implements IControlador {
     }
 
     @Override
-    public void modificarEmpleado(Long id, String nombre, String apellido, String telefono, int edad, String empleadoEmail) throws Exception {
+    public void modificarEmpleado(Long id, String nombre, String apellido, String telefono,
+                                  int edad, String empleadoEmail) throws Exception {
 
     }
 
     @Override
-    public void crearUsuario(String Nombre, String Apellido, String telefono, int edad, String email, String contrasenia, String pasaporte) throws Exception {
+    public void crearUsuario(String Nombre, String Apellido, String telefono, int edad,
+                             String email, String contrasenia, String pasaporte) throws Exception {
 
     }
 
@@ -110,12 +124,14 @@ public class ControladorPrincipal implements IControlador {
     }
 
     @Override
-    public void modificarUsuario(Long id, String nombre, String apellido, String telefono, int edad, String empleadoEmail) throws Exception {
+    public void modificarUsuario(Long id, String nombre, String apellido, String telefono,
+                                 int edad, String empleadoEmail) throws Exception {
 
     }
 
     @Override
-    public void crearVuelo(Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida, String fechaHoraLlegada, String idAvion) throws Exception {
+    public void crearVuelo(Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida,
+                           String fechaHoraLlegada, String idAvion) throws Exception {
 
     }
 
@@ -130,7 +146,7 @@ public class ControladorPrincipal implements IControlador {
     }
 
     @Override
-    public void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
+    public void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
 
     }
 
