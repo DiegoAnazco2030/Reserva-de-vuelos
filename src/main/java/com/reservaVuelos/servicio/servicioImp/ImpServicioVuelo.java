@@ -1,5 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
+import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
 import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
@@ -47,7 +48,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
     @Override
     public void eliminar(Long id) throws Exception {
         if (!repo.existe(id)) {
-            throw new PersonaNoEncontradaException("El vuelo no existe");
+            throw new EntidadNoEncontradaException("El vuelo no existe");
         }
         repo.eliminar(id);
     }
@@ -56,7 +57,7 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
     public void modificar(Long id, CrearVueloDTO objeto) throws Exception {
         Vuelo vueloExistente = repo.buscarPorID(id);
         if (vueloExistente == null) {
-            throw new PersonaNoEncontradaException("Vuelo no encontrado");
+            throw new EntidadNoEncontradaException("Vuelo no encontrado");
         }
 
         validacion.validarFechas(objeto.fechaHoraSalida(), objeto.fechaHoraLlegada());

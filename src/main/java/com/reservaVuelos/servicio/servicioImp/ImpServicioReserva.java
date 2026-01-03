@@ -1,6 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
-import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
 import com.reservaVuelos.modelo.Reserva;
 import com.reservaVuelos.modelo.persona.Usuario;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
@@ -52,7 +52,7 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
     @Override
     public void eliminar(Long id) throws Exception {
         if (!repoReserva.existe(id)) {
-            throw new Exception("La reserva no existe");
+            throw new EntidadNoEncontradaException("La reserva no existe");
         }
         repoReserva.eliminar(id);
     }
@@ -60,7 +60,7 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
     @Override
     public void modificar(Long id, CrearReservaDTO objeto) throws Exception {
         if (!repoReserva.existe(id)) {
-            throw new Exception("Reserva no encontrada");
+            throw new EntidadNoEncontradaException("Reserva no encontrada");
         }
         validarExistenciaComponentes(objeto.idVuelo(), objeto.idUsuario());
 
@@ -70,10 +70,10 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
 
     private void validarExistenciaComponentes(Long idVuelo, Long idUsuario) throws Exception {
         if (repoVuelo.buscarPorID(idVuelo) == null) {
-            throw new Exception("Vuelo no encontrado");
+            throw new EntidadNoEncontradaException("Vuelo no encontrado");
         }
         if (repoUsuario.buscarPorID(idUsuario) == null) {
-            throw new PersonaNoEncontradaException("Usuario no encontrado");
+            throw new EntidadNoEncontradaException("Usuario no encontrado");
         }
     }
 
