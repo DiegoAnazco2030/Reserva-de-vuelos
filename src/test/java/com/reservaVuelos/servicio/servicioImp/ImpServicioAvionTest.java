@@ -50,24 +50,27 @@ class ImpServicioAvionTest {
 
     @Test
     void CreacionCorrecta() throws Exception {
-        // 1. Datos de prueba
-        CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_787);
-        Avion avionSimulado = new Avion(1L, ModeloAvion.BOEING_787);
+        // GIVEN
+        CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.AIRBUS_A320);
 
-        // 2. STUBBING (Usando doReturn para máxima compatibilidad)
-        doReturn(0L).when(repo).ultimoID();
+        Avion entidadSimulada = new Avion(1L, ModeloAvion.AIRBUS_A320);
 
-        // Forzamos al mapper a devolver el objeto
-        doReturn(avionSimulado).when(mapperAvion).AvionDTOAAvion(any(), anyLong());
+        when(repo.ultimoID()).thenReturn(0L);
 
-        // FORZADO TOTAL: No importa qué reciba el repo, DEBE devolver avionSimulado
-        doReturn(avionSimulado).when(repo).guardar(any());
+        when(mapperAvion.AvionDTOAAvion(dto, 1L)).thenReturn(entidadSimulada);
 
-        // 3. EJECUCIÓN
+        // El repo debe devolver la entidad para que (resultado == null) sea falso
+        when(repo.guardar(entidadSimulada)).thenReturn(entidadSimulada);
+
+        // WHEN & THEN
         assertDoesNotThrow(() -> {
             servicio.crear(dto);
         });
+
+        verify(repo).ultimoID();
+        verify(repo).guardar(entidadSimulada);
     }
+
     @Test
     void ErrorRepoAlCrear() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_737);
