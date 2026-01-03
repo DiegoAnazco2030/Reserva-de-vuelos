@@ -185,15 +185,17 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void obtenerAvionPorIDNoExistente() throws Exception { //
+    void obtenerAvionPorIDNoExistente() throws Exception {
         // GIVEN
         Long id = 1L;
+
         when(repo.buscarPorID(id)).thenReturn(null);
 
-        // WHEN & THEN
         assertThrows(EntidadNoEncontradaException.class, () -> {
             servicio.obtenerAvionPorID(id);
         });
+
+        verify(repo).buscarPorID(id);
     }
 
     @Test
