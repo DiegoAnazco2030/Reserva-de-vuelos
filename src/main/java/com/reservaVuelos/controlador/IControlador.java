@@ -19,7 +19,7 @@ public interface IControlador {
 
 	// Aerolíneas
 	void crearAerolinea(String nombre, String telefono, String email) throws Exception;
-	List<SalidaAerolineaDTO> listarAerolineas();
+	//List<SalidaAerolineaDTO> listarAerolineas();
 	List<SalidaAerolineaDTO> buscarAerolineas(String palabraBuscar);
 	void eliminarAerolinea(Long id) throws Exception;
 	void modificarAerolinea(Long id, String nombre, String telefono, String email) throws Exception;
@@ -27,7 +27,7 @@ public interface IControlador {
 	// Aviones
 	void crearAvion(ModeloAvion modeloAvion) throws Exception;
 	List<SalidaAvionDTO> listarAviones();
-	List<SalidaAvionDTO> buscarAviones(String palabraBuscar);
+	//List<SalidaAvionDTO> buscarAviones(String palabraBuscar);
 	void eliminarAvion(Long id) throws Exception;
 	void modificarAvion(Long id, ModeloAvion modeloAvion) throws Exception;
 	SalidaAvionDTO obtenerAvionPorId(Long id) throws Exception;
@@ -35,7 +35,7 @@ public interface IControlador {
 	// Empleados
 	void crearEmpleado(String Nombre, String Apellido, String telefono, int edad,
                        String email, String contrasenia) throws Exception;
-	List<SalidaEmpleadoDTO> listarEmpleados();
+	//List<SalidaEmpleadoDTO> listarEmpleados();
 	List<SalidaEmpleadoDTO> buscarEmpleados(String palabraBuscar);
 	void eliminarEmpleado(Long id) throws Exception;
 	void modificarEmpleado(Long id, String nombre, String apellido,
@@ -44,7 +44,7 @@ public interface IControlador {
 	// Usuarios
 	void crearUsuario(String Nombre, String Apellido, String telefono, int edad,
                       String email, String contrasenia, String pasaporte) throws Exception;
-	List<SalidaUsuarioDTO> listarUsuarios();
+	//List<SalidaUsuarioDTO> listarUsuarios();
 	List<SalidaUsuarioDTO> buscarUsuarios(String palabraBuscar);
 	void eliminarUsuario(Long id) throws Exception;
 	void modificarUsuario(Long id, String nombre, String apellido,
@@ -53,15 +53,15 @@ public interface IControlador {
 	// Vuelos
     void crearVuelo(Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,
                     String fechaHoraSalida, String fechaHoraLlegada, String idAvion) throws Exception;
-    List<SalidaVueloDTO> listarVuelos();
+    //List<SalidaVueloDTO> listarVuelos();
     List<SalidaVueloDTO> buscarVuelos(String palabraBuscar);
     void eliminarVuelo(Long id) throws Exception;
-    void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo,
-                    Ciudad destinoVuelo, String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception;
+    void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,
+                        String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception;
 
 	// Reservas
     void crearReserva(Long idVuelo, Long idAsiento, Long idUsuario) throws Exception;
-    List<SalidaReservaDTO> listarReservas();
+    //List<SalidaReservaDTO> listarReservas();
     List<SalidaReservaDTO> buscarReservas(String palabraBuscar);
     void eliminarReserva(Long id) throws Exception;
     void modificarReserva(Long id, Long idVuelo, Long idAsiento, Long idUsuario) throws Exception;
