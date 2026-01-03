@@ -1,22 +1,27 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
+import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAsientoDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO> {
 
     private final IRepositorio<Avion> repo;
+    private final IRepositorio<Asiento> repoAsiento;
     private final Mapper mapperAvion;
 
-    public ImpServicioAvion(IRepositorio<Avion> repo, Mapper mapperAvion) {
+    public ImpServicioAvion(IRepositorio<Avion> repo, IRepositorio<Asiento> repoAsiento, Mapper mapperAvion) {
         this.repo = repo;
+        this.repoAsiento = repoAsiento;
         this.mapperAvion =  mapperAvion;
     }
 
@@ -69,5 +74,26 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
             throw new EntidadNoEncontradaException("El avion no existe");
         }
         return mapperAvion.AvionASalidaAvionDTO(avionEncontrado);
+
+    }
+
+    public List<SalidaAsientoDTO> obtenerAsientos(Long idAvion) {
+        if (idAvion == null) return new ArrayList<SalidaAsientoDTO>();
+
+        return repoAsiento.buscar(a -> verificarIDAvion(a.getId(), idAvion))
+                .stream()
+                .map(mapperAvion::AsientoASalidaAsientoDTO)
+                .toList();
+    }
+
+    private boolean verificarIDAvion(Long idAsiento, Long idAvion) {
+        Long idAvionAVerificar = (Long) idAsiento/1000;
+        return idAvionAVerificar.equals(idAvion);
+    }
+
+    public void modificarAsiento(Long idAsiento, boolean estado) throws Exception {
+        Asiento asiento = repoAsiento.buscarPorID(idAsiento);
+        asiento.setEstadoAsiento(estado);
+        repoAsiento.actualizar(asiento);
     }
 }

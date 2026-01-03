@@ -2,12 +2,7 @@ package com.reservaVuelos.controlador;
 
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAerolineaDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaReservaDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
 
 import java.util.List;
 
@@ -30,6 +25,9 @@ public interface IControlador {
 	void eliminarAvion(Long id) throws Exception;
 	void modificarAvion(Long id, ModeloAvion modeloAvion) throws Exception;
 	SalidaAvionDTO obtenerAvionPorId(Long id) throws Exception;
+    // Asientos
+    List<SalidaAsientoDTO> obtenerAsientos(Long idVuelo);
+    void modificarAsiento(Long idAsiento, boolean estado) throws Exception;
 
 	// Empleados
 	void crearEmpleado(String nombre, String apellido, String telefono, int edad,

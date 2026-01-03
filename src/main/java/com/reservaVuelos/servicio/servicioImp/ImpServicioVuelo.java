@@ -91,6 +91,16 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
         }
     }
 
+    public Long obtenerIdAvion(Long idVuelo){
+        Long id = obtenerVuelo(idVuelo);
+        return id;
+    }
+
+    private Long obtenerVuelo(Long id){
+        Vuelo vuelo= repo.buscarPorID(id);
+        return vuelo.getAvionVuelo().getId();
+    }
+
     private Avion mapperAvion(SalidaAvionDTO dto, Long idAvion) {
         return new Avion(idAvion, dto.modeloAvion());
     }

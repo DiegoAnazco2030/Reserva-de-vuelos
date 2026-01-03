@@ -6,6 +6,7 @@ import com.reservaVuelos.servicio.DTOs.DTOsCrear.*;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.servicioImp.ImpServicioAvion;
+import com.reservaVuelos.servicio.servicioImp.ImpServicioVuelo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +18,7 @@ public class ControladorPrincipal implements IControlador {
     private final ImpServicioAvion servicioAvion;
     private final IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva;
     private final IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario;
-    private final IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo;
+    private final ImpServicioVuelo servicioVuelo;
     private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS");
 
     public ControladorPrincipal(IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado,
@@ -25,7 +26,7 @@ public class ControladorPrincipal implements IControlador {
                                 ImpServicioAvion servicioAvion,
                                 IServicio<CrearReservaDTO, SalidaReservaDTO> servicioReserva,
                                 IServicio<CrearUsuarioDTO, SalidaUsuarioDTO> servicioUsuario,
-                                IServicio<CrearVueloDTO, SalidaVueloDTO> servicioVuelo) {
+                                ImpServicioVuelo servicioVuelo) {
         this.servicioEmpleado = servicioEmpleado;
         this.servicioAerolinea = servicioAerolinea;
         this.servicioAvion = servicioAvion;
@@ -83,6 +84,17 @@ public class ControladorPrincipal implements IControlador {
     @Override
     public SalidaAvionDTO obtenerAvionPorId(Long id) throws Exception {
         return servicioAvion.obtenerAvionPorID(id);
+    }
+
+    @Override
+    public List<SalidaAsientoDTO> obtenerAsientos(Long idVuelo) {
+        Long id = servicioVuelo.obtenerIdAvion(idVuelo);
+        return servicioAvion.obtenerAsientos(id);
+    }
+
+    @Override
+    public void modificarAsiento(Long idAsiento, boolean estado) throws Exception {
+        servicioAvion.modificarAsiento(idAsiento, estado);
     }
 
     //Empleado
