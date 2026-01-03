@@ -10,7 +10,7 @@ public interface IRepositorio<T extends Identificador> {
     // -------------- CRUD --------------
 
     // Crear
-    T guardar(T entity);
+    T guardar(T entity) throws Exception;
 
     // Leer
     T buscarPorID(Long ID);
@@ -20,10 +20,10 @@ public interface IRepositorio<T extends Identificador> {
     List<T> buscar(Predicate<? super T> filter);
 
     // Actualizar
-    T actualizar(T entity);
+    T actualizar(T entity) throws Exception;
 
     // Eliminar
-    T eliminar(Long ID);
+    T eliminar(Long ID) throws Exception;
 
     // -------------- Auxiliares --------------
 

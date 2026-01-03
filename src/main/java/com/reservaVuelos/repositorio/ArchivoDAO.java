@@ -1,5 +1,6 @@
 package com.reservaVuelos.repositorio;
 
+import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.Identificador;
 
 import java.io.DataInputStream;
@@ -118,7 +119,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     // -------------- Métodos de la interfaz IRepositorio --------------
 
     @Override
-    public T guardar(T entity) {
+    public T guardar(T entity) throws Exception {
         try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "rw")) {
             byte[] datosBytes = convertirABytes(entity);
 
@@ -138,8 +139,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
             indicesMapa.put(entity.getId(), posicion);
             return entity;
         } catch(IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new OperacionFallidaException("No se pudo guardar el " + entity.getClass().getSimpleName(), e);
         }
     }
 
@@ -209,7 +209,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     }
 
     @Override
-    public T actualizar(T entity) {
+    public T actualizar(T entity) throws Exception {
         if (entity == null || indicesMapa.get(entity.getId()) == null) return null;
         Long posicion = indicesMapa.get(entity.getId());
         
@@ -224,13 +224,12 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
             raf.write(datosBytes);
             return entity;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new OperacionFallidaException("No se pudo actualizar el " + entity.getClass().getSimpleName(), e);
         }
     }
 
     @Override
-    public T eliminar(Long ID) {
+    public T eliminar(Long ID) throws Exception {
         if (ID == null || indicesMapa.get(ID) == null) return null;
 
         T entidadEliminada = buscarPorID(ID);
@@ -242,8 +241,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
 
             indicesMapa.remove(ID);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new OperacionFallidaException("No se pudo eliminar el " + entidadEliminada.getClass().getSimpleName(), e);
         }
 
         return entidadEliminada;

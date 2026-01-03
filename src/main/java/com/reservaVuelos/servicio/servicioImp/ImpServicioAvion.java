@@ -15,7 +15,7 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
     private final IRepositorio<Avion> repo;
     private final Mapper mapperAvion;
 
-    public ImpServicioAvion(IRepositorio<Avion> repo, Mapper  mapperAvion) {
+    public ImpServicioAvion(IRepositorio<Avion> repo, Mapper mapperAvion) {
         this.repo = repo;
         this.mapperAvion =  mapperAvion;
     }
@@ -45,10 +45,10 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public void modificar(Long id, CrearAvionDTO avionModificar) throws Exception {
-        Avion avionEncontrado = repo.buscarPorID(id);
-        if (avionEncontrado == null) {
+        if (!repo.existe(id)) {
             throw new AvionNoEncontradoException("El avion no existe");
         }
+        Avion avionEncontrado = repo.buscarPorID(id);
         avionEncontrado.setModeloAvion(avionModificar.modeloAvion());
         if (repo.actualizar(avionEncontrado) == null) {
             throw new Exception("No se pudo modificar el avion");
@@ -57,14 +57,14 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public List<SalidaAvionDTO> obtenerListaReducida(String palabraBuscar) {
-        return repo.buscar(t -> t.getModeloAvion().name().equalsIgnoreCase(palabraBuscar)).stream().
+        return repo.buscar(t -> t.getModeloAvion().name().toLowerCase().contains(palabraBuscar.toLowerCase())).stream().
         map(mapperAvion::AvionASalidaAvionDTO).
         toList();
     }
 
     public Avion obtenerAvionPorID(Long id) throws AvionNoEncontradoException {
         Avion avionEncontrado= repo.buscarPorID(id);
-        if(avionEncontrado==null){
+        if(avionEncontrado == null){
             throw new AvionNoEncontradoException("El avion no existe");
         }
         return avionEncontrado;
