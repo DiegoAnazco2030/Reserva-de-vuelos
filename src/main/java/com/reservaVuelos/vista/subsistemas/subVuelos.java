@@ -5,6 +5,8 @@ import com.reservaVuelos.modelo.vuelo.Ciudad;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class subVuelos extends JFrame {
 
@@ -59,6 +61,30 @@ public class subVuelos extends JFrame {
             }
         });
 
+        //Action listener del text field para buscar
+
+        textFiBuscarVuelo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //Bottom para Crud
+
+        registrarModificarVuelo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        eliminarVuelo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     //Carga los datos seleccionados en la tabla en el formulario de forma automatica
