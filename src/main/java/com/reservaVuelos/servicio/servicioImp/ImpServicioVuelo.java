@@ -1,6 +1,7 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
+import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.repositorio.IRepositorio;
@@ -18,12 +19,14 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
     private final IRepositorio<Vuelo> repo;
     private final Mapper mapperVuelo;
     private final ImpServicioAvion avionServicio;
+    private final ImpServicioAerolinea aerolineaServicio;
     private final Validaciones validacion;
 
-    public ImpServicioVuelo(IRepositorio<Vuelo> repo, Mapper mapperVuelo, ImpServicioAvion avionServicio, Validaciones validacion) {
+    public ImpServicioVuelo(IRepositorio<Vuelo> repo, Mapper mapperVuelo, ImpServicioAvion avionServicio, ImpServicioAerolinea aerolineaServicio, Validaciones validacion) {
         this.repo = repo;
         this.mapperVuelo = mapperVuelo;
         this.avionServicio = avionServicio;
+        this.aerolineaServicio = aerolineaServicio;
         this.validacion = validacion;
     }
 
@@ -32,7 +35,8 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
         validacion.validarFechas(vueloNuevo.fechaHoraSalida(), vueloNuevo.fechaHoraLlegada());
         Long id = repo.ultimoID();
         Avion avionEncontrado = mapperAvion(avionServicio.obtenerAvionPorID(vueloNuevo.idAvion()), vueloNuevo.idAvion());
-        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, ++id, avionEncontrado);
+        Aerolinea aerolineaEncontrada = aerolineaServicio.buscarAerolineaEntidad(vueloNuevo.idAerolinea());
+        Vuelo nuevoVuelo = mapperVuelo.VuealoDTOAVuelo(vueloNuevo, ++id, aerolineaEncontrada, avionEncontrado);
         repo.guardar(nuevoVuelo);
     }
 
