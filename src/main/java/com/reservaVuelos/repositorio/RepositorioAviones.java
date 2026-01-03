@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Aviones con RandomAccessFile
@@ -18,6 +19,7 @@ import com.reservaVuelos.modelo.vuelo.ModeloAvion;
  * - modeloAvion: 11 caracteres × 2 = 22 bytes
  * - capacidad: int = 4 bytes
  */
+@Repository
 public class RepositorioAviones extends ArchivoDAO<Avion> {
     
     private final int MODELO_AVION_SIZE = 11;

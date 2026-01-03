@@ -12,6 +12,7 @@ import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.modelo.vuelo.Avion;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Vuelos con RandomAccessFile
@@ -27,6 +28,7 @@ import com.reservaVuelos.modelo.vuelo.Avion;
  * - estadoVuelo: boolean = 1 byte
  * - avionVueloID: Long = 8 bytes
  */
+@Repository
 public class RepositorioVuelos extends ArchivoDAO<Vuelo> {
     
     private final int ORIGEN_SIZE = 12;

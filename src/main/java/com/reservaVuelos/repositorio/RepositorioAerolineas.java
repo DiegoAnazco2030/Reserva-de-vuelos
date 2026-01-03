@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.reservaVuelos.modelo.vuelo.Aerolinea;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repositorio para gestión de Aerolineas con RandomAccessFile
@@ -18,6 +19,7 @@ import com.reservaVuelos.modelo.vuelo.Aerolinea;
  * - telefono: 10 caracteres × 2 = 20 bytes
  * - email: 40 caracteres × 2 = 80 bytes
  */
+@Repository
 public class RepositorioAerolineas extends ArchivoDAO<Aerolinea> {
 
     private final int NOMBRE_SIZE = 30;
