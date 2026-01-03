@@ -1,6 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
-import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
 import com.reservaVuelos.Excepciones.RunTime.StringNoValidoException;
 import com.reservaVuelos.Excepciones.RunTime.TelefonoNoValidoException;
@@ -27,8 +27,8 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     @Override
     public void crear(CrearEmpleadoDTO empleadoNuevoDTO) throws Exception {
         validarDatosEmpleado(empleadoNuevoDTO);
-        Long id=repo.ultimoID();
-        Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,++id);
+        Long id = repo.ultimoID() + 1;
+        Empleado empleadoNuevo = mapperEmpleado.EmpleadoDTOAEmpleado(empleadoNuevoDTO,id);
         repo.guardar(empleadoNuevo);
     }
 
@@ -40,7 +40,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
     @Override
     public void eliminar(Long id) throws Exception {
         if(repo.buscarPorID(id)==null){
-            throw new PersonaNoEncontradaException("Error, la persona no existe");
+            throw new EntidadNoEncontradaException("Error, la persona no existe");
         }
         repo.eliminar(id);
 
@@ -52,7 +52,7 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
         Empleado empleadoExistente = repo.buscarPorID(id);
         if (empleadoExistente == null) {
-            throw new PersonaNoEncontradaException("Error, la persona no existe");
+            throw new EntidadNoEncontradaException("Error, la persona no existe");
         }
 
         if (!validacion.correoEsValido(empleadoModificar.empleadoEmail())) {

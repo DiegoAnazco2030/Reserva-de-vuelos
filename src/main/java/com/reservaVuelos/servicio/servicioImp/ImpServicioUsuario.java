@@ -1,6 +1,6 @@
 package com.reservaVuelos.servicio.servicioImp;
 
-import com.reservaVuelos.Excepciones.Excepcion.PersonaNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
 import com.reservaVuelos.Excepciones.RunTime.CorreoNoValidoException;
 import com.reservaVuelos.Excepciones.RunTime.DocumentoNoValidoException;
 import com.reservaVuelos.Excepciones.RunTime.StringNoValidoException;
@@ -49,7 +49,7 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
     @Override
     public void eliminar(Long id) throws Exception {
         if(repo.buscarPorID(id)==null){
-            throw new PersonaNoEncontradaException("Error, la persona no existe");
+            throw new EntidadNoEncontradaException("Error, la persona no existe");
         }
         repo.eliminar(id);
 
@@ -60,7 +60,7 @@ public class ImpServicioUsuario implements IServicio<CrearUsuarioDTO, SalidaUsua
 
         Usuario usuarioExistente = repo.buscarPorID(id);
         if (usuarioExistente == null) {
-            throw new PersonaNoEncontradaException("Error, la persona no existe");
+            throw new EntidadNoEncontradaException("Error, la persona no existe");
         }
 
         if (!validacion.correoEsValido(usuarioModificar.usuarioEmail())) {
