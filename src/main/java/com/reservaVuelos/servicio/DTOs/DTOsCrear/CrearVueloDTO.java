@@ -5,7 +5,7 @@ import com.reservaVuelos.modelo.vuelo.Ciudad;
 
 import java.time.LocalDateTime;
 
-public record CrearVueloDTO(Aerolinea aerolinea,
+public record CrearVueloDTO(Long idAerolinea,
     Ciudad origenVuelo,
      Ciudad destinoVuelo,
      LocalDateTime fechaHoraSalida,

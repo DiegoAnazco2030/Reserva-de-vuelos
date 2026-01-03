@@ -48,4 +48,8 @@ public class Validaciones {
             throw new RuntimeException("La fecha de llegada no puede ser anterior a la de salida");
         }
     }
+
+    public boolean validarEdad(int edad) {
+        return edad >= 1 && edad <= 120;
+    }
 }

@@ -50,8 +50,8 @@ public interface IControlador {
                           String telefono, int edad, String empleadoEmail) throws Exception;
 
 	// Vuelos
-    void crearVuelo(Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
-                    String fechaHoraSalida, String fechaHoraLlegada, String idAvion) throws Exception;
+    void crearVuelo(Ciudad origenVuelo, Ciudad destinoVuelo,
+                    String fechaHoraSalida, String fechaHoraLlegada, Long idAvion, Long idAerolinea) throws Exception;
     //List<SalidaVueloDTO> listarVuelos();
     List<SalidaVueloDTO> buscarVuelos(String palabraBuscar);
     void eliminarVuelo(Long id) throws Exception;

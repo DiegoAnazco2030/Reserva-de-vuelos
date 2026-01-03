@@ -61,8 +61,15 @@ public class ImpServicioEmpleado implements IServicio<CrearEmpleadoDTO,SalidaEmp
 
         empleadoExistente.setEmpleadoEmail(empleadoModificar.empleadoEmail());
 
-        if (empleadoModificar.empleadoContrasenia() != null && !empleadoModificar.empleadoContrasenia().isBlank()) {
-            empleadoExistente.setEmpleadoContrasenia(empleadoModificar.empleadoContrasenia().trim());
+        if (empleadoModificar.nombre() != null && !empleadoModificar.nombre().isBlank()) {
+            empleadoExistente.setNombre(empleadoModificar.nombre().trim());
+        }
+
+        if (empleadoModificar.apellido() != null && !empleadoModificar.apellido().isBlank()) {
+            empleadoExistente.setNombre(empleadoModificar.apellido().trim());
+        }
+        if(validacion.validarEdad(empleadoModificar.edad())){
+            empleadoExistente.setEdad(empleadoModificar.edad());
         }
 
         if (empleadoModificar.telefono() != null && !empleadoModificar.telefono().isBlank()) {

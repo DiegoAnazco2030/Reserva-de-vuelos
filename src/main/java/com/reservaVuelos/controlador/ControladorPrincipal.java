@@ -93,80 +93,90 @@ public class ControladorPrincipal implements IControlador {
 
     @Override
     public List<SalidaEmpleadoDTO> buscarEmpleados(String palabraBuscar) {
-        return ;
+        return servicioEmpleado.obtenerListaReducida(palabraBuscar);
     }
 
     @Override
     public void eliminarEmpleado(Long id) throws Exception {
+        servicioEmpleado.eliminar(id);
 
     }
 
     @Override
     public void modificarEmpleado(Long id, String nombre, String apellido, String telefono,
                                   int edad, String empleadoEmail) throws Exception {
-
+        CrearEmpleadoDTO empleadoModificar = new CrearEmpleadoDTO(nombre,
+                apellido, telefono, edad, empleadoEmail, " ");
     }
 
+    //Usuario
     @Override
-    public void crearUsuario(String Nombre, String Apellido, String telefono, int edad,
+    public void crearUsuario(String nombre, String apellido, String telefono, int edad,
                              String email, String contrasenia, String pasaporte) throws Exception {
-
+        CrearUsuarioDTO usuarioDTO = new CrearUsuarioDTO(nombre, apellido,
+                telefono, edad, email, contrasenia, pasaporte);
+        servicioUsuario.crear(usuarioDTO);
     }
 
     @Override
     public List<SalidaUsuarioDTO> buscarUsuarios(String palabraBuscar) {
-        return List.of();
+        return servicioUsuario.obtenerListaReducida(palabraBuscar);
     }
 
     @Override
     public void eliminarUsuario(Long id) throws Exception {
-
+        servicioUsuario.eliminar(id);
     }
 
     @Override
     public void modificarUsuario(Long id, String nombre, String apellido, String telefono,
                                  int edad, String empleadoEmail) throws Exception {
-
+        CrearUsuarioDTO usuarioModificar= new CrearUsuarioDTO(nombre, apellido,
+                telefono, edad, empleadoEmail, " ", " " );
     }
 
+    //Vuelo
     @Override
-    public void crearVuelo(Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida,
-                           String fechaHoraLlegada, String idAvion) throws Exception {
-
+    public void crearVuelo(Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida,
+                           String fechaHoraLlegada, Long idAvion, Long idAerolinea) throws Exception {
+        CrearVueloDTO vueloDTO = new CrearVueloDTO();
     }
 
     @Override
     public List<SalidaVueloDTO> buscarVuelos(String palabraBuscar) {
-        return List.of();
+        return servicioVuelo.obtenerListaReducida(palabraBuscar);
     }
 
     @Override
     public void eliminarVuelo(Long id) throws Exception {
-
+        servicioVuelo.eliminar(id);
     }
 
     @Override
-    public void modificarVuelo(Long id, Long aerolineaID, Ciudad origenVuelo, Ciudad destinoVuelo,String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
-
+    public void modificarVuelo(Long id, Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
+                               String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
+        CrearVueloDTO dto = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaHoraSalida, fechaHoraLlegada, idAvion);
     }
 
     @Override
     public void crearReserva(Long idVuelo, Long idAsiento, Long idUsuario) throws Exception {
-
+        CrearReservaDTO dto = new CrearReservaDTO(idVuelo, idAsiento, idUsuario);
+        servicioReserva.crear(dto);
     }
 
     @Override
     public List<SalidaReservaDTO> buscarReservas(String palabraBuscar) {
-        return List.of();
+        return servicioReserva.obtenerListaReducida(palabraBuscar);
     }
 
     @Override
     public void eliminarReserva(Long id) throws Exception {
-
+        servicioReserva.eliminar(id);
     }
 
     @Override
     public void modificarReserva(Long id, Long idVuelo, Long idAsiento, Long idUsuario) throws Exception {
-
+        CrearReservaDTO dto = new CrearReservaDTO(idVuelo, idAsiento, idUsuario);
+        servicioReserva.modificar(id, dto);
     }
 }
