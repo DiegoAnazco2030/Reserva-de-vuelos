@@ -202,7 +202,11 @@ public class PaginaPrincipal extends JFrame {
 
     public void actualizarTablaAsientos(){
         modeloTablaAsientos.setRowCount(0);
-
+        /*
+        *
+        * Esto debo completar con lo que se haga con asientos
+        *
+         */
     }
 
     public void actualizarTablaVuelos(){
@@ -210,14 +214,14 @@ public class PaginaPrincipal extends JFrame {
         List<SalidaVueloDTO> listVuelos = controlador.buscarVuelos("");
         for(SalidaVueloDTO  salidaVuelo : listVuelos) {
             Object[] fila = new Object[]{
-                    salidaVuelo.
-            }
+                    salidaVuelo.idVuelo(),
+                    salidaVuelo.origen(),
+                    salidaVuelo.destino(),
+                    salidaVuelo.llegadaVuelo()
+            };
+            modeloTablaVuelos.addRow(fila);
         }
     }
-    /*modeloTablaVuelos.addColumn("ID");
-        modeloTablaVuelos.addColumn("Origen");
-        modeloTablaVuelos.addColumn("Destino");
-        modeloTablaVuelos.addColumn("Hora Salida");*/
 
     private void createUIComponents() {
 
