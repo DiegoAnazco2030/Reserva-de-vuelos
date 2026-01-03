@@ -1,6 +1,7 @@
 package com.reservaVuelos.vista;
 
 import com.reservaVuelos.controlador.IControlador;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAsientoDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaReservaDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
@@ -59,6 +60,7 @@ public class PaginaPrincipal extends JFrame {
         actualizarTablaUsuarios();
         actualizarTablaReservas("");
         actualizarTablaVuelos();
+        mensajeSistema.setText("Bienvenido");
 
         /*Esta funcion es para que se pueda seleccionar y deseleccionar de la tabla y dependiendo
         que si esta selecciona es modificar y si no lo esta es registrar*/
@@ -177,6 +179,8 @@ public class PaginaPrincipal extends JFrame {
             }
         });
 
+        //Action listener de poner los asientos del vuelo seleccioando
+
         tablaVuelos.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int filaSeleccionada = tablaVuelos.getSelectedRow();
@@ -191,9 +195,9 @@ public class PaginaPrincipal extends JFrame {
         });
     }
 
-    public void actualizarTablaReservas(String buscarReservaPalbra){
+    public void actualizarTablaReservas(String buscarReservaPalabra){
         modeloTablaReservas.setRowCount(0);
-        List<SalidaReservaDTO> listBuscadaReserva = controlador.buscarReservas(buscarReservaPalbra);
+        List<SalidaReservaDTO> listBuscadaReserva = controlador.buscarReservas(buscarReservaPalabra);
         for(SalidaReservaDTO salidaReserva : listBuscadaReserva) {
             Object[] fila = new Object[]{
                     salidaReserva.idReserva(),
@@ -224,13 +228,24 @@ public class PaginaPrincipal extends JFrame {
     public void actualizarTablaAsientos(Long idVuelo){
         modeloTablaAsientos.setRowCount(0);
         if(idVuelo==null){
+            mensajeSistema.setText("Seleccione un vuelo");
             return;
+        }else{
+            try{
+                List<SalidaAsientoDTO> listAsientos = controlador.obtenerAsientos(idVuelo);
+                for(SalidaAsientoDTO salidaAsiento : listAsientos) {
+                    if(!salidaAsiento.estado()){
+                        Object[] fila = new Object[]{
+                            salidaAsiento.idAsiento(),
+                            salidaAsiento.tipoAsiento()
+                        };
+                        modeloTablaAsientos.addRow(fila);
+                    }
+                }
+            }catch (Exception ex){
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        /*
-        *
-        * Esto debo completar con lo que se haga con asientos
-        *
-         */
     }
 
     public void actualizarTablaVuelos(){

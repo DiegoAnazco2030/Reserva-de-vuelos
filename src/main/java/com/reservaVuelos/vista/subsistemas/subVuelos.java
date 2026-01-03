@@ -1,9 +1,9 @@
 package com.reservaVuelos.vista.subsistemas;
 
 import com.reservaVuelos.controlador.IControlador;
-import com.reservaVuelos.modelo.persona.RolUsuario;
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;

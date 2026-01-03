@@ -1,10 +1,12 @@
 package com.reservaVuelos.vista.subsistemas;
 
 import com.reservaVuelos.controlador.IControlador;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAerolineaDTO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.awt.event.ActionListener;
 
 public class subAerolineas extends JFrame {
@@ -37,6 +39,7 @@ public class subAerolineas extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
+        actualizarTablaAerolineas("");
 
         /*Esta funcion es para que se pueda seleccionar y deseleccionar de la tabla y dependiendo
         que si esta selecciona es modificar y si no lo esta es registrar*/
@@ -58,7 +61,7 @@ public class subAerolineas extends JFrame {
         textFiBuscarAerolinea.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
             }
         });
 
@@ -67,27 +70,69 @@ public class subAerolineas extends JFrame {
         registrarModificarAerolineas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String modo = registrarModificarAerolineas.getText();
+                try{
+                    int filaSeleccionada =  tablaAerolinea.getSelectedRow();
+                    if(filaSeleccionada == -1){
+                        controlador.crearAerolinea(
+                                nombreAerolinea.getText(),
+                                telefonoAerolinea.getText(),
+                                emailAerolinea.getText()
+                        );
+                        actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
+                        limpiarFormulario();
+                        mensajeService.setText("Aerolinea Registrada");
+                    }else{
+                        controlador.modificarAerolinea(
+                                Long.parseLong(modeloTablaAerolinea.getValueAt(filaSeleccionada,0).toString()),
+                                nombreAerolinea.getText(),
+                                telefonoAerolinea.getText(),
+                                emailAerolinea.getText()
+                        );
+                        actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
+                        limpiarFormulario();
+                        mensajeService.setText("Aerolinea Modificada");
+                    }
 
-                if (modo.equals("Registrar")) {
-                    // Lógica para capturar campos y enviar al service.save()
-                    System.out.println("Registrando nueva aerolínea...");
-                } else {
-                    // Lógica para capturar el ID de la fila y enviar al service.update()
-                    int fila = tablaAerolinea.getSelectedRow();
-                    Object id = modeloTablaAerolinea.getValueAt(fila, 0);
-                    System.out.println("Modificando aerolínea con ID: " + id);
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
                 }
+
             }
         });
 
         EliminarAerolinea.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try{
+                    int filaSeleccionada =  tablaAerolinea.getSelectedRow();
+                    if(filaSeleccionada != -1){
+                        controlador.eliminarAerolinea(Long.parseLong(modeloTablaAerolinea.getValueAt(filaSeleccionada,0).toString()));
+                        actualizarTablaAerolineas(textFiBuscarAerolinea.getText());
+                        limpiarFormulario();
+                        mensajeService.setText("Aerolinea Eliminada");
+                    }else{
+                        mensajeService.setText("Seleccione un Aerolinea");
+                    }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
+    }
+
+    public void actualizarTablaAerolineas(String buscarAerolineaPalabra){
+        modeloTablaAerolinea.setRowCount(0);
+        List<SalidaAerolineaDTO> listBuscarAerolinea = controlador.buscarAerolineas(buscarAerolineaPalabra);
+        for(SalidaAerolineaDTO salidaAerolinea : listBuscarAerolinea){
+            Object[] fila = new Object[]{
+                    salidaAerolinea.aerolineaID(),
+                    salidaAerolinea.nombre(),
+                    salidaAerolinea.telefono(),
+                    salidaAerolinea.email()
+            };
+            modeloTablaAerolinea.addRow(fila);
+        }
     }
 
     //Carga los datos seleccionados en la tabla en el formulario de forma automatica
@@ -108,6 +153,7 @@ public class subAerolineas extends JFrame {
         mensajeService.setText(""); // Limpiar avisos
     }
 
+    //Buidel de la tabla
     private void createUIComponents() {
         tablaAerolinea = new JTable() {
             @Override
@@ -131,9 +177,5 @@ public class subAerolineas extends JFrame {
         modeloTablaAerolinea.addColumn("Telefono");
         modeloTablaAerolinea.addColumn("Email");
         tablaAerolinea.setModel(modeloTablaAerolinea);
-    }
-
-    public void actualizarTablaAerolineas() {
-
     }
 }

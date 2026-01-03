@@ -2,7 +2,9 @@ package com.reservaVuelos.vista.subsistemas;
 
 import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -38,6 +40,7 @@ public class subAviones extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
+        actualizarTablaAviones("");
 
         DefaultComboBoxModel<ModeloAvion> modelModeloAvion = new DefaultComboBoxModel<>(ModeloAvion.values());
         modeloAvion.setModel(modelModeloAvion);
@@ -60,7 +63,7 @@ public class subAviones extends JFrame {
         textFiBusquedaAvion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                actualizarTablaAviones(textFiBusquedaAvion.getText());
             }
         });
 
@@ -69,16 +72,55 @@ public class subAviones extends JFrame {
         registrarModificarAvion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try{
+                    int filaSeleccionado = tablaAviones.getSelectedRow();
+                    if(filaSeleccionado == -1){
+                        controlador.crearAvion(
+                                (ModeloAvion)  modeloAvion.getSelectedItem()
+                        );
+                        actualizarTablaAviones(textFiBusquedaAvion.getText());
+                        mensajeSistema.setText("Avion registrado");
+                    }else{
+                        controlador.modificarAvion(
+                                Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionado,0).toString()),
+                                (ModeloAvion)  modeloAvion.getSelectedItem()
+                        );
+                        actualizarTablaAviones(textFiBusquedaAvion.getText());
+                        mensajeSistema.setText("Avion modificado");
+                    }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
         eliminarAvion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try{
+                    int filaSeleccionada = tablaAviones.getSelectedRow();
+                    if(filaSeleccionada != -1){
+                        controlador.eliminarAvion(
+                                Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionada,0).toString())
+                        );
+                    }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
+    }
+
+    public void actualizarTablaAviones(String buscarAvionesPalabra){
+        modeloTablaAviones.setRowCount(0);
+        List<SalidaAvionDTO> listAviones = controlador.buscarAviones(buscarAvionesPalabra);
+        for (SalidaAvionDTO salidaAvion : listAviones) {
+            Object[] fila = new Object[]{
+                    salidaAvion.idAvion(),
+                    salidaAvion.modeloAvion()
+            };
+            modeloTablaAviones.addRow(fila);
+        }
     }
 
     //Carga los datos seleccionados en la tabla en el formulario de forma automatica
@@ -89,6 +131,7 @@ public class subAviones extends JFrame {
         }
     }
 
+    //Constructor personalizado de la tabla
     private void createUIComponents() {
         tablaAviones = new  JTable(){
 
