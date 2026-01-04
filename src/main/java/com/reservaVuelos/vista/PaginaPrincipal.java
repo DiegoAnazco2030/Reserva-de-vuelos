@@ -218,7 +218,8 @@ public class PaginaPrincipal extends JFrame {
                     salidaReserva.nombrePersona(),
                     salidaReserva.apellidoPersona(),
                     salidaReserva.origen(),
-                    salidaReserva.destino()
+                    salidaReserva.destino(),
+                    salidaReserva.idAsiento()
             };
             modeloTablaReservas.addRow(fila);
         }
@@ -303,6 +304,7 @@ public class PaginaPrincipal extends JFrame {
         modeloTablaReservas.addColumn("Apellido");
         modeloTablaReservas.addColumn("Origen");
         modeloTablaReservas.addColumn("Destino");
+        modeloTablaReservas.addColumn("ID Asiento");
         tablaReservas.setModel(modeloTablaReservas);
 
         //Configurar tabla de vuelos
