@@ -125,7 +125,8 @@ public class Mapper {
                 vuelo.getFechaHoraSalida().format(formateador), // LocalDateTime a String
                 vuelo.getFechaHoraLlegada().format(formateador), // LocalDateTime a String
                 String.valueOf(vuelo.isEstadoVuelo()),
-                vuelo.getAvionVuelo().getModeloAvion()
+                vuelo.getAvionVuelo().getModeloAvion(),
+                vuelo.getAvionVuelo().getId()
         );
     }
 

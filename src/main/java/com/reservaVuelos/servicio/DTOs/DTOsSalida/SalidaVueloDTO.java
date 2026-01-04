@@ -9,5 +9,6 @@ public record SalidaVueloDTO(Long idVuelo,
                         String salidaVuelo,
                         String llegadaVuelo,
                         String estadoVuelo,
-                        ModeloAvion modeloAvion) {
+                        ModeloAvion modeloAvion,
+                        Long idAvion) {
 }

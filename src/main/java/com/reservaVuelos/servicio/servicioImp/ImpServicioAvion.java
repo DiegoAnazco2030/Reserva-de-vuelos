@@ -8,6 +8,7 @@ import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAsientoDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
+import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.Mapper;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,13 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     private final IRepositorio<Avion> repo;
     private final IRepositorio<Asiento> repoAsiento;
+    private final ImpServicioVuelo servicioVuelo;
     private final Mapper mapperAvion;
 
-    public ImpServicioAvion(IRepositorio<Avion> repo, IRepositorio<Asiento> repoAsiento, Mapper mapperAvion) {
+    public ImpServicioAvion(IRepositorio<Avion> repo, IRepositorio<Asiento> repoAsiento, ImpServicioVuelo servicioVuelo, Mapper mapperAvion) {
         this.repo = repo;
         this.repoAsiento = repoAsiento;
+        this.servicioVuelo = servicioVuelo;
         this.mapperAvion =  mapperAvion;
     }
 
@@ -57,6 +60,11 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     @Override
     public void eliminar(Long id) throws Exception {
+        boolean idAvion = servicioVuelo.obtenerTodos().stream()
+                .anyMatch(v -> v.idAvion().equals(id));
+        if (idAvion) {
+            throw new OperacionFallidaException("No se puede eliminar el avión porque está asociado a un vuelo");
+        }
         if(!repo.existe(id)){
             throw new EntidadNoEncontradaException("El avion a eliminar no existe");
         }

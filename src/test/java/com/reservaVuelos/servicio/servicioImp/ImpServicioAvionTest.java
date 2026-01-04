@@ -5,8 +5,6 @@ import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
-import com.reservaVuelos.repositorio.IRepositorio;
-import com.reservaVuelos.repositorio.RepositorioAerolineas;
 import com.reservaVuelos.repositorio.RepositorioAsientos;
 import com.reservaVuelos.repositorio.RepositorioAviones;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;

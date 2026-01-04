@@ -121,7 +121,6 @@ class ImpServicioAerolineaTest {
     @Test
     void idEncontradoParaModificar() throws Exception {
 
-
         Long id = 11L;
         when(repo.existe(id)).thenReturn(true);
 
