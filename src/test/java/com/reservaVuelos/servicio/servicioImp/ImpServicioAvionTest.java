@@ -10,6 +10,7 @@ import com.reservaVuelos.repositorio.RepositorioAviones;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.Mapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,8 +38,12 @@ class ImpServicioAvionTest {
     @Mock
     private Mapper mapperAvion;
 
-    @InjectMocks
-    private ImpServicioAvion servicio;
+    private static ImpServicioAvion servicio;
+
+    @BeforeEach
+    void setUp() {
+        servicio = new ImpServicioAvion(repo, repoAsiento, mapperAvion);
+    }
 
     @Test
     void objetoNuloAlCrear() throws Exception {
@@ -54,12 +60,14 @@ class ImpServicioAvionTest {
     void creacionCorrecta() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.AIRBUS_A320);
         Avion entidadSimulada = new Avion(1L, ModeloAvion.AIRBUS_A320);
+        Asiento asiento = new Asiento(1L, TipoDeAsiento.TURISTA);
 
         when(repo.ultimoID()).thenReturn(0L);
-
         when(mapperAvion.AvionDTOAAvion(dto, 1L)).thenReturn(entidadSimulada);
+        when(repo.guardar(any(Avion.class))).thenReturn(entidadSimulada);
 
-        when(repo.guardar(entidadSimulada)).thenReturn(entidadSimulada);
+        lenient().when(repoAsiento.guardar(any(Asiento.class)))
+                .thenReturn(new Asiento(1L, TipoDeAsiento.TURISTA));
 
         lenient().when(repoAsiento.guardar(any(Asiento.class)))
                 .thenReturn(new Asiento(1L, TipoDeAsiento.TURISTA));
@@ -148,7 +156,7 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void obtenerListaReducidaDeAviones() { //
+    void obtenerListaReducidaDeAviones() {
         // GIVEN
         String palabra = "BOEING";
         Avion avion = new Avion(1L, ModeloAvion.BOEING_787);
