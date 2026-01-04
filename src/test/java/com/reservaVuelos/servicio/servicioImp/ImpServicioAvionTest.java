@@ -13,13 +13,11 @@ import com.reservaVuelos.servicio.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,7 +58,6 @@ class ImpServicioAvionTest {
     void creacionCorrecta() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.AIRBUS_A320);
         Avion entidadSimulada = new Avion(1L, ModeloAvion.AIRBUS_A320);
-        Asiento asiento = new Asiento(1L, TipoDeAsiento.TURISTA);
 
         when(repo.ultimoID()).thenReturn(0L);
         when(mapperAvion.AvionDTOAAvion(dto, 1L)).thenReturn(entidadSimulada);
