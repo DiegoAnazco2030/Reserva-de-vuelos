@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class subAviones extends JFrame {
+public class subAviones extends JDialog {
 
     private IControlador controlador;
     private JPanel JPanelAvion;
@@ -32,8 +32,9 @@ public class subAviones extends JFrame {
     //JLabel apra mostrar los mensajes del sistema
     private JLabel mensajeSistema;
 
-    public subAviones(IControlador controlador) {
+    public subAviones(JFrame parent, IControlador controlador) {
 
+        super(parent, "Registro de avion", true);
         this.controlador = controlador;
         setContentPane(JPanelAvion);
         setTitle("Registro de avion");

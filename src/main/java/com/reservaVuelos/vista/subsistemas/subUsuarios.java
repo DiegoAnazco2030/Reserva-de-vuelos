@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class subUsuarios extends JFrame{
+public class subUsuarios extends JDialog{
 
     private final IControlador controlador;
     private JPanel JPanelUsuario;
@@ -40,8 +40,9 @@ public class subUsuarios extends JFrame{
     //JLabl del mensaje del sistema
     private JLabel mensajeSistema;
 
-    public subUsuarios(IControlador controlador) {
+    public subUsuarios(JFrame parent, IControlador controlador) {
 
+        super(parent, "Registro de usuarios", true);
         this.controlador = controlador;
         setContentPane(JPanelUsuario);
         setTitle("Registro de usuarios");

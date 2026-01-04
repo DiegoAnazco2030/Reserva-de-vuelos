@@ -9,6 +9,7 @@ import com.reservaVuelos.vista.subsistemas.subAerolineas;
 import com.reservaVuelos.vista.subsistemas.subAviones;
 import com.reservaVuelos.vista.subsistemas.subUsuarios;
 import com.reservaVuelos.vista.subsistemas.subVuelos;
+import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@Controller
 public class PaginaPrincipal extends JFrame {
 
     private JPanel JPanelPrincipal;
@@ -88,32 +90,36 @@ public class PaginaPrincipal extends JFrame {
         aerolineasSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subAerolineas subSistemaAerolineas = new subAerolineas(controlador);
+                subAerolineas subSistemaAerolineas = new subAerolineas(PaginaPrincipal.this, controlador);
                 subSistemaAerolineas.setVisible(true);
+                resetTablas();
             }
         });
 
         avionesSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subAviones subSistemaAaviones = new subAviones(controlador);
+                subAviones subSistemaAaviones = new subAviones(PaginaPrincipal.this, controlador);
                 subSistemaAaviones.setVisible(true);
+                resetTablas();
             }
         });
 
         usuariosSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subUsuarios subSistemaUsuarios = new subUsuarios(controlador);
+                subUsuarios subSistemaUsuarios = new subUsuarios(PaginaPrincipal.this, controlador);
                 subSistemaUsuarios.setVisible(true);
+                resetTablas();
             }
         });
 
         vuelosSubsistema.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subVuelos subSistemaVuelos = new subVuelos(controlador);
+                subVuelos subSistemaVuelos = new subVuelos(PaginaPrincipal.this, controlador);
                 subSistemaVuelos.setVisible(true);
+                resetTablas();
             }
         });
 
@@ -193,6 +199,13 @@ public class PaginaPrincipal extends JFrame {
                 }
             }
         });
+    }
+
+    public void resetTablas(){
+        limpiarFormulario();
+        actualizarTablaReservas("");
+        actualizarTablaVuelos();
+        actualizarTablaUsuarios();
     }
 
     public void actualizarTablaReservas(String buscarReservaPalabra){

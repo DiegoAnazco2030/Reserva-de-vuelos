@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.awt.event.ActionListener;
 
-public class subAerolineas extends JFrame {
+public class subAerolineas extends JDialog {
 
     private IControlador controlador;
     private JPanel JPanelAero;
@@ -31,8 +31,9 @@ public class subAerolineas extends JFrame {
     //JLabel apra mostrar los mensajes del sistema
     private JLabel mensajeService;
 
-    public subAerolineas(IControlador controlador) {
+    public subAerolineas(JFrame parent, IControlador controlador) {
 
+        super(parent, "Registro de aerolinea", true);
         this.controlador = controlador;
         setContentPane(JPanelAero);
         setTitle("Registro de aerolinea");

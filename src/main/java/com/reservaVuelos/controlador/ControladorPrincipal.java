@@ -7,11 +7,13 @@ import com.reservaVuelos.servicio.DTOs.DTOsSalida.*;
 import com.reservaVuelos.servicio.IServicio;
 import com.reservaVuelos.servicio.servicioImp.ImpServicioAvion;
 import com.reservaVuelos.servicio.servicioImp.ImpServicioVuelo;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Controller
 public class ControladorPrincipal implements IControlador {
     private final IServicio<CrearEmpleadoDTO, SalidaEmpleadoDTO> servicioEmpleado;
     private final IServicio<CrearAereolineaDTO, SalidaAerolineaDTO> servicioAerolinea;
