@@ -7,6 +7,7 @@ import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
 import com.reservaVuelos.repositorio.RepositorioAsientos;
 import com.reservaVuelos.repositorio.RepositorioAviones;
+import com.reservaVuelos.repositorio.RepositorioVuelos;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.Mapper;
@@ -34,13 +35,16 @@ class ImpServicioAvionTest {
     private RepositorioAsientos repoAsiento;
 
     @Mock
+    private RepositorioVuelos reposVuelos;
+
+    @Mock
     private Mapper mapperAvion;
 
     private static ImpServicioAvion servicio;
 
     @BeforeEach
     void setUp() {
-        servicio = new ImpServicioAvion(repo, repoAsiento, mapperAvion);
+        servicio = new ImpServicioAvion(repo, repoAsiento, reposVuelos, mapperAvion);
     }
 
     @Test
