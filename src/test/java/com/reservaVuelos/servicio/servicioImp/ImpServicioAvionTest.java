@@ -40,7 +40,7 @@ class ImpServicioAvionTest {
     private ImpServicioAvion servicio;
 
     @Test
-    void ObjetoNuloAlCrear() throws Exception {
+    void objetoNuloAlCrear() throws Exception {
         CrearAvionDTO dto = null;
 
         assertThrows(Exception.class, () -> {
@@ -51,7 +51,7 @@ class ImpServicioAvionTest {
     }
 
     @Test
-    void CreacionCorrecta() throws Exception {
+    void creacionCorrecta() throws Exception {
         // GIVEN
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.AIRBUS_A320);
 
@@ -75,7 +75,7 @@ class ImpServicioAvionTest {
 
 
     @Test
-    void ErrorRepoAlCrear() throws Exception {
+    void errorRepoAlCrear() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_737);
         when(repo.ultimoID()).thenReturn(10L);
 

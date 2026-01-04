@@ -10,5 +10,6 @@ public record SalidaReservaDTO(Long idReserva,
    String apellidoPersona,
    String correoPersona,
    Ciudad origen,
-   Ciudad destino) {
+   Ciudad destino,
+   Long idAsiento) {
 }

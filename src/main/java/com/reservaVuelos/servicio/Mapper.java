@@ -152,7 +152,7 @@ public class Mapper {
     }
 
     // Salida Reserva (Salida)
-    public SalidaReservaDTO ReservaAReservaDTO(Long idReserva, Vuelo vuelo, Usuario usuario) {
+    public SalidaReservaDTO ReservaAReservaDTO(Long idReserva, Reserva reserva, Vuelo vuelo, Usuario usuario) {
         return new SalidaReservaDTO(
                 idReserva,
                 vuelo.getId(),
@@ -161,7 +161,8 @@ public class Mapper {
                 usuario.getApellido(),
                 usuario.getUsuarioEmail(),
                 vuelo.getOrigenVuelo(),
-                vuelo.getDestinoVuelo()
+                vuelo.getDestinoVuelo(),
+                reserva.getIdAsiento()
         );
     }
 

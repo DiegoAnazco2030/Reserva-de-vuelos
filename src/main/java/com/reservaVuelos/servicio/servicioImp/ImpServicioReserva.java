@@ -82,6 +82,6 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
     private SalidaReservaDTO mapearASalida(Reserva reserva) {
         Vuelo vuelo = repoVuelo.buscarPorID(reserva.getIdVuelo());
         Usuario usuario = repoUsuario.buscarPorID(reserva.getIdUsuario());
-        return mapper.ReservaAReservaDTO(reserva.getId(), vuelo, usuario);
+        return mapper.ReservaAReservaDTO(reserva.getId(), reserva, vuelo, usuario);
     }
 }
