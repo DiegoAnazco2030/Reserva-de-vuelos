@@ -1,8 +1,10 @@
 package com.reservaVuelos.servicio.servicioImp;
 
 import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
+import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.Reserva;
 import com.reservaVuelos.modelo.persona.Usuario;
+import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearReservaDTO;
@@ -18,22 +20,33 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
     private final IRepositorio<Reserva> repoReserva;
     private final IRepositorio<Vuelo> repoVuelo;
     private final IRepositorio<Usuario> repoUsuario;
+    private final IRepositorio<Asiento> repoAsiento;
     private final Mapper mapper;
 
-    public ImpServicioReserva(IRepositorio<Reserva> repoReserva, IRepositorio<Vuelo> repoVuelo, IRepositorio<Usuario> repoUsuario, Mapper mapper) {
+    public ImpServicioReserva(IRepositorio<Reserva> repoReserva, IRepositorio<Vuelo> repoVuelo, IRepositorio<Usuario> repoUsuario, IRepositorio<Asiento> repoAsiento, Mapper mapper) {
         this.repoReserva = repoReserva;
         this.repoVuelo = repoVuelo;
         this.repoUsuario = repoUsuario;
+        this.repoAsiento = repoAsiento;
         this.mapper = mapper;
     }
 
     @Override
     public void crear(CrearReservaDTO crearReserva) throws Exception {
         validarExistenciaComponentes(crearReserva.idVuelo(), crearReserva.idUsuario());
+        if (repoAsiento.buscarPorID(crearReserva.idAsiento()) == null) {
+            throw new EntidadNoEncontradaException("Asiento no encontrado");
+        }
+        if (repoAsiento.buscarPorID(crearReserva.idAsiento()).isEstadoAsiento()) {
+            throw new OperacionFallidaException("El asiento ya esta reservado");
+        }
 
         Long id = repoReserva.ultimoID() + 1;
         Reserva nuevaReserva = mapper.ReservaDTOAReserva(id,crearReserva);
+        Asiento asientoReservado = repoAsiento.buscarPorID(crearReserva.idAsiento());
+        asientoReservado.setEstadoAsiento(true);
         repoReserva.guardar(nuevaReserva);
+        repoAsiento.actualizar(asientoReservado);
     }
 
     @Override
@@ -56,7 +69,11 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
         if (!repoReserva.existe(id)) {
             throw new EntidadNoEncontradaException("La reserva no existe");
         }
+        Reserva reservaAEliminar = repoReserva.buscarPorID(id);
+        Asiento asientoLiberado = repoAsiento.buscarPorID(reservaAEliminar.getIdAsiento());
+        asientoLiberado.setEstadoAsiento(false);
         repoReserva.eliminar(id);
+        repoAsiento.actualizar(asientoLiberado);
     }
 
     @Override
@@ -67,7 +84,15 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
         validarExistenciaComponentes(objeto.idVuelo(), objeto.idUsuario());
 
         Reserva actualizada = mapper.ReservaDTOAReserva(id,objeto);
+        Asiento asientoAnterior = repoAsiento.buscarPorID(repoReserva.buscarPorID(id).getIdAsiento());
+        Asiento asientoNuevo = repoAsiento.buscarPorID(objeto.idAsiento());
+        
+        asientoNuevo.setEstadoAsiento(true);
+        asientoAnterior.setEstadoAsiento(false);
+
         repoReserva.actualizar(actualizada);
+        repoAsiento.actualizar(asientoAnterior);
+        repoAsiento.actualizar(asientoNuevo);
     }
 
     private void validarExistenciaComponentes(Long idVuelo, Long idUsuario) throws Exception {

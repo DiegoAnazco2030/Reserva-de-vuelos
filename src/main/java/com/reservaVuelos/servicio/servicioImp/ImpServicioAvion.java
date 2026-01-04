@@ -4,6 +4,7 @@ import com.reservaVuelos.Excepciones.Excepcion.EntidadNoEncontradaException;
 import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.vuelo.Asiento;
 import com.reservaVuelos.modelo.vuelo.Avion;
+import com.reservaVuelos.modelo.vuelo.Vuelo;
 import com.reservaVuelos.repositorio.IRepositorio;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAsientoDTO;
@@ -20,11 +21,13 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
 
     private final IRepositorio<Avion> repo;
     private final IRepositorio<Asiento> repoAsiento;
+    private final IRepositorio<Vuelo> repoVuelo;
     private final Mapper mapperAvion;
 
-    public ImpServicioAvion(IRepositorio<Avion> repo, IRepositorio<Asiento> repoAsiento, Mapper mapperAvion) {
+    public ImpServicioAvion(IRepositorio<Avion> repo, IRepositorio<Asiento> repoAsiento, IRepositorio<Vuelo> repoVuelo, Mapper mapperAvion) {
         this.repo = repo;
         this.repoAsiento = repoAsiento;
+        this.repoVuelo = repoVuelo;
         this.mapperAvion =  mapperAvion;
     }
 
@@ -60,6 +63,13 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
         if(!repo.existe(id)){
             throw new EntidadNoEncontradaException("El avion a eliminar no existe");
         }
+
+        boolean eliminarAvion = repoVuelo.buscar(v -> v.getAvionVuelo().getId().equals(id)).isEmpty();
+
+        if (!eliminarAvion) {
+            throw new OperacionFallidaException("No se puede eliminar el avión porque está asociado a un vuelo");
+        }
+
         if (repo.eliminar(id) == null) {
             throw new Exception("No se pudo eliminar el avion");
         }
