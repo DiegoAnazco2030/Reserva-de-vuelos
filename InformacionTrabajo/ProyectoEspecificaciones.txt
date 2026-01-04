@@ -26,3 +26,6 @@ Paleta de colores a usar correspondiente a nuestro logo
 Azul Marino #3270BF
 Celeste/Cian #33A1DE
 Blanco: #FFFFFF
+
+Repositorio Git
+https://github.com/DiegoAnazco2030/Reserva-de-vuelos.git
