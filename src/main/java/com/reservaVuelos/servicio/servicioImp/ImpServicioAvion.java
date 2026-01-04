@@ -34,13 +34,19 @@ public class ImpServicioAvion implements IServicio<CrearAvionDTO, SalidaAvionDTO
             throw new OperacionFallidaException("El DTO de avión no puede ser nulo");
         }
 
-
         Long id = repo.ultimoID() +1;
 
         Avion avionParaGuardar = mapperAvion.AvionDTOAAvion(avionNuevo, id);
 
         if (repo.guardar(avionParaGuardar) == null) {
             throw new OperacionFallidaException("No se pudo crear el avion");
+        }
+
+        List<Asiento> asientosAVincular = avionParaGuardar.getAsientosAvion();
+        for (Asiento asiento : asientosAVincular) {
+            if (repoAsiento.guardar(asiento) == null) {
+                throw new OperacionFallidaException("No se pudieron crear los asientos del avión");
+            }
         }
     }
 

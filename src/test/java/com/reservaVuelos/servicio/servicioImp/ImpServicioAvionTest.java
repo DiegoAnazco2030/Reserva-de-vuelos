@@ -6,6 +6,9 @@ import com.reservaVuelos.modelo.vuelo.Avion;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.modelo.vuelo.TipoDeAsiento;
 import com.reservaVuelos.repositorio.IRepositorio;
+import com.reservaVuelos.repositorio.RepositorioAerolineas;
+import com.reservaVuelos.repositorio.RepositorioAsientos;
+import com.reservaVuelos.repositorio.RepositorioAviones;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.Mapper;
@@ -15,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +30,10 @@ import static org.mockito.Mockito.*;
 class ImpServicioAvionTest {
 
     @Mock
-    private IRepositorio<Avion> repo;
+    private RepositorioAviones repo;
 
     @Mock
-    private IRepositorio<Asiento> repoAsiento;
+    private RepositorioAsientos repoAsiento;
 
     @Mock
     private Mapper mapperAvion;
@@ -70,6 +74,8 @@ class ImpServicioAvionTest {
         verify(repo).ultimoID();
         verify(repo).guardar(entidadSimulada);
     }
+
+
     @Test
     void ErrorRepoAlCrear() throws Exception {
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.BOEING_737);
@@ -78,7 +84,7 @@ class ImpServicioAvionTest {
         Avion entidadSimulada = new Avion(11L, ModeloAvion.BOEING_737);
         when(mapperAvion.AvionDTOAAvion(any(), anyLong())).thenReturn(entidadSimulada);
 
-        when(repo.guardar(any(Avion.class))).thenReturn(null);
+        when(repo.guardar(entidadSimulada)).thenThrow(new IOException("Archivo no encontrado"));
 
         assertThrows(Exception.class, () -> {
             servicio.crear(dto);

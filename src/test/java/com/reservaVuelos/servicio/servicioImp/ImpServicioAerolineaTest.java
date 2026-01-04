@@ -6,10 +6,7 @@ import com.reservaVuelos.modelo.vuelo.Aerolinea;
 import com.reservaVuelos.repositorio.RepositorioAerolineas;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.CrearAereolineaDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAerolineaDTO;
-import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
 import com.reservaVuelos.servicio.Mapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,7 +33,7 @@ class ImpServicioAerolineaTest {
     private ImpServicioAerolinea servicio;
 
     @Test
-    void ObjetoNuloAlCrear() throws Exception {
+    void objetoNuloAlCrear() throws Exception {
         CrearAereolineaDTO aerolinea=null;
 
         assertThrows(OperacionFallidaException.class, ()-> {
@@ -46,7 +43,7 @@ class ImpServicioAerolineaTest {
         verify(repo, never()).guardar(any());
     }
     @Test
-    void CreacionCorrecta() throws Exception {
+    void creacionCorrecta() throws Exception {
         CrearAereolineaDTO dto = new CrearAereolineaDTO("ALA", "0999999999", "gf@gmail.com");
 
         when(repo.ultimoID()).thenReturn(10L);
@@ -64,7 +61,9 @@ class ImpServicioAerolineaTest {
         verify(repo, times(1)).ultimoID();
         verify(repo, times(1)).guardar(any(Aerolinea.class));
     }
-    void ErrorRepoAlCrear() throws Exception {
+
+    @Test
+    void errorRepoAlCrear() throws Exception {
         CrearAereolineaDTO dto = new CrearAereolineaDTO("ALA", "0999999999", "gf@gmail.com");
 
         when(repo.ultimoID()).thenReturn(10L);
@@ -107,7 +106,6 @@ class ImpServicioAerolineaTest {
 
     @Test
     void idNoEncontradoParaModificar() throws Exception {
-
 
         Long id = 11L;
         when(repo.existe(id)).thenReturn(false);
