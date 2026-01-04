@@ -9,15 +9,17 @@ import com.reservaVuelos.vista.subsistemas.subAerolineas;
 import com.reservaVuelos.vista.subsistemas.subAviones;
 import com.reservaVuelos.vista.subsistemas.subUsuarios;
 import com.reservaVuelos.vista.subsistemas.subVuelos;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.net.URL;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-@Controller
+@Component
 public class PaginaPrincipal extends JFrame {
 
     private JPanel JPanelPrincipal;
@@ -57,6 +59,11 @@ public class PaginaPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
+
+        URL urlLogo = getClass().getResource("/logo.png");
+        if (urlLogo != null) {
+            setIconImage(Toolkit.getDefaultToolkit().getImage(urlLogo));
+        }
 
         actualizarTablaAsientos(null);
         actualizarTablaUsuarios();

@@ -1,4 +1,4 @@
-CANTIDAD_REGISTROS = 1000000
+CANTIDAD_REGISTROS = 1_000_000
 
 Tiempo total escritura: 74581.6907
 Promedio por registro 0.07458169070000001 milisegundos
