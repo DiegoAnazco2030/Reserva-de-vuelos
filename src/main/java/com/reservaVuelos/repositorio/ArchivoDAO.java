@@ -29,14 +29,28 @@ import java.util.function.Predicate;
  */
 
 public abstract class ArchivoDAO<T extends Identificador> implements IRepositorio<T> {
+    private static final String CARPETA_BASE = "./base_datos_archivos/";
+    private static final String RUTA_DATOS = CARPETA_BASE + "datos/";
+    private static final String RUTA_INDICES = CARPETA_BASE + "indices/";
+
     private File archivoIndices;            // Archivo de los indices densos
     private File archivoDatos;              // Archivo de los datos
     private Long tamanoRegistro;            // Tamano de Bytes del registro
     private Map<Long, Long> indicesMapa;    // El Índice Denso en RAM (ID vs Posición)
 
     public ArchivoDAO(String nombreBase, Long tamanoRegistro) {
-        this.archivoIndices = new File(nombreBase + ".idx");
-        this.archivoDatos = new File(nombreBase + ".raf");
+        File carpetaDatos = new File(RUTA_DATOS);
+        File carpetaIndices = new File(RUTA_INDICES);
+        
+        if (!carpetaDatos.exists()) {
+            carpetaDatos.mkdirs();
+        }
+        if (!carpetaIndices.exists()) {
+            carpetaIndices.mkdirs();
+        }
+
+        this.archivoIndices = new File(RUTA_INDICES + nombreBase + ".idx");
+        this.archivoDatos = new File(RUTA_DATOS + nombreBase + ".raf");
         this.tamanoRegistro = tamanoRegistro;
         this.indicesMapa = new HashMap<>();
 
