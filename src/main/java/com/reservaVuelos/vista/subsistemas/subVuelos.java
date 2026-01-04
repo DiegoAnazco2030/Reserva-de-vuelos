@@ -159,8 +159,8 @@ public class subVuelos extends JDialog {
                     salidaVuelo.idVuelo(),
                     salidaVuelo.origen(),
                     salidaVuelo.destino(),
-                    salidaVuelo.salidaVuelo(),
-                    salidaVuelo.llegadaVuelo(),
+                    salidaVuelo.salidaVuelo().substring(0,16),
+                    salidaVuelo.llegadaVuelo().substring(0,16),
                     salidaVuelo.estadoVuelo(),
                     salidaVuelo.modeloAvion()
             };

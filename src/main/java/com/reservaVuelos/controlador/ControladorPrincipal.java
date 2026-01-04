@@ -1,5 +1,6 @@
 package com.reservaVuelos.controlador;
 
+import com.reservaVuelos.Excepciones.Excepcion.OperacionFallidaException;
 import com.reservaVuelos.modelo.vuelo.Ciudad;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.servicio.DTOs.DTOsCrear.*;
@@ -74,6 +75,11 @@ public class ControladorPrincipal implements IControlador {
 
     @Override
     public void eliminarAvion(Long id) throws Exception {
+        boolean idAvion = servicioVuelo.obtenerTodos().stream()
+                .anyMatch(v -> v.idAvion().equals(id));
+        if (idAvion) {
+            throw new OperacionFallidaException("No se puede eliminar el avión porque está asociado a un vuelo");
+        }
         servicioAvion.eliminar(id);
     }
 
@@ -158,8 +164,8 @@ public class ControladorPrincipal implements IControlador {
     @Override
     public void crearVuelo(Ciudad origenVuelo, Ciudad destinoVuelo, String fechaHoraSalida,
                            String fechaHoraLlegada, Long idAvion, Long idAerolinea) throws Exception {
-        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida, DATE_TIME_FORMATTER);
-        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada, DATE_TIME_FORMATTER);
+        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida + ":00.000000000", DATE_TIME_FORMATTER);
+        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada + ":00.000000000", DATE_TIME_FORMATTER);
         CrearVueloDTO vueloDTO = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaSalida, fechaLlegada, idAvion);
         servicioVuelo.crear(vueloDTO);
     }

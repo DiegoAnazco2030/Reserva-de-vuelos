@@ -269,7 +269,7 @@ public class PaginaPrincipal extends JFrame {
                     salidaVuelo.idVuelo(),
                     salidaVuelo.origen(),
                     salidaVuelo.destino(),
-                    salidaVuelo.llegadaVuelo()
+                    salidaVuelo.llegadaVuelo().substring(0,16)
             };
             modeloTablaVuelos.addRow(fila);
         }
