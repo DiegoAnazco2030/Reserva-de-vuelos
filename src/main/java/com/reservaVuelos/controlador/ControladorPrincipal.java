@@ -183,8 +183,8 @@ public class ControladorPrincipal implements IControlador {
     @Override
     public void modificarVuelo(Long id, Long idAerolinea, Ciudad origenVuelo, Ciudad destinoVuelo,
                                String fechaHoraSalida, String fechaHoraLlegada, Long idAvion) throws Exception {
-        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida, DATE_TIME_FORMATTER);
-        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada, DATE_TIME_FORMATTER);
+        LocalDateTime fechaSalida = LocalDateTime.parse(fechaHoraSalida  + ":00.000000000", DATE_TIME_FORMATTER);
+        LocalDateTime fechaLlegada = LocalDateTime.parse(fechaHoraLlegada  + ":00.000000000", DATE_TIME_FORMATTER);
         CrearVueloDTO dto = new CrearVueloDTO(idAerolinea, origenVuelo, destinoVuelo, fechaSalida, fechaLlegada, idAvion);
         servicioVuelo.modificar(id, dto);
     }

@@ -71,7 +71,8 @@ public class ImpServicioVuelo implements IServicio<CrearVueloDTO, SalidaVueloDTO
         vueloExistente.setFechaHoraSalida(objeto.fechaHoraSalida());
         vueloExistente.setFechaHoraLlegada(objeto.fechaHoraLlegada());
 
-        Avion nuevoAvion = new Avion(objeto.idAvion(), null);
+        SalidaAvionDTO avionInfo = avionServicio.obtenerAvionPorID(objeto.idAvion());
+        Avion nuevoAvion = new Avion(objeto.idAvion(), avionInfo.modeloAvion());
         vueloExistente.setAvionVuelo(nuevoAvion);
 
         actualizarEstadoVuelo(vueloExistente);
