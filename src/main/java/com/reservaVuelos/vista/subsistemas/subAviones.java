@@ -46,19 +46,6 @@ public class subAviones extends JDialog {
         DefaultComboBoxModel<ModeloAvion> modelModeloAvion = new DefaultComboBoxModel<>(ModeloAvion.values());
         modeloAvion.setModel(modelModeloAvion);
 
-        /*Esta funcion es para que se pueda seleccionar y deseleccionar de la tabla y dependiendo
-        que si esta selecciona es modificar y si no lo esta es registrar*/
-        tablaAviones.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                if (tablaAviones.getSelectedRow() == -1) {
-                    registrarModificarAvion.setText("Registrar");
-                } else {
-                    registrarModificarAvion.setText("Modificar");
-                    cargarCamposDesdeTabla();
-                }
-            }
-        });
-
         //Listener del text field de buscar
 
         textFiBusquedaAvion.addActionListener(new ActionListener() {
@@ -81,12 +68,7 @@ public class subAviones extends JDialog {
                         );
                         mensajeSistema.setText("Avion registrado");
                     }else{
-                        controlador.modificarAvion(
-                                Long.parseLong(modeloTablaAviones.getValueAt(filaSeleccionado,0).toString()),
-                                (ModeloAvion)  modeloAvion.getSelectedItem()
-                        );
-
-                        mensajeSistema.setText("Avion modificado");
+                        mensajeSistema.setText("No se puede modificar un Avion");
                     }
                     actualizarTablaAviones(textFiBusquedaAvion.getText());
                 }catch(Exception ex){
