@@ -1,0 +1,7 @@
+CANTIDAD_REGISTROS = 1000000
+
+Tiempo total escritura: 74581.6907
+Promedio por registro 0.07458169070000001 milisegundos
+Tiempo total busqueda: 0.2697
+Tiempo total obtenerTodo: 3340.2131
+Archivos eliminador y test finalizado
