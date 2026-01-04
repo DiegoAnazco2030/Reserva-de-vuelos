@@ -206,6 +206,9 @@ public class PaginaPrincipal extends JFrame {
                 }
             }
         });
+
+        //Aplico mi configuracion de estilos
+        aplicarEstiloCorporativo();
     }
 
     public void resetTablas(){
@@ -376,5 +379,71 @@ public class PaginaPrincipal extends JFrame {
                 }
             }
         };
+    }
+
+    //Esta funcion es la encargada de configurar los estilos
+    //Leonardo o Josue, el que vea esto, esto de aqui es lo que deben implementar en los subsistemas
+    //Esta funcion debes añadirla al final del constructor, reviar el cosntructor de esta clase
+    //Eliminar esto comentario para la version final!!!!
+    private void aplicarEstiloCorporativo() {
+
+        //Agrego la paleta de colores
+        Color azulMarino = Color.decode("#3270BF");
+        Color celesteClaro = Color.decode("#33A1DE");
+        Color blanco = Color.WHITE;
+
+        //Configuracion de los bottoms principales
+        JButton[] botonesPrincipales = {
+                registrarModiReservas,
+                aerolineasSubsistema,
+                avionesSubsistema,
+                usuariosSubsistema,
+                vuelosSubsistema
+        };
+
+        for (JButton btn : botonesPrincipales) {
+            if (btn != null) {
+                btn.setBackground(azulMarino);
+                btn.setForeground(blanco);
+                btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                // Hacemos que sean redondeados (Estilo moderno)
+                btn.putClientProperty("JButton.buttonType", "roundRect");
+            }
+        }
+
+        // Congiguracion del bottom eliminar
+        if (eliminarReservas != null) {
+            eliminarReservas.setForeground(Color.RED);
+            eliminarReservas.putClientProperty("JButton.borderColor", Color.RED);
+            eliminarReservas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        // Congiguracion tablas
+        JTable[] tablas = {tablaVuelos, tablaAsientos, tablaUsuarios, tablaReservas};
+
+        for (JTable tabla : tablas) {
+            if (tabla != null) {
+                // Estilo de la cabecera
+                tabla.getTableHeader().setBackground(azulMarino);
+                tabla.getTableHeader().setForeground(blanco);
+                tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+                // Altura de filas
+                tabla.setRowHeight(25);
+                // Color de selección
+                tabla.setSelectionBackground(celesteClaro);
+                tabla.setSelectionForeground(blanco);
+                // Quitar líneas verticales para limpieza visual
+                tabla.setShowVerticalLines(false);
+            }
+        }
+
+        // Barra de busqueda
+        if (buscarReserva != null) {
+            // Borde celeste cuando pasas el mouse
+            buscarReserva.putClientProperty("JComponent.outline", celesteClaro);
+            // Botón de borrado rápido
+            buscarReserva.putClientProperty("JTextField.showClearButton", true);
+        }
     }
 }

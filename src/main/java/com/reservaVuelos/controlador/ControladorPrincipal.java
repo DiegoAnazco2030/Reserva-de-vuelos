@@ -189,6 +189,7 @@ public class ControladorPrincipal implements IControlador {
         servicioVuelo.modificar(id, dto);
     }
 
+    //Reserva
     @Override
     public void crearReserva(Long idVuelo, Long idAsiento, Long idUsuario) throws Exception {
         CrearReservaDTO dto = new CrearReservaDTO(idVuelo, idAsiento, idUsuario);

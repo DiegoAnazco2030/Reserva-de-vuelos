@@ -23,6 +23,6 @@ Especificaciones
 */
 
 Paleta de colores a usar correspondiente a nuestro logo
-Azul Marino #1D4E89
+Azul Marino #3270BF
 Celeste/Cian #33A1DE
 Blanco: #FFFFFF
