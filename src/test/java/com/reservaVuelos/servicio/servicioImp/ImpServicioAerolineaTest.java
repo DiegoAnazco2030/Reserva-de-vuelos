@@ -80,7 +80,6 @@ class ImpServicioAerolineaTest {
 
     @Test
     void idNoEncontradoAleliminar() throws  Exception {
-
         Long id = 11L;
         when(repo.existe(id)).thenReturn(false);
 
@@ -93,7 +92,6 @@ class ImpServicioAerolineaTest {
 
     @Test
     void idEncontradoAleliminar() throws  Exception {
-
         Long id = 11L;
         when(repo.existe(id)).thenReturn(true);
 
@@ -106,7 +104,6 @@ class ImpServicioAerolineaTest {
 
     @Test
     void idNoEncontradoParaModificar() throws Exception {
-
         Long id = 11L;
         when(repo.existe(id)).thenReturn(false);
 
@@ -120,7 +117,6 @@ class ImpServicioAerolineaTest {
 
     @Test
     void idEncontradoParaModificar() throws Exception {
-
         Long id = 11L;
         when(repo.existe(id)).thenReturn(true);
 
@@ -131,14 +127,12 @@ class ImpServicioAerolineaTest {
             servicio.modificar(id,dto);
         });
 
-
         verify(repo,times(1)).actualizar(aero1);
         verify(repo,times(1)).buscarPorID(id);
     }
 
-
     @Test
-    void obtenerListaReducida() {
+    void obtenerTodos() {
         Aerolinea aero1 = new Aerolinea(1L, "Iberia", "1234567890", "i@mail.com");
         Aerolinea aero2 = new Aerolinea(2L, "Latam", "4567891234", "l@mail.com");
         List<Aerolinea> listaEntidades = List.of(aero1, aero2);
@@ -147,7 +141,6 @@ class ImpServicioAerolineaTest {
                 "Iberia", "1234567890", "i@mail.com");
         SalidaAerolineaDTO dto2 = new SalidaAerolineaDTO(2L,
                 "Latam", "4567891234", "l@mail.com");
-
 
         when(repo.buscarTodos()).thenReturn(listaEntidades);
 
@@ -161,5 +154,27 @@ class ImpServicioAerolineaTest {
 
         verify(repo, times(1)).buscarTodos();
         verify(mapper, times(2)).AerolineaASalidaAerolineaDTO(any());
+    }
+
+    @Test
+    void obtenerListaReducida() {
+        String palabraBuscar = "Iberia";
+        Aerolinea aeroEncontrada = new Aerolinea(1L, "Iberia", "1234567890", "i@mail.com");
+        List<Aerolinea> listaFiltrada = List.of(aeroEncontrada);
+
+        SalidaAerolineaDTO dtoSalida = new SalidaAerolineaDTO(1L, "Iberia", "1234567890", "i@mail.com");
+
+        when(repo.buscar(any())).thenReturn(listaFiltrada);
+
+        when(mapper.AerolineaASalidaAerolineaDTO(aeroEncontrada)).thenReturn(dtoSalida);
+
+        List<SalidaAerolineaDTO> resultado = servicio.obtenerListaReducida(palabraBuscar);
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals("Iberia", resultado.get(0).nombre());
+
+        verify(repo, times(1)).buscar(any());
+        verify(mapper, times(1)).AerolineaASalidaAerolineaDTO(any());
     }
 }

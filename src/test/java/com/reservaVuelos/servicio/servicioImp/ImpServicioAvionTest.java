@@ -209,7 +209,6 @@ class ImpServicioAvionTest {
         // Creamos un asiento real para que el setter funcione en la prueba
         Asiento asientoSimulado = new Asiento(idAsiento, TipoDeAsiento.TURISTA);
 
-
         when(repoAsiento.buscarPorID(idAsiento)).thenReturn(asientoSimulado);
 
         // WHEN

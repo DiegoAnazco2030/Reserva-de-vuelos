@@ -63,7 +63,7 @@ class ImpServicioReservaTest {
         // Mocks necesarios para el método privado mapearASalida
         when(repoVuelo.buscarPorID(10L)).thenReturn(mock(Vuelo.class));
         when(repoUsuario.buscarPorID(20L)).thenReturn(mock(Usuario.class));
-        when(mapper.ReservaAReservaDTO(any(), any(), any())).thenReturn(mock(SalidaReservaDTO.class));
+        //when(mapper.ReservaAReservaDTO(any(), any(), any())).thenReturn(mock(SalidaReservaDTO.class));
 
         List<SalidaReservaDTO> resultado = servicio.obtenerTodos();
 

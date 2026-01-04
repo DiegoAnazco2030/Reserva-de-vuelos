@@ -31,8 +31,8 @@ public class ImpServicioReserva implements IServicio<CrearReservaDTO, SalidaRese
     public void crear(CrearReservaDTO crearReserva) throws Exception {
         validarExistenciaComponentes(crearReserva.idVuelo(), crearReserva.idUsuario());
 
-        Long id = repoReserva.ultimoID();
-        Reserva nuevaReserva = mapper.ReservaDTOAReserva(id,crearReserva); // Usa el ID interno del DTO o cámbialo por el del repo si prefieres
+        Long id = repoReserva.ultimoID() + 1;
+        Reserva nuevaReserva = mapper.ReservaDTOAReserva(id,crearReserva);
         repoReserva.guardar(nuevaReserva);
     }
 
