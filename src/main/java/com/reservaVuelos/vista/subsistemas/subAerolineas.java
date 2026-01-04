@@ -5,6 +5,7 @@ import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAerolineaDTO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.awt.event.ActionListener;
@@ -123,6 +124,7 @@ public class subAerolineas extends JDialog {
             }
         });
 
+        aplicarEstiloCorporativo();
     }
 
     public void actualizarTablaAerolineas(String buscarAerolineaPalabra){
@@ -181,5 +183,58 @@ public class subAerolineas extends JDialog {
         modeloTablaAerolinea.addColumn("Telefono");
         modeloTablaAerolinea.addColumn("Email");
         tablaAerolinea.setModel(modeloTablaAerolinea);
+    }
+
+    private void aplicarEstiloCorporativo() {
+
+        // Agrego la paleta de colores
+        Color azulMarino = Color.decode("#3270BF");
+        Color celesteClaro = Color.decode("#33A1DE");
+        Color blanco = Color.WHITE;
+
+        if (registrarModificarAerolineas != null) {
+            registrarModificarAerolineas.setBackground(azulMarino);
+            registrarModificarAerolineas.setForeground(blanco);
+            registrarModificarAerolineas.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            registrarModificarAerolineas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            registrarModificarAerolineas.putClientProperty("JButton.buttonType", "roundRect");
+        }
+
+        if (EliminarAerolinea != null) {
+            EliminarAerolinea.setForeground(Color.RED);
+            EliminarAerolinea.putClientProperty("JButton.borderColor", Color.RED);
+            EliminarAerolinea.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        if (tablaAerolinea != null) {
+            // Estilo de la cabecera
+            tablaAerolinea.getTableHeader().setBackground(azulMarino);
+            tablaAerolinea.getTableHeader().setForeground(blanco);
+            tablaAerolinea.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+
+            // Configuración de filas
+            tablaAerolinea.setRowHeight(25);
+
+            // Color de selección
+            tablaAerolinea.setSelectionBackground(celesteClaro);
+            tablaAerolinea.setSelectionForeground(blanco);
+
+            // Limpieza visual
+            tablaAerolinea.setShowVerticalLines(false);
+        }
+
+        if (textFiBuscarAerolinea != null) {
+            textFiBuscarAerolinea.putClientProperty("JComponent.outline", celesteClaro);
+            textFiBuscarAerolinea.putClientProperty("JTextField.placeholderText", "🔍 Buscar aerolínea...");
+            textFiBuscarAerolinea.putClientProperty("JTextField.showClearButton", true);
+        }
+
+        // Esto hará que brillen en celeste cuando los selecciones para escribir
+        JTextField[] camposTexto = {nombreAerolinea, telefonoAerolinea, emailAerolinea};
+        for (JTextField campo : camposTexto) {
+            if (campo != null) {
+                campo.putClientProperty("JComponent.outline", celesteClaro);
+            }
+        }
     }
 }

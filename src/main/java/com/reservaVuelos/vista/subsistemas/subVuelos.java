@@ -6,6 +6,7 @@ import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAerolineaDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaVueloDTO;
 
+import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -149,6 +150,8 @@ public class subVuelos extends JDialog {
                 }
             }
         });
+
+        aplicarEstiloCorporativo();
     }
 
     public void actualizarTablaVuelos(String buscarVuelosalPalabra){
@@ -281,5 +284,58 @@ public class subVuelos extends JDialog {
                 }
             }
         };
+    }
+
+    private void aplicarEstiloCorporativo() {
+
+        // Agrego la paleta de colores
+        Color azulMarino = Color.decode("#3270BF");
+        Color celesteClaro = Color.decode("#33A1DE");
+        Color blanco = Color.WHITE;
+
+        if (registrarModificarVuelo != null) {
+            registrarModificarVuelo.setBackground(azulMarino);
+            registrarModificarVuelo.setForeground(blanco);
+            registrarModificarVuelo.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            registrarModificarVuelo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            registrarModificarVuelo.putClientProperty("JButton.buttonType", "roundRect");
+        }
+
+        if (eliminarVuelo != null) {
+            eliminarVuelo.setForeground(Color.RED);
+            eliminarVuelo.putClientProperty("JButton.borderColor", Color.RED);
+            eliminarVuelo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        JTable[] tablas = {tablaVuelos, tablaAerolineas, tablaAviones};
+
+        for (JTable tabla : tablas) {
+            if (tabla != null) {
+                // Cabecera Azul Marino
+                tabla.getTableHeader().setBackground(azulMarino);
+                tabla.getTableHeader().setForeground(blanco);
+                tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+
+                // Filas y Selección Celeste
+                tabla.setRowHeight(25);
+                tabla.setSelectionBackground(celesteClaro);
+                tabla.setSelectionForeground(blanco);
+                tabla.setShowVerticalLines(false);
+            }
+        }
+
+        if (textFiBuscarVuelo != null) {
+            textFiBuscarVuelo.putClientProperty("JComponent.outline", celesteClaro);
+            textFiBuscarVuelo.putClientProperty("JTextField.placeholderText", "🔍 Buscar vuelo...");
+            textFiBuscarVuelo.putClientProperty("JTextField.showClearButton", true);
+        }
+
+        JTextField[] camposHora = {horaSalida, horaLLegada};
+        for (JTextField campo : camposHora) {
+            if (campo != null) {
+                campo.putClientProperty("JComponent.outline", celesteClaro);
+                campo.putClientProperty("JTextField.placeholderText", "Ej: 2026-01-05 14:30");
+            }
+        }
     }
 }

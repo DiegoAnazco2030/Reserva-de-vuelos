@@ -5,6 +5,7 @@ import com.reservaVuelos.modelo.persona.RolUsuario;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaEmpleadoDTO;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaUsuarioDTO;
 
+import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -156,6 +157,7 @@ public class subUsuarios extends JDialog{
             }
         });
 
+        aplicarEstiloCorporativo();
     }
 
     public void actualizarTablaUsuarios(String buscarUsuarioPalabra){
@@ -238,5 +240,59 @@ public class subUsuarios extends JDialog{
         modelotablaUsuario.addColumn("Email");
         modelotablaUsuario.addColumn("Rol");
         tablaUsuarios.setModel(modelotablaUsuario);
+    }
+
+    private void aplicarEstiloCorporativo() {
+
+        // Agrego la paleta de colores
+        Color azulMarino = Color.decode("#3270BF");
+        Color celesteClaro = Color.decode("#33A1DE");
+        Color blanco = Color.WHITE;
+
+        // Configuracion del boton principal
+        if (registroUsuario != null) {
+            registroUsuario.setBackground(azulMarino);
+            registroUsuario.setForeground(blanco);
+            registroUsuario.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            registroUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            registroUsuario.putClientProperty("JButton.buttonType", "roundRect");
+        }
+
+        // Configuracion del boton eliminar
+        if (eliminarUsuario != null) {
+            eliminarUsuario.setForeground(Color.RED);
+            eliminarUsuario.putClientProperty("JButton.borderColor", Color.RED);
+            eliminarUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        // Configuracion tabla de usuarios
+        if (tablaUsuarios != null) {
+            tablaUsuarios.getTableHeader().setBackground(azulMarino);
+            tablaUsuarios.getTableHeader().setForeground(blanco);
+            tablaUsuarios.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+            tablaUsuarios.setRowHeight(25);
+            tablaUsuarios.setSelectionBackground(celesteClaro);
+            tablaUsuarios.setSelectionForeground(blanco);
+            tablaUsuarios.setShowVerticalLines(false);
+        }
+
+        // Barra de busqueda
+        if (textFiBuscarUsuario != null) {
+            textFiBuscarUsuario.putClientProperty("JComponent.outline", celesteClaro);
+            textFiBuscarUsuario.putClientProperty("JTextField.placeholderText", "🔍 Buscar usuario...");
+            textFiBuscarUsuario.putClientProperty("JTextField.showClearButton", true);
+        }
+
+        // Campos del formulario
+        JTextField[] camposFormulario = {
+                nombrePersona, apellidoPersona, telefonoPersona,
+                edadPersona, emailUsuario, contrasenaUsuario, pasaporteUsuario
+        };
+
+        for (JTextField campo : camposFormulario) {
+            if (campo != null) {
+                campo.putClientProperty("JComponent.outline", celesteClaro);
+            }
+        }
     }
 }

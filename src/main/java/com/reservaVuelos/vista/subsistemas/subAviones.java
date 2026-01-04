@@ -4,6 +4,7 @@ import com.reservaVuelos.controlador.IControlador;
 import com.reservaVuelos.modelo.vuelo.ModeloAvion;
 import com.reservaVuelos.servicio.DTOs.DTOsSalida.SalidaAvionDTO;
 
+import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -99,6 +100,8 @@ public class subAviones extends JDialog {
                 }
             }
         });
+
+        aplicarEstiloCorporativo();
     }
 
     public void actualizarTablaAviones(String buscarAvionesPalabra){
@@ -146,5 +149,52 @@ public class subAviones extends JDialog {
         modeloTablaAviones.addColumn("Modelo");
         modeloTablaAviones.addColumn("Capacidad");
         tablaAviones.setModel(modeloTablaAviones);
+    }
+
+    private void aplicarEstiloCorporativo() {
+
+        // Agrego la paleta de colores (Mismos que PaginaPrincipal)
+        Color azulMarino = Color.decode("#3270BF");
+        Color celesteClaro = Color.decode("#33A1DE");
+        Color blanco = Color.WHITE;
+
+        // Configuracion del boton principal (Registrar)
+        if (registrarModificarAvion != null) {
+            registrarModificarAvion.setBackground(azulMarino);
+            registrarModificarAvion.setForeground(blanco);
+            registrarModificarAvion.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            registrarModificarAvion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            registrarModificarAvion.putClientProperty("JButton.buttonType", "roundRect");
+        }
+
+        // Configuracion del boton eliminar
+        if (eliminarAvion != null) {
+            eliminarAvion.setForeground(Color.RED);
+            eliminarAvion.putClientProperty("JButton.borderColor", Color.RED);
+            eliminarAvion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+
+        // Configuracion tabla de aviones
+        if (tablaAviones != null) {
+            // Estilo de la cabecera
+            tablaAviones.getTableHeader().setBackground(azulMarino);
+            tablaAviones.getTableHeader().setForeground(blanco);
+            tablaAviones.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+            // Altura de filas
+            tablaAviones.setRowHeight(25);
+            // Color de selección
+            tablaAviones.setSelectionBackground(celesteClaro);
+            tablaAviones.setSelectionForeground(blanco);
+            // Quitar líneas verticales
+            tablaAviones.setShowVerticalLines(false);
+        }
+
+        // Barra de busqueda
+        if (textFiBusquedaAvion != null) {
+            // Borde celeste cuando pasas el mouse
+            textFiBusquedaAvion.putClientProperty("JComponent.outline", celesteClaro);
+            // Botón de borrado rápido
+            textFiBusquedaAvion.putClientProperty("JTextField.showClearButton", true);
+        }
     }
 }
