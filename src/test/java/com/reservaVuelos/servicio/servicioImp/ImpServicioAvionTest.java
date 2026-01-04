@@ -52,27 +52,25 @@ class ImpServicioAvionTest {
 
     @Test
     void creacionCorrecta() throws Exception {
-        // GIVEN
         CrearAvionDTO dto = new CrearAvionDTO(ModeloAvion.AIRBUS_A320);
-
         Avion entidadSimulada = new Avion(1L, ModeloAvion.AIRBUS_A320);
 
         when(repo.ultimoID()).thenReturn(0L);
 
         when(mapperAvion.AvionDTOAAvion(dto, 1L)).thenReturn(entidadSimulada);
 
-        // El repo debe devolver la entidad para que (resultado == null) sea falso
         when(repo.guardar(entidadSimulada)).thenReturn(entidadSimulada);
 
-        // WHEN & THEN
+        lenient().when(repoAsiento.guardar(any(Asiento.class)))
+                .thenReturn(new Asiento(1L, TipoDeAsiento.TURISTA));
+
         assertDoesNotThrow(() -> {
             servicio.crear(dto);
         });
 
-        verify(repo).ultimoID();
         verify(repo).guardar(entidadSimulada);
+        verify(repoAsiento, atLeastOnce()).guardar(any(Asiento.class));
     }
-
 
     @Test
     void errorRepoAlCrear() throws Exception {
