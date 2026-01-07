@@ -193,7 +193,7 @@ public class subAviones extends JDialog {
         if (textFiBusquedaAvion != null) {
             // Borde celeste cuando pasas el mouse
             textFiBusquedaAvion.putClientProperty("JComponent.outline", celesteClaro);
-            // Botón de borrado rápido
+            textFiBusquedaAvion.putClientProperty("JTextField.placeholderText", "🔍 Buscar avion...");
             textFiBusquedaAvion.putClientProperty("JTextField.showClearButton", true);
         }
     }

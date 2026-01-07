@@ -381,10 +381,7 @@ public class PaginaPrincipal extends JFrame {
         };
     }
 
-    //Esta funcion es la encargada de configurar los estilos
-    //Leonardo o Josue, el que vea esto, esto de aqui es lo que deben implementar en los subsistemas
-    //Esta funcion debes añadirla al final del constructor, reviar el cosntructor de esta clase
-    //Eliminar esto comentario para la version final!!!!
+    //Esta funcion es la encargada de configurar los estilos, hay que implementarlos en los otros subsistemas tambien
     private void aplicarEstiloCorporativo() {
 
         //Agrego la paleta de colores
@@ -442,7 +439,7 @@ public class PaginaPrincipal extends JFrame {
         if (buscarReserva != null) {
             // Borde celeste cuando pasas el mouse
             buscarReserva.putClientProperty("JComponent.outline", celesteClaro);
-            // Botón de borrado rápido
+            buscarReserva.putClientProperty("JTextField.placeholderText", "🔍 Buscar reserva...");
             buscarReserva.putClientProperty("JTextField.showClearButton", true);
         }
     }

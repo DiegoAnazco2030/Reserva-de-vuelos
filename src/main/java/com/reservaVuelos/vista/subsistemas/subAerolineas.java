@@ -225,11 +225,11 @@ public class subAerolineas extends JDialog {
 
         if (textFiBuscarAerolinea != null) {
             textFiBuscarAerolinea.putClientProperty("JComponent.outline", celesteClaro);
-            textFiBuscarAerolinea.putClientProperty("JTextField.placeholderText", "🔍 Buscar aerolínea...");
+            textFiBuscarAerolinea.putClientProperty("JTextField.placeholderText", "🔍 Buscar aerolinea...");
             textFiBuscarAerolinea.putClientProperty("JTextField.showClearButton", true);
         }
 
-        // Esto hará que brillen en celeste cuando los selecciones para escribir
+        // Esto hara que brillen en celeste cuando los selecciones para escribir
         JTextField[] camposTexto = {nombreAerolinea, telefonoAerolinea, emailAerolinea};
         for (JTextField campo : camposTexto) {
             if (campo != null) {
