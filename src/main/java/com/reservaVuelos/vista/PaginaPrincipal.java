@@ -35,12 +35,6 @@ public class PaginaPrincipal extends JFrame {
     private JTable tablaReservas;
     private DefaultTableModel modeloTablaReservas;
 
-    //Bottoms de los panels de los subsistemas
-    private JButton aerolineasSubsistema;
-    private JButton usuariosSubsistema;
-    private JButton avionesSubsistema;
-    private JButton vuelosSubsistema;
-
     //Bottoms del crud de reservas
     private JButton registrarModiReservas;
     private JButton eliminarReservas;
@@ -55,6 +49,7 @@ public class PaginaPrincipal extends JFrame {
 
         this.controlador = controlador;
         setContentPane(JPanelPrincipal);
+        iniciarMenuSuperior();
         setTitle("Registro de reservas");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
@@ -89,44 +84,6 @@ public class PaginaPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarTablaReservas(buscarReserva.getText());
-            }
-        });
-
-        //Action listener de los bottom de los subsistemas
-
-        aerolineasSubsistema.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subAerolineas subSistemaAerolineas = new subAerolineas(PaginaPrincipal.this, controlador);
-                subSistemaAerolineas.setVisible(true);
-                resetTablas();
-            }
-        });
-
-        avionesSubsistema.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subAviones subSistemaAaviones = new subAviones(PaginaPrincipal.this, controlador);
-                subSistemaAaviones.setVisible(true);
-                resetTablas();
-            }
-        });
-
-        usuariosSubsistema.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subUsuarios subSistemaUsuarios = new subUsuarios(PaginaPrincipal.this, controlador);
-                subSistemaUsuarios.setVisible(true);
-                resetTablas();
-            }
-        });
-
-        vuelosSubsistema.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subVuelos subSistemaVuelos = new subVuelos(PaginaPrincipal.this, controlador);
-                subSistemaVuelos.setVisible(true);
-                resetTablas();
             }
         });
 
@@ -389,26 +346,6 @@ public class PaginaPrincipal extends JFrame {
         Color celesteClaro = Color.decode("#33A1DE");
         Color blanco = Color.WHITE;
 
-        //Configuracion de los bottoms principales
-        JButton[] botonesPrincipales = {
-                registrarModiReservas,
-                aerolineasSubsistema,
-                avionesSubsistema,
-                usuariosSubsistema,
-                vuelosSubsistema
-        };
-
-        for (JButton btn : botonesPrincipales) {
-            if (btn != null) {
-                btn.setBackground(azulMarino);
-                btn.setForeground(blanco);
-                btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-                btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                // Hacemos que sean redondeados (Estilo moderno)
-                btn.putClientProperty("JButton.buttonType", "roundRect");
-            }
-        }
-
         // Congiguracion del bottom eliminar
         if (eliminarReservas != null) {
             eliminarReservas.setForeground(Color.RED);
@@ -442,5 +379,69 @@ public class PaginaPrincipal extends JFrame {
             buscarReserva.putClientProperty("JTextField.placeholderText", "🔍 Buscar reserva...");
             buscarReserva.putClientProperty("JTextField.showClearButton", true);
         }
+    }
+
+    private void iniciarMenuSuperior() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuSubsistemas = new JMenu("Subsistemas");
+        menuSubsistemas.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        JMenuItem itemAerolineas = new JMenuItem("Aerolíneas");
+        JMenuItem itemAviones = new JMenuItem("Aviones");
+        JMenuItem itemUsuarios = new JMenuItem("Usuarios");
+        JMenuItem itemVuelos = new JMenuItem("Vuelos");
+
+        // ActionListeners de los Bottoms
+
+        // Bottom para Aerolíneas
+        itemAerolineas.addActionListener(e -> {
+            subAerolineas subSistemaAerolineas = new subAerolineas(PaginaPrincipal.this, controlador);
+            subSistemaAerolineas.setVisible(true);
+            resetTablas(); //
+        });
+
+        // Bottom para Aviones
+        itemAviones.addActionListener(e -> {
+            subAviones subSistemaAviones = new subAviones(PaginaPrincipal.this, controlador);
+            subSistemaAviones.setVisible(true);
+            resetTablas();
+        });
+
+        // Bottom para Usuarios
+        itemUsuarios.addActionListener(e -> {
+            subUsuarios subSistemaUsuarios = new subUsuarios(PaginaPrincipal.this, controlador);
+            subSistemaUsuarios.setVisible(true);
+            resetTablas();
+        });
+
+        // Bottom para Vuelos
+        itemVuelos.addActionListener(e -> {
+            subVuelos subSistemaVuelos = new subVuelos(PaginaPrincipal.this, controlador);
+            subSistemaVuelos.setVisible(true);
+            resetTablas();
+        });
+
+        menuSubsistemas.add(itemAerolineas);
+        menuSubsistemas.add(itemAviones);
+        menuSubsistemas.add(itemUsuarios);
+        menuSubsistemas.add(itemVuelos);
+        menuBar.add(menuSubsistemas);
+
+        //Menu Help
+        JMenu menuHelp = new JMenu("Help");
+        menuHelp.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        JMenuItem itemContacto = new JMenuItem("Contactanos");
+        itemContacto.addActionListener(e -> {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Sistema de Reserva de Vuelos\nContacto: diego@ucuenca.edu.ec",
+                    "Información de Contacto",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        menuHelp.add(itemContacto);
+        menuBar.add(menuSubsistemas);
+        menuBar.add(menuHelp);
+
+        this.setJMenuBar(menuBar);
     }
 }
