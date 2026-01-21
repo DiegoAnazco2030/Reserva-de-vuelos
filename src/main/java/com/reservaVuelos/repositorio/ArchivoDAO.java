@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * para guardar cualquier cosa el ID es el primer dato que se guarda
@@ -32,36 +32,110 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
     private static final String CARPETA_BASE = "./base_datos_archivos/";
     private static final String RUTA_DATOS = CARPETA_BASE + "datos/";
     private static final String RUTA_INDICES = CARPETA_BASE + "indices/";
+    private static final String RUTA_COMPRESION = CARPETA_BASE + "comprimidos/";
 
     private File archivoIndices;            // Archivo de los indices densos
     private File archivoDatos;              // Archivo de los datos
+    private File archivoComprimido;         // Archivo comprimido
     private Long tamanoRegistro;            // Tamano de Bytes del registro
     private Map<Long, Long> indicesMapa;    // El Índice Denso en RAM (ID vs Posición)
+    private Long ultimoIDCache = null;      // Cache del ultimo ID para evitar leer el archivo siempre
 
     public ArchivoDAO(String nombreBase, Long tamanoRegistro) {
         File carpetaDatos = new File(RUTA_DATOS);
         File carpetaIndices = new File(RUTA_INDICES);
+        File capetaCompresion = new File(RUTA_COMPRESION);
         
-        if (!carpetaDatos.exists()) {
-            carpetaDatos.mkdirs();
-        }
-        if (!carpetaIndices.exists()) {
-            carpetaIndices.mkdirs();
-        }
+        if (!carpetaDatos.exists()) {carpetaDatos.mkdirs();}
+        if (!carpetaIndices.exists()) {carpetaIndices.mkdirs();}
+        if (!capetaCompresion.exists()) {capetaCompresion.mkdirs();}
 
         this.archivoIndices = new File(RUTA_INDICES + nombreBase + ".idx");
         this.archivoDatos = new File(RUTA_DATOS + nombreBase + ".raf");
+        this.archivoComprimido = new File(RUTA_COMPRESION + nombreBase + ".zip");
         this.tamanoRegistro = tamanoRegistro;
-        this.indicesMapa = new HashMap<>();
+        this.indicesMapa = new LinkedHashMap<>();
+
+        // Descomprimir los archivos del Zip
+        descomprimirArchivo();
 
         // Cargar el indice denso en memoria al inicializar el DAO
         cargarIndiceDensoEnMemoria();
 
+        // Actualizar el ultimo ID cache
+        this.ultimoIDCache = cargarultimoID();
+
         // Uso de SHUTDOWN HOOK al cerrar la aplicacion para guardar el indice denso en disco
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             guardarIndiceDensoEnDisco();
+            comprimirArchivo();
             System.out.println("Indices densos guardados antes de cerrar todo");
         }));
+    }
+
+    // -------------- Compresion de archivos --------------
+
+    private void comprimirArchivo() {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(archivoComprimido))) {
+            comprimirArchivo(zos, archivoDatos);
+            comprimirArchivo(zos, archivoIndices);
+            System.out.println("Archivos comprimidos exitosamente en: " + archivoComprimido.getAbsolutePath());
+
+            // Borrar los archivos originales despues de comprimir
+            if (archivoDatos.exists()) { archivoDatos.delete(); }
+            if (archivoIndices.exists()) { archivoIndices.delete(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void descomprimirArchivo() {
+        if (!archivoComprimido.exists()) {
+            System.out.println("No se encontró archivo comprimido: " + archivoComprimido.getName());
+            return;
+        }
+
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(archivoComprimido))) {
+            ZipEntry entrada;
+            while ((entrada = zis.getNextEntry()) != null) {
+                File destino = entrada.getName().endsWith(".raf") ? archivoDatos : archivoIndices;
+
+                descomprimirArchivo(zis, destino);
+                zis.closeEntry();
+            }
+
+            zis.close();
+            System.out.println("Archivos descomprimidos exitosamente desde: " + archivoComprimido.getAbsolutePath());
+            archivoComprimido.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void comprimirArchivo(ZipOutputStream zos, File archivo) throws IOException {
+        if (!archivo.exists()) return;
+
+        try (FileInputStream fis = new FileInputStream(archivo)) {
+            zos.putNextEntry(new ZipEntry(archivo.getName()));
+
+            byte[] buffer = new byte[4096];
+            int leido;
+            while ((leido = fis.read(buffer)) >= 0) {
+                zos.write(buffer, 0, leido);
+            }
+
+            zos.closeEntry();
+        }
+    }
+
+    private void descomprimirArchivo(ZipInputStream zis, File destino) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(destino)) {
+            byte[] buffer = new byte[4096];
+            int leido;
+            while ((leido = zis.read(buffer)) >= 0) {
+                fos.write(buffer, 0, leido);
+            }
+        }
     }
 
     // -------------- Indice Denso --------------
@@ -129,6 +203,23 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
         }
     }
 
+    // -------------- Carga del ultimo ID --------------
+
+    private Long cargarultimoID() {
+        if (!archivoDatos.exists() || archivoDatos.length() == 0) return 0L;
+
+        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
+            long posUltimoRegistro = raf.length() - tamanoRegistro;
+
+            raf.seek(posUltimoRegistro);
+
+            return raf.readLong();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+
     // -------------- Métodos de la interfaz IRepositorio --------------
 
     @Override
@@ -150,6 +241,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
             raf.write(datosBytes);
 
             indicesMapa.put(entity.getId(), posicion);
+            ultimoIDCache = entity.getId();
             return entity;
         } catch(IOException e) {
             throw new OperacionFallidaException("No se pudo guardar el " + entity.getClass().getSimpleName(), e);
@@ -272,19 +364,7 @@ public abstract class ArchivoDAO<T extends Identificador> implements IRepositori
 
     @Override
     public Long ultimoID() {
-        if (!archivoDatos.exists() || archivoDatos.length() == 0) return 0L;
-
-        try (RandomAccessFile raf = new RandomAccessFile(archivoDatos, "r")) {
-            long posUltimoRegistro = raf.length() - tamanoRegistro;
-            
-            raf.seek(posUltimoRegistro);
-            
-            return raf.readLong();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0L;
-        }
+        return ultimoIDCache;
     }
 
     // Poner los metodos abstractos que se necesiten para los DAO concretos. (si es que existen)
